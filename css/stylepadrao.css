@@ -26,6 +26,7 @@ body{
     background-color: var(--color-body);
     color: var(--color-dark);
     font-weight: 300;
+    padding: 8px;
 }
 
 img{
@@ -43,6 +44,7 @@ img{
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.15em;
+    border-radius: 20px 20px 0 0;
 }
 /*Header*/
 .header{
@@ -51,6 +53,14 @@ img{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    
+}
+
+.header a{
+    color: var(--color-dark);
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .logo{
@@ -63,10 +73,21 @@ img{
 .header-icons{
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     font-size: 1.3rem;
     color: var(--color-dark);
-    cursor: pointer;;
+    cursor: pointer;
+    padding: 0;
+}
+
+.cestinha{
+    height: 60px;
+    width: 50px;
+}
+
+.perfil{
+    height: 50px;
+    width: 40px;
 }
 /*nav*/
 
@@ -97,9 +118,39 @@ img{
     opacity: 0.75;
 }
 
+/*Pesquisa*/
+#icone-busca{
+    width: 40px;
+    height: 30px;
+    padding: 0;
+}
+.barra-pesquisa {
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.3s ease;
+    display: flex;
+    gap: 6px;
+    
+}
+
+.barra-pesquisa.ativa {
+    max-width: 280px;
+}
+
+.buscar{
+    background-color: var(--color-primary);
+    font-family: var(--font--sans);
+    color: var(--color-body);
+    height: 30px;
+    width: 80px;
+    border: none;
+    border-radius: 20px;
+}
+
 /*Footer*/
 .rodape{
-    margin-top: 60px;
+    width: 100%;
+    overflow: visible;
 }
 
 .rodape-grid{

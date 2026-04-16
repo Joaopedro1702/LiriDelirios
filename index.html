@@ -13,23 +13,29 @@
     <header class="header">
         <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
         <div class="header-icons">
-            <a href="#">Perfil</a>
-            <a href="#">Carrinho</a>
-        </div>
+            <a href="#">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil">
+            </a>
+            <a href="#">
+                <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        
 
-        <form action="#" class="barra-pesquisa" role="search">
-            <input 
-            type="search"
-            id="busca"
-            name="q"
-            placeholder="Buscar vestidos, blusas..."
-            aria-label="Pesquisar produtos no site"
-            required
-            >
-            <button type="submit" aria-label="Buscar">
-                Buscar
-            </button>
-        </form>
+        <img src="imagem/pesquisa.png" alt="Icone de pesquisa." id="icone-busca">
+            <form action="#" class="barra-pesquisa" role="search" id="barra-pesquisa">
+                <input
+                type="search"
+                id="busca"
+                name="q"
+                placeholder="Buscar vestidos, blusas..."
+                aria-label="Pesquisar produtos no site"
+                required
+                >
+                <button type="submit" aria-label="Buscar" class="buscar">
+                    Buscar
+                </button>
+            </form>
+        </div>
     </header>
         <nav class="nav">
     <ul>
@@ -138,6 +144,15 @@
         </div>
     
 </footer>
-    
+
+<script>
+    const icone = document.getElementById('icone-busca')
+    const barra = document.getElementById('barra-pesquisa')
+
+    icone.addEventListener('click', () => {
+        barra.classList.toggle('ativa')
+    })
+</script>
+
 </body>
 </html>
