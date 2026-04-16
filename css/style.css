@@ -1,0 +1,234 @@
+
+/*Hero / Topo*/
+
+.topo{
+    background-color: var(--color-bg);
+    padding: 80px 40px;
+    text-align: center;
+}
+
+.container-topo{
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.texto1{
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: var(--color-dark);
+    line-height: 1.2;
+}
+
+.topo p{
+    font-family: var(--font--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+}
+
+.explorar{
+    margin-top: 8px;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    font-family: var(--font--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+}
+
+.explorar:hover{
+    background-color: var(--color-primary-dark);
+}
+
+/*Seções de produtos (Destaques / Mais Vendidos)*/
+
+.destaques, .maisvendidos{
+    padding: 60px 40px;
+    text-align: center;
+    background-color: var(--color-body);
+}
+
+.destaques h2, .maisvendidos h2{
+    font-family: var(--font--sans);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--color-dark);
+    margin-bottom: 6px;
+}
+
+.destaques > p, .maisvendidos > p{
+    font-family: var(--font--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-decoration: uppercase;
+    color: var(--color-label);
+    margin-bottom: 36px;
+}
+
+/*Grid de cards*/
+
+.grid-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/*Card de produto*/
+
+.card-produto{
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: left;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card-produto:hover{
+    box-shadow: 0 6px 24px rgba(128, 0, 32, 0.1);
+    transform: translateY(-3px);
+}
+
+.card-produto img{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background-color: var(--color-bg);
+}
+
+.container-informacao{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.descricao{
+    font-family: var(--font--sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-decoration: uppercase;
+    color: var(--color-label);
+
+}
+
+.container-informacao h3{
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.15rem;
+    color:var(--color-dark);
+}
+
+.container-informacao p{
+    font-family: var(--font--sans);
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    font-weight: 300;
+}
+
+.preco{
+    font-family: var(--font--sans);
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: var(--color-dark) !important;
+    margin-top: 4px;
+}
+
+.btnadicionar{
+    margin-top: 8px;
+    background-color: var(--color-btn-secondary);
+    color: var(--color-dark);
+    border: none;
+    padding: 10px 14px;
+    font-family: var(--font--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.btnadicionar:hover{
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+/*Banner do meio*/
+
+.meio{
+    background-color: var(--color-primary);
+    padding: 70px 40px;
+    text-align: center;
+}
+
+.container-meio{
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.textomeio{
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    color: #fff;
+}
+
+.meio p{
+    font-family: var(--font--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);;
+}
+
+.colecao{
+    margin-top: 8px;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 13px 34px;
+    font-family: var(--font--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.colecao:hover{
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #fff;
+
+}
+
