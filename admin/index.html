@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela admin</title>
+</head>
+<body>
+    <input type="file" id="inputImagem">
+    <button id="btnEnviarImagem">Enviar</button>
+
+    <script type="module">
+        import {cadastrarProduto} from "./produtos.js";
+
+        const botaoTestar = document.getElementById("btnEnviarImagem");
+        const inputImagem = document.getElementById("inputImagem");
+
+        botaoTestar.addEventListener("click", async() =>
+        {
+            if (inputImagem.files.length ===0 ){
+                alert("Selecione uma imagem para enviar.");
+                return;
+            }
+
+        const arquivoSelecionado = inputImagem.files[0];
+
+        const produtoFalso = {
+            categoria: "Vestidos",
+            nome: "Vestido Floral Midi",
+            tamanho: "M",
+            descricao: "Vestido floral midi com alças finas e saia rodadinha, perfeito para ocasiões casuais e festas.",    
+            destaque: true,
+            preco: 149.90,
+            imagem: arquivoSelecionado,
+            estoque:{
+                quantidade: 10,
+                tamanho: "M"
+            }
+        };
+        try{
+            console.log("Iniciando o teste, aguarde o upload...")
+
+            const idGerado = await cadastrarProduto(produtoFalso);
+            console.log("Produto cadastrado com sucesso! ID:", idGerado);
+            alert("Sucesso! Olhe o console (f12) para ver os detalhes.")
+        } catch (error){
+            console.error("Putz, deu algum erro:", error);
+            alert("Deu erro! Olhe o console (f12) para ver os detalhes.")
+        }
+        })
+    </script>
+</body>
+</html>
