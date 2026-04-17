@@ -7,7 +7,47 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
-
+    <style>
+        gestao-estoque {
+            padding: 20px;
+        }
+        .gestao-estoque h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #tabela-estoque {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #tabela-estoque th,
+        #tabela-estoque td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .adcProduto {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .adcProduto label,
+        .adcProduto input,
+        .adcProduto select,
+        .adcProduto button{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .adcProduto .linha{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+    </style>
     <title>Estoque</title>
 </head>
 <body>
@@ -36,12 +76,37 @@
             </thead>
             <tbody id="listar-produtos-estoque"></tbody>
         </table>
-        <button class="btn-listar">Listar</button>
-        <button class="btn-excluir">Excluir</button>
     </div>
+
+    <section class="adcProduto">
+        <h2>Adicionar produto</h2>
+        <form class="adicionarProduto" >
+            <label class="labels">Nome do produto: </label>
+            <input type="text" id="nome-produto" placeholder="Nome do produto">
+            <label class="labels">Valor do produto: </label>
+            <input type="text" id="valor-produto" placeholder="valor do produto">
+            <label class="labels">Descrição do produto: </label>
+            <input type="text" id="descricao-produto" placeholder="Descrição do produto">
+            <label class="labels">Categoria do produto: </label>
+            <input type="text" id="categoria-produto" placeholder="Categoria do produto">
+            <label class="labels">Quantidade do produto: </label>
+            <input type="number" id="quantidade-produto" placeholder="Quantidade do produto">
+            <label class="labels">Tamanho do produto: </label>
+            <input type="text" id="tamanho-produto" placeholder="Tamanho do produto">
+            <label class="labels">Imagem do produto: </label>
+            <input type="file" id="imagem-produto">
+            <button type="submit" id="btn-adicionar-produto">Adicionar</button>
+        </form>
+    </section>
 </main>
 
-<script>
+<script type="module">
+    // Importando sua lógica interna
+import { monitorarEstoque, cadastrarProduto } from "./produtos.js"; 
+
+// Importando as ferramentas do Firebase (para os botões de excluir/listar)
+import { db } from "./firebase.js"; 
+import { doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const corpoTabela = document.getElementById("listar-produtos-estoque");
 
@@ -50,7 +115,7 @@
         <tr>
             <td><img src="${p.imgURL}" width="50"></td>
             <td>${p.nome}</td>
-            <td>${p.cateogria}</td>
+            <td>${p.categoria}</td>
             <td class="${p.estoque.quantidade < 3 ? 'alerta' : ''}">
             ${p.estoque.quantidade}</td>
             <td>
@@ -58,22 +123,6 @@
             </td>
         </tr>
         `).join('');
-    });
-    
-    corpoTabela.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("btn-listar")){
-            const idDoListar = event.target.getAttribute("data-id");
-
-            if(confirm("Realmente deseja listar os produtos?")){
-                try{
-                    const docRef = doc(db, "produtos", idDoListar);
-                    await deleteDoc(docRef);
-                    alert("Produtos listados com sucesso!")
-                }catch(error){
-                    console.error("Erro ao listar: ", error)
-                }
-            }
-        }
     });
 
     corpoTabela.addEventListener("click", async (event) => {
@@ -91,7 +140,48 @@
                 }
             }
         }
+    }); 
+    const btnSalvar = document.getElementById("btn-adicionar-produto");
+    btnSalvar.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const nomeProduto = document.getElementById("nome-produto").value;
+        const precoDigitado = parseFloat(document.getElementById("valor-produto").value);
+        const inputFoto = document.getElementById("imagem-produto");
+        const descricaoProduto = document.getElementById("descricao-produto").value;
+        const categoriaProduto = document.getElementById("categoria-produto").value;
+        const tamanhoProduto = document.getElementById("tamanho-produto").value;
+        const quantidadeProduto = parseInt(document.getElementById("quantidade-produto").value);
+
+        const arquivoSelecionado = inputFoto.files[0];
+
+        if (!arquivoSelecionado || nomeProduto === ""){
+            alert("Preencha todos os campos obrigatórios");
+            return;
+        }
+        const produto = {
+            nome: nomeProduto,
+            preco: precoDigitado,
+            descricao: descricaoProduto,
+            categoria: categoriaProduto,
+            tamanho: tamanhoProduto,
+            imagem: arquivoSelecionado,
+            quantidade: quantidadeProduto,
+            destaque: true,
+            estoque: {
+                quantidade: quantidadeProduto,
+                tamanho: "M"
+            }
+        };
+        try{
+            await cadastrarProduto(produto);
+            alert("Produto adicionado com sucesso!");
+            document.querySelector(".adicionarProduto").reset();
+        }catch(error){
+            console.error("Erro ao adicionar produto: ", error);
+            alert("Erro ao adicionar produto. Veja o console para detalhes.");
+        }
     });
+    console.log("btn", btnSalvar);
 </script>
 </body>
 </html>

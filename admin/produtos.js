@@ -1,6 +1,5 @@
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { collection, addDoc, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
-import { collection, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 // 1. Trazendo as ferramentas de salvar dados do Firebase
 async function uploadImage(arquivo) {
     const apiKey = import.meta.env.VITE_KEY_IMAGE;
@@ -25,6 +24,7 @@ export async function cadastrarProduto(produto){
         nome: produto.nome,
         descricao: produto.descricao,
         destaque: produto.destaque,
+        quantidade: produto.quantidade,
         preco: produto.preco,
         imgURL: imgURL,
         estoque: produto.estoque
@@ -59,5 +59,6 @@ export function monitorarEstoque(callback){
             id: doc.id,
             ...doc.data()
         }));
+        callback(produtos);
     });
 }
