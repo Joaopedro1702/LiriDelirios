@@ -47,7 +47,25 @@
             console.error("Putz, deu algum erro:", error);
             alert("Deu erro! Olhe o console (f12) para ver os detalhes.")
         }
-        })
+        });
+        const produtos = await listarProdutos();
+
+            produtos.forEach(produto => {
+                console.log("Nome da peça: ", produto.nome);
+                console.log("Link da imagem: ", produto.imgURL);
+            });
+
+        async function handleDeletar(id) {
+            const confirmacao = confirm("Tem certeza que deseja remover esta peça?");
+            if (confirmacao){
+                try{
+                    await deletarProduto(id);
+                    location.reload();
+                }catch(error){
+                    console.error("Erro ao deletar: ", error)
+                }
+            }
+        }
     </script>
 </body>
 </html>

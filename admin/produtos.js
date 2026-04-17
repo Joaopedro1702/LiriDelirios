@@ -1,5 +1,6 @@
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { db } from "./firebase.js";
+import { collection, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 // 1. Trazendo as ferramentas de salvar dados do Firebase
 async function uploadImage(arquivo) {
     const apiKey = import.meta.env.VITE_KEY_IMAGE;
@@ -29,4 +30,34 @@ export async function cadastrarProduto(produto){
         estoque: produto.estoque
     });
     return docRef.id;
+}
+
+export async function listarProdutos(){
+    const produtosRef = collection(db, "produtos");
+    const snapshot = await getDocs(produtosRef);
+
+    const lista = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }))
+    return lista
+}
+
+export async function inativarProduto(id){
+    const docRef = doc(db, "produtos", id);
+
+    await updateDoc(docRef, {
+        ativo: false
+    });
+}
+
+export function monitorarEstoque(callback){
+    const produtosRef = collection(db, "produtos");
+
+    return onSnapshot(produtosRef, (snapshot)=>{
+        const produtos = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    });
 }

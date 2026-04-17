@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylepadrao.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+
+    <title>Estoque</title>
+</head>
+<body>
+        <header class="header">
+        <img src="../imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
+    </header>
+        <nav class="nav">
+    <ul>
+        <li><a href="#">Gestão de estoque</a></li>
+        <li><a href="#">Vestidos</a></li>
+    </ul>
+</nav>
+<main>
+
+    <div class="gestao-estoque">
+        <h2>Gestão de estoque - Liri de Lírios</h2>
+        <table id="tabela-estoque">
+            <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Produtos</th>
+                    <th>Categoria</th>
+                    <th>Qtd</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="listar-produtos-estoque"></tbody>
+        </table>
+        <button class="btn-listar">Listar</button>
+        <button class="btn-excluir">Excluir</button>
+    </div>
+</main>
+
+<script>
+
+    const corpoTabela = document.getElementById("listar-produtos-estoque");
+
+    monitorarEstoque((produtos) => {
+        corpoTabela.innerHTML = produtos.map(p => `
+        <tr>
+            <td><img src="${p.imgURL}" width="50"></td>
+            <td>${p.nome}</td>
+            <td>${p.cateogria}</td>
+            <td class="${p.estoque.quantidade < 3 ? 'alerta' : ''}">
+            ${p.estoque.quantidade}</td>
+            <td>
+                <button class="btn-excluir" data-id="${p.id}">Excluir</button>
+            </td>
+        </tr>
+        `).join('');
+    });
+    
+    corpoTabela.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("btn-listar")){
+            const idDoListar = event.target.getAttribute("data-id");
+
+            if(confirm("Realmente deseja listar os produtos?")){
+                try{
+                    const docRef = doc(db, "produtos", idDoListar);
+                    await deleteDoc(docRef);
+                    alert("Produtos listados com sucesso!")
+                }catch(error){
+                    console.error("Erro ao listar: ", error)
+                }
+            }
+        }
+    });
+
+    corpoTabela.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("btn-excluir")){
+            const id = event.target.dataset.id;
+            const confirmar = confirm("Deseja mesmo remover este item do catálogo?");
+
+            if (confirmar){
+                try{
+                    const docRef = doc(db, "produtos", id);
+                    await deleteDoc(docRef);
+                    alert("Produto removido com sucesso!");
+                }catch(error){
+                    console.error("Erro ao remover: ", error);
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
