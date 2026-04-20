@@ -1,25 +1,23 @@
-// 1. IMPORTAÇÕES DA INTERNET (CDN)
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+// admin/js/firebase.js
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// 2. SUAS CREDENCIAIS DO FIREBASE
 const firebaseConfig = {
-    apiKey: "AIzaSyDxIRnIgyyzDOPm1WQrp-oQneLS0YIVSkE",
-    authDomain: "liri-delirios.firebaseapp.com",
-    projectId: "liri-delirios",
-    storageBucket: "liri-delirios.firebasestorage.app",
-    messagingSenderId: "804738312923",
-    appId: "1:804738312923:web:294153015b5d2bd81cbafe",
-    measurementId: "G-7VS366BBDG"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// 3. INICIALIZAÇÃO DAS FERRAMENTAS
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
 
-// 4. EXPORTAÇÃO (Isso aqui é o que resolve o seu erro vermelho!)
-export { db, storage };
+// Exporta as instâncias para o resto do projeto
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
