@@ -101,13 +101,9 @@
 </main>
 
 <script type="module">
-    // Importando sua lógica interna
-import { monitorarEstoque, cadastrarProduto } from "./produtos.js"; 
 
 // Importando as ferramentas do Firebase (para os botões de excluir/listar)
-import { db } from "./firebase.js"; 
-import { doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
+    import { monitorarEstoque, cadastrarProduto, deletarProduto } from "./produtos.js";
     const corpoTabela = document.getElementById("listar-produtos-estoque");
 
     monitorarEstoque((produtos) => {
@@ -128,19 +124,18 @@ import { doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/fireba
     corpoTabela.addEventListener("click", async (event) => {
         if (event.target.classList.contains("btn-excluir")){
             const id = event.target.dataset.id;
-            const confirmar = confirm("Deseja mesmo remover este item do catálogo?");
+            const confirmar = confirm("Deseja mesmo remover este item do catálogo?")
 
-            if (confirmar){
+            if(confirmar){
                 try{
-                    const docRef = doc(db, "produtos", id);
-                    await deleteDoc(docRef);
-                    alert("Produto removido com sucesso!");
+                    await deletarProduto(id);
+                    alert("Produto removido com sucesso!")
                 }catch(error){
                     console.error("Erro ao remover: ", error);
                 }
             }
         }
-    }); 
+    })
     const btnSalvar = document.getElementById("btn-adicionar-produto");
     btnSalvar.addEventListener("click", async (event) => {
         event.preventDefault();

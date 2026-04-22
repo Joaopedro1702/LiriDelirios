@@ -136,25 +136,6 @@
     })
 </script>
 
-<script type="module">
-    import { monitorarEstoque } from "./admin/produtos.js";
-    const vitrineDesques = document.getElementById("vitrine-destaques");
-    monitorarEstoque((produtos) => {
-        vitrineDesques.innerHTML = produtos.map(p => `
-            <article class="card-produto">
-                <img src="${p.imgURL}" alt="${p.nome}">
-                <div class="conteiner-informacao">
-                    <span class="descricao">${p.categoria}</span>
-                    <h3>${p.nome}</h3>
-                    <p>${p.descricao}</p>
-                    <p class="preco">R$ ${p.preco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-                    <button class="btnadicionar">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-        `).join('');
-    });
-
-</script>
 
 <script>
     const btnEsquerda = document.querySelector('.anterior');
@@ -177,6 +158,60 @@
         });
     });
 </script>
+
+<script type="module">
+  import { monitorarEstoque } from "./admin/produtos.js";
+  const vitrineDesques = document.getElementById("vitrine-destaques");
+
+  monitorarEstoque((produtos) => {
+    vitrineDesques.innerHTML = produtos.map(p => `
+      <article class="card-produto">
+        <img src="${p.imgURL}" alt="${p.nome}">
+        <div class="conteiner-informacao">
+          <span class="descricao">${p.categoria}</span>
+          <h3>${p.nome}</h3>
+          <p>${p.descricao}</p>
+          <p class="preco">R$ ${p.preco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+          <button class="btnadicionar"
+            data-id="${p.id}"
+            data-nome="${p.nome}"
+            data-preco="${p.preco}"
+            data-img="${p.imgURL}"
+            data-categoria="${p.categoria}">
+            Adicionar ao Carrinho
+          </button>
+        </div>
+      </article>
+    `).join('');
+  });
+
+  vitrineDesques.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btnadicionar')) {
+      const btn = e.target;
+      const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+
+      const item = {
+        id: btn.dataset.id,
+        nome: btn.dataset.nome,
+        preco: parseFloat(btn.dataset.preco),
+        imgURL: btn.dataset.img,
+        categoria: btn.dataset.categoria,
+        quantidade: 1
+      };
+
+      const existente = carrinho.find(i => i.id === item.id);
+      if (existente) {
+        existente.quantidade += 1;
+      } else {
+        carrinho.push(item);
+      }
+
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      alert('Produto adicionado ao carrinho!');
+    }
+  });
+</script>
+
 
 </body>
 </html>

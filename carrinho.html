@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Carrinho — Líri de Lírios</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="stylepadrao.css">
   <style>
     /* ─── VARIÁVEIS ─── */
     :root {
@@ -36,6 +37,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.15em;
     }
+    
 
     /* ─── NAVBAR ─── */
     .navbar {
@@ -453,6 +455,8 @@
       padding-top: 32px;
       border-top: 1px solid rgba(255,255,255,0.15);
     }
+
+    
   </style>
 </head>
 <body>
@@ -462,25 +466,18 @@
 
   <!-- NAVBAR -->
   <header class="navbar">
-    <a href="#" class="navbar__logo">Líri de Lírios</a>
-    <nav>
-      <ul class="navbar__nav">
-        <li><a href="#">INÍCIO</a></li>
-        <li><a href="#">VESTIDOS</a></li>
-        <li><a href="#">BLUSAS</a></li>
-        <li><a href="#">SAIAS</a></li>
-        <li><a href="#">VER TUDO</a></li>
-        <li><a href="#">PROMOÇÕES</a></li>
-      </ul>
-    </nav>
-    <div class="navbar__icons">
-      <!-- Ícone usuário -->
-      <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      <!-- Ícone carrinho -->
-      <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-      <!-- Ícone busca -->
-      <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </div>
+    <a href="index.html" class="navbar__logo">
+      <img src="imagem/logolirios.png" alt="Logo Liri de Lírios." class="logo">
+    </a>
+
+      <div class="header-icons">
+            <a href="login.html">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil">
+            </a>
+            <a href="carrinho.html">
+                <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+      </div>
   </header>
 
   <!-- BREADCRUMB -->
@@ -490,7 +487,7 @@
   <main class="carrinho-wrapper">
 
     <!-- LADO ESQUERDO: ITENS -->
-    <section>
+    <section id="lista-carrinho">
       <h1 class="secao-titulo">Meu Carrinho</h1>
       <p class="secao-subtitulo">3 ITENS SELECIONADOS</p>
 
@@ -503,73 +500,9 @@
         <span></span>
       </div>
 
-      <!-- Item 1 -->
-      <div class="carrinho-item">
-        <div class="item-produto">
-          <div class="item-img-placeholder"></div>
-          <div class="item-info">
-            <p class="item-info__categoria">VESTIDO</p>
-            <p class="item-info__nome">Vestido Floral Verão</p>
-            <p class="item-info__variante">Cor: Azul floral · Tamanho: M</p>
-          </div>
-        </div>
-        <span class="item-preco">R$ 189,99</span>
-        <div class="quantidade">
-          <button class="quantidade__btn">−</button>
-          <input class="quantidade__valor" type="text" value="1" readonly/>
-          <button class="quantidade__btn">+</button>
-        </div>
-        <span class="item-subtotal">R$ 189,99</span>
-        <button class="item-remover">×</button>
-      </div>
+      <div id="itens-carrinho"></div>
 
-      <!-- Item 2 -->
-      <div class="carrinho-item">
-        <div class="item-produto">
-          <div class="item-img-placeholder"></div>
-          <div class="item-info">
-            <p class="item-info__categoria">BLUSA</p>
-            <p class="item-info__nome">Blusa Rendada Primavera</p>
-            <p class="item-info__variante">Cor: Rosé · Tamanho: P</p>
-          </div>
-        </div>
-        <span class="item-preco">R$ 89,99</span>
-        <div class="quantidade">
-          <button class="quantidade__btn">−</button>
-          <input class="quantidade__valor" type="text" value="2" readonly/>
-          <button class="quantidade__btn">+</button>
-        </div>
-        <span class="item-subtotal">R$ 179,98</span>
-        <button class="item-remover">×</button>
-      </div>
-
-      <!-- Item 3 -->
-      <div class="carrinho-item">
-        <div class="item-produto">
-          <div class="item-img-placeholder"></div>
-          <div class="item-info">
-            <p class="item-info__categoria">SAIA</p>
-            <p class="item-info__nome">Saia Midi Elegante</p>
-            <p class="item-info__variante">Cor: Vinho · Tamanho: G</p>
-          </div>
-        </div>
-        <span class="item-preco">R$ 149,99</span>
-        <div class="quantidade">
-          <button class="quantidade__btn">−</button>
-          <input class="quantidade__valor" type="text" value="1" readonly/>
-          <button class="quantidade__btn">+</button>
-        </div>
-        <span class="item-subtotal">R$ 149,99</span>
-        <button class="item-remover">×</button>
-      </div>
-
-      <!-- Cupom -->
-      <div class="cupom-area">
-        <input class="cupom-input" type="text" placeholder="CUPOM DE DESCONTO"/>
-        <button class="cupom-btn">APLICAR</button>
-      </div>
-
-      <a href="#" class="continuar-comprando">← CONTINUAR COMPRANDO</a>
+      <a href="index.html" class="continuar-comprando">← CONTINUAR COMPRANDO</a>
     </section>
 
     <!-- LADO DIREITO: RESUMO -->
@@ -633,6 +566,6 @@
     </div>
     <p class="footer__copy">© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
   </footer>
-
+  <script type="module" src="js/carrinho.js"></script>
 </body>
 </html>

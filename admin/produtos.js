@@ -1,5 +1,4 @@
-import { collection, addDoc, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { db } from "./firebase.js";
+import { collection, addDoc, onSnapshot, doc, deleteDoc } from "firebase/firestore";import { db } from "./firebase.js";
 // 1. Trazendo as ferramentas de salvar dados do Firebase
 async function uploadImage(arquivo) {
     const apiKey = import.meta.env.VITE_KEY_IMAGE;
@@ -62,3 +61,10 @@ export function monitorarEstoque(callback){
         callback(produtos);
     });
 }
+
+export async function deletarProduto(id) {
+    const docRef = doc(db, "produtos", id);
+    await deleteDoc(docRef);
+    
+}
+
