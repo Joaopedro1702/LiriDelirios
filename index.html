@@ -67,6 +67,12 @@
             <!-- Os cards de produtos serão inseridos aqui dinamicamente -->
         </div>
     </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-conteudo">
+            <div id="detlahes-produtos"></div>
+    </div>
+</div>
         </section>
         <!--Fim dos destaques-->
 
@@ -127,91 +133,7 @@
     
 </footer>
 
-<script>
-    const icone = document.getElementById('icone-busca')
-    const barra = document.getElementById('barra-pesquisa')
-
-    icone.addEventListener('click', () => {
-        barra.classList.toggle('ativa')
-    })
-</script>
-
-
-<script>
-    const btnEsquerda = document.querySelector('.anterior');
-    const btnDireita = document.querySelector('.proximo');
-    const carrossel =  document.getElementById('vitrine-destaques');
-
-    //largura do card (280px) + Gap (24px)
-    const tamnhoDoPasso = 304;
-
-    btnDireita.addEventListener('click', () => {
-        carrossel.scrollBy({
-            left: tamnhoDoPasso,
-            behavior: 'smooth'
-        });
-    });
-    btnEsquerda.addEventListener('click', () => {
-        carrossel.scrollBy({
-            left: -tamnhoDoPasso,
-            behavior: 'smooth'
-        });
-    });
-</script>
-
-<script type="module">
-  import { monitorarEstoque } from "./admin/produtos.js";
-  const vitrineDesques = document.getElementById("vitrine-destaques");
-
-  monitorarEstoque((produtos) => {
-    vitrineDesques.innerHTML = produtos.map(p => `
-      <article class="card-produto">
-        <img src="${p.imgURL}" alt="${p.nome}">
-        <div class="conteiner-informacao">
-          <span class="descricao">${p.categoria}</span>
-          <h3>${p.nome}</h3>
-          <p>${p.descricao}</p>
-          <p class="preco">R$ ${p.preco.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-          <button class="btnadicionar"
-            data-id="${p.id}"
-            data-nome="${p.nome}"
-            data-preco="${p.preco}"
-            data-img="${p.imgURL}"
-            data-categoria="${p.categoria}">
-            Adicionar ao Carrinho
-          </button>
-        </div>
-      </article>
-    `).join('');
-  });
-
-  vitrineDesques.addEventListener('click', (e) => {
-    if (e.target.classList.contains('btnadicionar')) {
-      const btn = e.target;
-      const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
-
-      const item = {
-        id: btn.dataset.id,
-        nome: btn.dataset.nome,
-        preco: parseFloat(btn.dataset.preco),
-        imgURL: btn.dataset.img,
-        categoria: btn.dataset.categoria,
-        quantidade: 1
-      };
-
-      const existente = carrinho.find(i => i.id === item.id);
-      if (existente) {
-        existente.quantidade += 1;
-      } else {
-        carrinho.push(item);
-      }
-
-      localStorage.setItem('carrinho', JSON.stringify(carrinho));
-      alert('Produto adicionado ao carrinho!');
-    }
-  });
-</script>
-
+<script type="module" src="./js/pagPrincipal.js"></script>
 
 </body>
 </html>
