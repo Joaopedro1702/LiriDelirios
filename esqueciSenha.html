@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Esqueci minha senha — Líri de Lírios</title>
   <link rel="stylesheet" href="stylepadrao.css">
   <link rel="stylesheet" href="css/style.css">
-  <title>Entrar — Líri de Lírios</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -27,7 +27,6 @@
       flex-direction: column;
     }
 
-    /* BANNER */
     .banner {
       background: var(--vinho);
       color: var(--branco);
@@ -37,7 +36,6 @@
       letter-spacing: 0.15em;
     }
 
-    /* NAVBAR */
     .navbar {
       background: var(--rosé);
       padding: 20px 60px;
@@ -45,13 +43,6 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--borda);
-    }
-    .navbar__logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.8rem;
-      color: var(--vinho);
-      text-decoration: none;
     }
     .navbar__voltar {
       font-size: 0.68rem;
@@ -62,14 +53,12 @@
     }
     .navbar__voltar:hover { color: var(--vinho); }
 
-    /* LAYOUT PRINCIPAL: painel decorativo + formulário */
     .auth-wrapper {
       flex: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
 
-    /* PAINEL ESQUERDO */
     .auth-painel {
       background: var(--vinho);
       display: flex;
@@ -127,7 +116,6 @@
       position: relative; z-index: 1;
     }
 
-    /* PAINEL DIREITO: FORMULÁRIO */
     .auth-form-area {
       background: var(--branco);
       display: flex;
@@ -135,10 +123,8 @@
       justify-content: center;
       padding: 60px 80px;
     }
-    .form-box {
-      width: 100%;
-      max-width: 400px;
-    }
+    .form-box { width: 100%; max-width: 400px; }
+
     .form-titulo {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -151,9 +137,9 @@
       letter-spacing: 0.12em;
       color: var(--cinza);
       margin-bottom: 40px;
+      line-height: 1.7;
     }
 
-    /* CAMPOS */
     .campo {
       display: flex;
       flex-direction: column;
@@ -182,36 +168,6 @@
     }
     .campo input::placeholder { color: var(--cinza); }
 
-    /* LINHA: lembrar + esqueci */
-    .form-linha-opcoes {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-    .checkbox-lembrar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.65rem;
-      color: var(--cinza);
-      letter-spacing: 0.05em;
-      cursor: pointer;
-    }
-    .checkbox-lembrar input[type="checkbox"] {
-      accent-color: var(--vinho);
-      width: 14px; height: 14px;
-    }
-    .link-senha {
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      color: var(--cinza);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .link-senha:hover { color: var(--vinho); }
-
-    /* BOTÃO ENTRAR */
     .btn-principal {
       width: 100%;
       padding: 15px;
@@ -223,88 +179,58 @@
       letter-spacing: 0.2em;
       cursor: pointer;
       transition: background 0.25s;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
     .btn-principal:hover { background: var(--vinho-escuro); }
 
-    /* DIVISOR */
-    .ou-divisor {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
+    .voltar-login {
+      text-align: center;
+      border-top: 1px solid var(--borda);
+      padding-top: 24px;
     }
-    .ou-divisor span {
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
+    .voltar-login a {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
       color: var(--cinza);
-      white-space: nowrap;
+      text-decoration: none;
+      transition: color 0.2s;
     }
-    .ou-divisor::before, .ou-divisor::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--borda);
-    }
+    .voltar-login a:hover { color: var(--vinho); }
 
-    /* BOTÕES SOCIAIS */
-    .sociais {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 36px;
+    /* TELA DE SUCESSO */
+    .sucesso {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
     }
-    .btn-social {
+    .sucesso__icone {
+      width: 64px;
+      height: 64px;
+      background: var(--rosé);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      border: 1px solid var(--borda);
-      background: none;
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 0.67rem;
-      letter-spacing: 0.1em;
-      color: var(--texto);
-      cursor: pointer;
-      border-radius: 2px;
-      transition: border-color 0.2s;
+      font-size: 1.8rem;
+      color: var(--vinho);
+      margin-bottom: 8px;
     }
-    .btn-social:hover { border-color: var(--vinho); }
-
-    /* DIVISOR CRIAÇÃO DE CONTA */
-    .criar-conta-box {
-      border-top: 1px solid var(--borda);
-      padding-top: 28px;
-      text-align: center;
+    .sucesso__titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--vinho);
     }
-    .criar-conta-box p {
-      font-size: 0.7rem;
+    .sucesso__texto {
+      font-size: 0.75rem;
       color: var(--cinza);
       letter-spacing: 0.05em;
-      margin-bottom: 14px;
-    }
-    .btn-criar-conta {
-      display: inline-block;
-      width: 100%;
-      padding: 14px;
-      background: none;
-      color: var(--vinho);
-      border: 1.5px solid var(--vinho);
-      font-family: 'Josefin Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-criar-conta:hover {
-      background: var(--vinho);
-      color: var(--branco);
+      line-height: 1.7;
+      max-width: 300px;
     }
 
-    /* FOOTER */
     footer {
       background: var(--vinho);
       text-align: center;
@@ -314,84 +240,58 @@
       color: rgba(255,255,255,0.4);
     }
 
-    /*media*/
     @media (max-width: 768px) {
-  .navbar { padding: 16px 20px; }
-
-  .auth-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-painel { display: none; }
-
-  .auth-form-area { padding: 40px 24px; }
-}
+      .navbar { padding: 16px 20px; }
+      .auth-wrapper { grid-template-columns: 1fr; }
+      .auth-painel { display: none; }
+      .auth-form-area { padding: 40px 24px; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="banner">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+  <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
 
-  <header class="header">
-      <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
-
-    <a href="index.html" class="navbar__voltar">← VOLTAR ÀS COMPRAS</a>
+  <header class="navbar">
+    <img src="imagem/logolirios.png" alt="Logo Liri de Lírios" class="logo">
+    <a href="login.html" class="navbar__voltar">← VOLTAR PARA LOGIN</a>
   </header>
 
   <main class="auth-wrapper">
 
-    <!-- PAINEL DECORATIVO -->
     <aside class="auth-painel">
       <p class="painel__logo">Líri de Lírios</p>
       <p class="painel__tagline">NOVO CONCEITO EM MODAS</p>
       <div class="painel__divisor"></div>
-      <p class="painel__frase">"Peças que expressam elegância e fé"</p>
+      <p class="painel__frase">"Sua segurança é nossa prioridade"</p>
     </aside>
 
-    <!-- FORMULÁRIO DE LOGIN -->
     <section class="auth-form-area">
       <div class="form-box">
 
-        <h1 class="form-titulo">Bem-vinda de volta</h1>
-        <p class="form-subtitulo">ACESSE SUA CONTA PARA CONTINUAR</p>
+        <!-- FORMULÁRIO -->
+        <div id="form-esqueci">
+          <h1 class="form-titulo">Esqueci minha senha</h1>
+          <p class="form-subtitulo">DIGITE SEU E-MAIL E ENVIAREMOS UM LINK PARA REDEFINIR SUA SENHA</p>
 
-        <div class="campo">
-          <label for="email">E-MAIL</label>
-          <input type="email" id="email" placeholder="seu@email.com"/>
+          <div class="campo">
+            <label for="email">E-MAIL</label>
+            <input type="email" id="email" placeholder="seu@email.com"/>
+          </div>
+
+          <button class="btn-principal" id="btn-enviar">ENVIAR LINK</button>
+
+          <div class="voltar-login">
+            <a href="login.html">← VOLTAR PARA O LOGIN</a>
+          </div>
         </div>
 
-        <div class="campo">
-          <label for="senha">SENHA</label>
-          <input type="password" id="senha" placeholder="••••••••"/>
-        </div>
-
-        <div class="form-linha-opcoes">
-          <label class="checkbox-lembrar">
-            <input type="checkbox" id="lembrar"/>
-            Lembrar de mim
-          </label>
-          <a href="esqueciSenha.html" class="link-senha">Esqueci minha senha</a>
-        </div>
-
-        <button class="btn-principal" id="btn-principal">ENTRAR NA MINHA CONTA</button>
-
-        <div class="ou-divisor"><span>OU CONTINUE COM</span></div>
-
-        <div class="sociais">
-          <button class="btn-social">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-            GOOGLE
-          </button>
-          <button class="btn-social">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            FACEBOOK
-          </button>
-        </div>
-
-        <!-- BLOCO CRIAR CONTA -->
-        <div class="criar-conta-box">
-          <p>Ainda não tem uma conta?</p>
-          <a href="cadastro.html" class="btn-criar-conta">CRIAR MINHA CONTA</a>
+        <!-- TELA DE SUCESSO -->
+        <div class="sucesso" id="sucesso">
+          <div class="sucesso__icone">✦</div>
+          <p class="sucesso__titulo">E-mail enviado!</p>
+          <p class="sucesso__texto">Verifique sua caixa de entrada e clique no link para redefinir sua senha.</p>
+          <a href="login.html" class="btn-principal" style="text-align:center; text-decoration:none; display:block; margin-top:16px;">VOLTAR PARA O LOGIN</a>
         </div>
 
       </div>
@@ -400,6 +300,28 @@
   </main>
 
   <footer>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</footer>
-  <script type="module" src="./js/login.js"></script>
+
+  <script type="module">
+    import { sendPasswordResetEmail } from 'firebase/auth';
+    import { auth } from './admin/firebase.js';
+
+    document.getElementById('btn-enviar').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+
+      if (!email) {
+        alert('Digite seu e-mail.');
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        document.getElementById('form-esqueci').style.display = 'none';
+        document.getElementById('sucesso').style.display = 'flex';
+      } catch (erro) {
+        alert('E-mail não encontrado. Verifique e tente novamente.');
+      }
+    });
+  </script>
+
 </body>
 </html>

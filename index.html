@@ -13,9 +13,11 @@
     <header class="header">
         <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
         <div class="header-icons">
-            <a href="login.html">
-                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil">
-            </a>
+            <div class="perfil-container">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            
             <a href="carrinho.html">
                 <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
             </a>
@@ -90,17 +92,7 @@
             <h2>Mais Vendidos</h2>
             <p>FAVORISTAS DAS CLIENTES</p>
 
-        <div class="grid-cards">
-            <article class="card-produto">
-                <img src="#" alt="">
-                <div class="conteiner-informacao">
-                    <span class="descricao">vestido</span>
-                    <h3>Nome do produto</h3>
-                    <p>Descrição do produto</p>
-                    <p class="preco">R$189,99</p>
-                    <button class="btnadicionar">Adicionar ao Carrinho</button>
-                </div>
-            </article>
+        <div class="grid-cards" id="vitrine-maisvendidos">
         </div>
         </section>
     </main>

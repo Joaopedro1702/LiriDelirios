@@ -1,10 +1,12 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../admin/firebase.js";
+import { auth, db } from "../admin/firebase.js";
+import { monitorarEstoque } from "../admin/produtos";
+import { collection,query,doc, getDocs, limit, orderBy } from "firebase/firestore";
 
-const inconePerfil = document.getElementById('icone-perfil');
+const iconePerfil = document.getElementById('icone-perfil');
 const dropdown = document.getElementById('dropdown-perfil');
 
-inconePerfil.addEventListener('click', () => {
+iconePerfil.addEventListener('click', () => {
   dropdown.classList.toggle('ativo');
 });
 
@@ -54,8 +56,7 @@ btnEsquerda.addEventListener("click", () => {
 });
 
 let listaProdutos = [];
-import { monitorarEstoque } from "../admin/produtos";
-import { doc } from "firebase/firestore";
+
 const vitrineDesques = document.getElementById("vitrine-destaques");
 
 monitorarEstoque((produtos) => {
@@ -128,5 +129,38 @@ function abrirModal(produto) {
     })
 }
 
-console.log(abrirModal)
+/**/
+async function carregarMaisVendidos(){
+  const q = query(
+    collection(db, "produtos"),
+    orderBy("totalVendido", "desc"),
+    limit(4)
+  );
 
+  const snapshot = await getDocs(q);
+  const grid = document.getElementById("vitrine-maisvendidos")
+
+  snapshot.forEach((doc) => {
+    const p = doc.data();
+    grid.innerHTML +=`
+    <article class="card-produto">
+        <img src="${p.imagem}" alt="${p.nome}">
+        <div class="conteiner-informacao">
+          <span class="descricao">${p.categoria}</span>
+          <h3>${p.nome}</h3>
+          <p class="preco">R$ ${p.preco}</p>
+          <button class="btnadicionar">Adicionar ao Carrinho</button>
+        </div>
+      `;
+  });
+  
+}
+
+import { where } from "firebase/firestore";
+
+const q = query(
+  collection(db, "produtos"),
+  where("destaque", "==", true)
+);
+
+carregarMaisVendidos();

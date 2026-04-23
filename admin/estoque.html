@@ -95,6 +95,7 @@
             <input type="text" id="tamanho-produto" placeholder="Tamanho do produto">
             <label class="labels">Imagem do produto: </label>
             <input type="file" id="imagem-produto">
+            <input type="checkbox" id="destaque-produto">
             <button type="submit" id="btn-adicionar-produto">Adicionar</button>
         </form>
     </section>
@@ -160,7 +161,7 @@
             categoria: categoriaProduto,
             tamanho: tamanhoProduto,
             imagem: arquivoSelecionado,
-            quantidade: quantidadeProduto,
+            quantidade: document.getElementById("destaque-produto").checked,
             destaque: true,
             estoque: {
                 quantidade: quantidadeProduto,
