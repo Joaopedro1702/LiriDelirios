@@ -129,38 +129,45 @@ function abrirModal(produto) {
     })
 }
 
-/**/
-async function carregarMaisVendidos(){
-  const q = query(
-    collection(db, "produtos"),
-    orderBy("totalVendido", "desc"),
-    limit(4)
-  );
-
+/*Buscando produtos*/
+async function carregarNossosProdutos(){
+  const q = query(collection(db, "produtos"));
   const snapshot = await getDocs(q);
-  const grid = document.getElementById("vitrine-maisvendidos")
 
   snapshot.forEach((doc) => {
-    const p = doc.data();
-    grid.innerHTML +=`
+    todosProdutos.push(doc.data());
+  });
+
+  renderizarPagina();
+  
+}
+
+let paginaAtual = 1;
+const produtosPorPagina = 12;
+let todosProdutos = [];
+
+function renderizarPagina(){
+  const grid = document.getElementById("vitrine-nossos");
+  const inicio = (paginaAtual-1) * produtosPorPagina;
+  const fim = paginaAtual * produtosPorPagina;
+  const fatia = todosProdutos.slice(inicio,fim);
+
+  grid.innerHTML = "";
+  fatia.forEach((p) =>{
+    grid.innerHTML += 
+    `
     <article class="card-produto">
-        <img src="${p.imagem}" alt="${p.nome}">
+        <img src="${p.imgURL}" alt="${p.nome}">
         <div class="conteiner-informacao">
           <span class="descricao">${p.categoria}</span>
           <h3>${p.nome}</h3>
           <p class="preco">R$ ${p.preco}</p>
           <button class="btnadicionar">Adicionar ao Carrinho</button>
         </div>
+      </article>
       `;
   });
-  
+
 }
 
-import { where } from "firebase/firestore";
-
-const q = query(
-  collection(db, "produtos"),
-  where("destaque", "==", true)
-);
-
-carregarMaisVendidos();
+carregarNossosProdutos();

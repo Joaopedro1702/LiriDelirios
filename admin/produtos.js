@@ -23,7 +23,6 @@ export async function cadastrarProduto(produto){
         nome: produto.nome,
         descricao: produto.descricao,
         destaque: produto.destaque,
-        quantidade: produto.quantidade,
         preco: produto.preco,
         imgURL: imgURL,
         estoque: produto.estoque

@@ -95,7 +95,10 @@
             <input type="text" id="tamanho-produto" placeholder="Tamanho do produto">
             <label class="labels">Imagem do produto: </label>
             <input type="file" id="imagem-produto">
+            <label for="labels">Onde vai ficar? (se selecionar vai para destaques e se não vai ficar apenas em nossos produtos)</label>
+            <label for="labels">Destaque</label>
             <input type="checkbox" id="destaque-produto">
+
             <button type="submit" id="btn-adicionar-produto">Adicionar</button>
         </form>
     </section>
@@ -161,8 +164,7 @@
             categoria: categoriaProduto,
             tamanho: tamanhoProduto,
             imagem: arquivoSelecionado,
-            quantidade: document.getElementById("destaque-produto").checked,
-            destaque: true,
+            destaque: document.getElementById("destaque-produto").checked,
             estoque: {
                 quantidade: quantidadeProduto,
                 tamanho: "M"
@@ -177,7 +179,6 @@
             alert("Erro ao adicionar produto. Veja o console para detalhes.");
         }
     });
-    console.log("btn", btnSalvar);
 </script>
 </body>
 </html>
