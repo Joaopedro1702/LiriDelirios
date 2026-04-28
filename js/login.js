@@ -58,3 +58,4 @@ const ui = new LoginUI();
 document.getElementById("btn-principal").addEventListener("click", () => {
   ui.aoClicarEntrar();
 });
+

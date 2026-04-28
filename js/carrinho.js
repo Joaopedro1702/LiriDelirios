@@ -24,12 +24,15 @@ function renderizarCarrinho(){
         </div>`;
     }).join('');
 
-    const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
-    document.querySelector('.resumo__total-valor').textContent = `R$ ${total.toFixed(2)}`;
-    document.querySelector('.resumo__valor').textContent = `R$ ${total.toFixed(2)}`;
-
     let frete = 10;
+    const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
     if(total >= 199) frete = 0;
+
+    const totalFinal = frete + total;
+
+    document.querySelector('.resumo__total-valor').textContent = `R$ ${totalFinal.toFixed(2)}`;
+    document.querySelector('.resumo__valor').textContent = `R$ ${total.toFixed(2)}`;
     document.querySelector('.resumo__frete-gratis').textContent = frete === 0 ? 'GRÁTIS ✦' : `R$ ${frete.toFixed(2)}`;
 }
 
@@ -51,5 +54,21 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
     renderizarCarrinho();
 });
+
+    const botao = document.getElementById("finalizar");
+
+    botao.addEventListener('click', async function(){
+        const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
+        
+    const resposta = await fetch("http://127.0.0.1:5001/liri-delirios/us-central1/criarCheckout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itens: carrinho })
+    });
+    const dados = await resposta.json();
+    console.log(dados);
+    const link = dados.links.find(l => l.rel === "PAY");
+    window.location.href = link.href;
+    });
 
 renderizarCarrinho();

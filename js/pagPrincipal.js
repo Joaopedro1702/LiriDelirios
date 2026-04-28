@@ -67,7 +67,14 @@ vitrineDesques.innerHTML = produtos.map((p)=> `
         <div class="conteiner-informacao">
           <span class="descricao">${p.categoria}</span>
           <h3>${p.nome}</h3>
-          <button class="btnadicionar" data-id="${p.id}">Adicionar ao Carrinho</button>
+            <button class="btnadicionar" 
+                data-id="${p.id}"
+                data-nome="${p.nome}"
+                data-preco="${p.preco}"
+                data-img="${p.imgURL}"
+                data-categoria="${p.categoria}">
+                Adicionar ao Carrinho
+            </button>
         </div>
 </article>
 `).join('');
