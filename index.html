@@ -95,8 +95,12 @@
         <div class="grid-cards" id="vitrine-nossos">
         </div>
         </section>
+
     </main>
 
+        <section id="resultados-busca" style="display: none;">
+            <div class="grid-cards" id="grid-resultados"></div>
+        </section>
 <footer class="rodape">
     <div class="rodape-grid">
             <div class="coluna">
@@ -126,6 +130,59 @@
 </footer>
 
 <script type="module" src="./js/pagPrincipal.js"></script>
+
+<script type="module">
+    import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "./admin/firebase.js";
+
+async function buscarProdutos(produtoDigitado){
+    //referenciando a tabela de produtos do banco de dados.
+    const prodRef = collection(db, "produtos");
+
+    //Criando consulta no servidor
+    const consulta =  query(prodRef, where("categoria", "==", produtoDigitado));
+
+    try{
+        const snapshot = await getDocs(consulta);
+
+        //transformando o retorno num array limpo
+        const resultados = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+
+        console.log(resultados);
+
+        const grid = document.getElementById('grid-resultados');
+            document.querySelector('main').style.display = 'none';
+            document.getElementById('resultados-busca').style.display = 'block';
+            console.log(document.getElementById('grid-resultados'));
+            grid.innerHTML = "";
+            resultados.forEach(p => {
+                grid.innerHTML += `
+                <article class="card-produto">
+                    <img src="${p.imgURL}" alt="${p.nome}">
+                    <div class="conteiner-informacao">
+                        <span class="descricao">${p.categoria}</span>
+                        <h3>${p.nome}</h3>
+                        <p class="preco">R$ ${p.preco}</p>
+                        <button class="btnadicionar">Adicionar ao Carrinho</button>
+                    </div>
+                </article>`;
+                });
+
+    }catch(error){
+        console.error("Erro na consulta da infraestrutura: ", error);
+    }
+}
+    document.querySelectorAll('.buscar').forEach(botao => {
+        botao.addEventListener('click', () => {
+            event.preventDefault();
+            const produto = document.getElementById("busca").value;
+            buscarProdutos(produto);
+        });
+    })
+</script>
 
 </body>
 </html>
