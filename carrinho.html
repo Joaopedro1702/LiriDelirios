@@ -418,43 +418,6 @@
       color: var(--cinza);
     }
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--vinho);
-      color: var(--branco);
-      padding: 60px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 40px;
-    }
-
-    .footer__titulo {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 20px;
-      opacity: 0.7;
-    }
-
-    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-    .footer__links a {
-      text-decoration: none;
-      color: rgba(255,255,255,0.7);
-      font-size: 0.78rem;
-      transition: color 0.2s;
-    }
-
-    .footer__links a:hover { color: var(--branco); }
-
-    .footer__copy {
-      grid-column: 1 / -1;
-      text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      opacity: 0.5;
-      padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.15);
-    }
 
     @media (max-width: 768px) {
   .navbar { padding: 16px 20px; }
@@ -563,30 +526,34 @@
 
   <!-- FOOTER -->
   <footer>
-    <div>
-      <p class="footer__titulo">A LOJA</p>
-      <ul class="footer__links">
-        <li><a href="#">Sobre nós</a></li>
-        <li><a href="#">Trocas e devoluções</a></li>
-        <li><a href="#">Política de privacidade</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer__titulo">ATENDIMENTO</p>
-      <ul class="footer__links">
-        <li><a href="#">Seg-Sex: 9h às 18h</a></li>
-        <li><a href="#">lojaliridelirios@xxxxx.com</a></li>
-        <li><a href="#">WhatsApp</a></li>
-      </ul>
-    </div>
-    <div>
-      <p class="footer__titulo">SIGA NAS REDES SOCIAIS</p>
-      <ul class="footer__links">
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Facebook</a></li>
-      </ul>
-    </div>
-    <p class="footer__copy">© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: xh ás xh</p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
   </footer>
   <script type="module" src="js/carrinho.js"></script>
 </body>

@@ -14,7 +14,9 @@ onAuthStateChanged(auth, (usuario) => {
   if(usuario){
     dropdown.innerHTML = `
     <a href="#">MEU PERFIL<a>
-    <a href="#" id="btn-sair">SAIR<a> 
+    <a href="#" id="btn-sair">SAIR<a>
+    <a href="/minha-conta.html">MINHA CONTA</a>
+
     `;
     document.getElementById('btn-sair').addEventListener('click', async () => {
       await signOut(auth);
@@ -151,7 +153,7 @@ async function carregarNossosProdutos(){
 
 let paginaAtual = 1;
 const produtosPorPagina = 12;
-let todosProdutos = [];
+export let todosProdutos = [];
 
 function renderizarPagina(){
   const grid = document.getElementById("vitrine-nossos");

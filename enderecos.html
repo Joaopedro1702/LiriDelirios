@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylepadrao.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Endereços — Liri de Lírios</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .enderecos-wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            font-size: 0.75rem;
+            color: var(--color-label);
+            letter-spacing: 0.08em;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: var(--color-label);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover { color: var(--color-primary); }
+
+        .pagina-titulo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--color-dark);
+            margin-bottom: 28px;
+        }
+
+        .endereco-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .endereco-card.padrao {
+            border-color: var(--color-primary);
+        }
+
+        .badge-padrao {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .endereco-card h4 {
+            font-family: var(--font--sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-dark);
+            margin-bottom: 8px;
+        }
+
+        .endereco-card p {
+            font-size: 0.85rem;
+            color: var(--color-label);
+            line-height: 1.6;
+        }
+
+        .endereco-card__acoes {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .btn-acao {
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .btn-acao.excluir { color: #c62828; }
+        .btn-acao.editar { color: var(--color-primary); }
+
+        .btn-novo-endereco {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px dashed var(--color-primary);
+            color: var(--color-primary);
+            padding: 14px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .btn-novo-endereco:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        /* Modal de novo endereço */
+        .modal-fundo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-fundo.ativo { display: flex; }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            width: 100%;
+            max-width: 500px;
+            margin: 16px;
+        }
+
+        .modal-box h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--color-dark);
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .campo label {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-label);
+        }
+
+        .campo input {
+            padding: 10px 14px;
+            border: 1px solid var(--color-card-border);
+            border-radius: 4px;
+            font-family: var(--font--sans);
+            font-size: 0.88rem;
+            color: var(--color-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .campo input:focus { border-color: var(--color-primary); }
+
+        .campo-grupo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-acoes {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-salvar {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.2s;
+        }
+
+        .btn-salvar:hover { background: var(--color-primary-dark); }
+
+        .btn-cancelar {
+            background: transparent;
+            border: 1px solid var(--color-card-border);
+            color: var(--color-label);
+            padding: 12px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            <a href="carrinho.html">
+                <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        </div>
+    </header>
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Vestidos</a></li>
+            <li><a href="#">Blusas</a></li>
+            <li><a href="#">Saias</a></li>
+            <li><a href="#">Ver Tudo</a></li>
+            <li><a href="#">Promoções</a></li>
+        </ul>
+    </nav>
+
+    <main class="enderecos-wrapper">
+        <p class="breadcrumb"><a href="minha-conta.html">Minha Conta</a> / Endereços</p>
+        <h1 class="pagina-titulo">Endereços</h1>
+
+        <button class="btn-novo-endereco" id="btn-abrir-modal">+ Cadastrar novo endereço</button>
+
+        <div id="lista-enderecos">
+            <p style="color:var(--color-label); font-size:0.85rem;">Carregando endereços...</p>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-fundo" id="modal-endereco">
+        <div class="modal-box">
+            <h3>Novo endereço</h3>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>CEP</label>
+                    <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                </div>
+                <div class="campo">
+                    <label>Estado</label>
+                    <input type="text" id="estado" placeholder="SP">
+                </div>
+            </div>
+            <div class="campo">
+                <label>Cidade</label>
+                <input type="text" id="cidade" placeholder="São Paulo">
+            </div>
+            <div class="campo">
+                <label>Bairro</label>
+                <input type="text" id="bairro" placeholder="Jardim das Flores">
+            </div>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>Rua</label>
+                    <input type="text" id="rua" placeholder="Av. das Rosas">
+                </div>
+                <div class="campo">
+                    <label>Número</label>
+                    <input type="text" id="numero" placeholder="123">
+                </div>
+            </div>
+            <div class="campo">
+                <label>Complemento</label>
+                <input type="text" id="complemento" placeholder="Apto 12 (opcional)">
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
+                <button class="btn-salvar" id="btn-salvar-endereco">Salvar endereço</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="rodape">
+        <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: xh ás xh</p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { onAuthStateChanged, signOut } from "firebase/auth";
+        import { auth, db } from "./admin/firebase.js";
+        import { collection, addDoc, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
+
+        const iconePerfil = document.getElementById('icone-perfil');
+        const dropdown = document.getElementById('dropdown-perfil');
+        iconePerfil.addEventListener('click', () => dropdown.classList.toggle('ativo'));
+
+        let uid = null;
+
+        onAuthStateChanged(auth, async (usuario) => {
+            if (usuario) {
+                uid = usuario.uid;
+                dropdown.innerHTML = `
+                    <a href="minha-conta.html">MINHA CONTA</a>
+                    <a href="meus-pedidos.html">MEUS PEDIDOS</a>
+                    <a href="meus-dados.html">MEUS DADOS</a>
+                    <a href="enderecos.html">ENDEREÇO</a>
+                    <a href="#" id="btn-sair">SAIR</a>
+                `;
+                document.getElementById('btn-sair').addEventListener('click', async () => {
+                    await signOut(auth);
+                    window.location.href = '/login.html';
+                });
+                await carregarEnderecos();
+            } else {
+                window.location.href = '/login.html';
+            }
+        });
+
+        async function carregarEnderecos() {
+            const lista = document.getElementById('lista-enderecos');
+            const q = query(collection(db, "enderecos"), where("usuarioId", "==", uid));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                lista.innerHTML = `<p style="color:var(--color-label);font-size:0.85rem;">Nenhum endereço cadastrado ainda.</p>`;
+                return;
+            }
+
+            lista.innerHTML = "";
+            snap.forEach((d, i) => {
+                const e = d.data();
+                lista.innerHTML += `
+                <div class="endereco-card ${i === 0 ? 'padrao' : ''}">
+                    ${i === 0 ? '<span class="badge-padrao">Padrão</span>' : ''}
+                    <h4>Endereço ${i === 0 ? 'Padrão' : i + 1}</h4>
+                    <p>${e.rua}, ${e.numero}${e.complemento ? ', ' + e.complemento : ''}<br>
+                    ${e.bairro} — ${e.cidade}, ${e.estado}<br>
+                    CEP ${e.cep}</p>
+                    <div class="endereco-card__acoes">
+                        <button class="btn-acao excluir" data-id="${d.id}">Excluir</button>
+                    </div>
+                </div>`;
+            });
+
+            lista.querySelectorAll('.excluir').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const result = await Swal.fire({
+                        title: 'Excluir endereço?',
+                        text: 'Esta ação não pode ser desfeita.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#800020',
+                        cancelButtonColor: '#B05070',
+                        confirmButtonText: 'Sim, excluir',
+                        cancelButtonText: 'Cancelar'
+                    });
+
+                    if (result.isConfirmed) {
+                        await deleteDoc(doc(db, "enderecos", btn.dataset.id));
+                        await carregarEnderecos();
+                        Swal.fire('Excluído!', 'Endereço removido com sucesso.', 'success');
+                    }
+                });
+            });
+        }
+
+        document.getElementById('btn-abrir-modal').addEventListener('click', () => {
+            document.getElementById('modal-endereco').classList.add('ativo');
+        });
+
+        document.getElementById('btn-fechar-modal').addEventListener('click', () => {
+            document.getElementById('modal-endereco').classList.remove('ativo');
+        });
+
+        document.getElementById('btn-salvar-endereco').addEventListener('click', async () => {
+            const endereco = {
+                usuarioId: uid,
+                cep: document.getElementById('cep').value,
+                estado: document.getElementById('estado').value,
+                cidade: document.getElementById('cidade').value,
+                bairro: document.getElementById('bairro').value,
+                rua: document.getElementById('rua').value,
+                numero: document.getElementById('numero').value,
+                complemento: document.getElementById('complemento').value,
+            };
+
+            if (!endereco.rua || !endereco.numero || !endereco.cidade) {
+                alert('Preencha os campos obrigatórios.');
+                return;
+            }
+
+            await addDoc(collection(db, "enderecos"), endereco);
+            document.getElementById('modal-endereco').classList.remove('ativo');
+            await carregarEnderecos();
+        });
+
+        document.getElementById('cep').addEventListener('blur', async () => {
+    const cep = document.getElementById('cep').value.replace(/\D/g, '');
+    if (cep.length !== 8) return;
+
+    const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const dados = await resposta.json();
+
+    if (dados.erro) {
+        alert('CEP não encontrado.');
+        return;
+    }
+
+    document.getElementById('rua').value = dados.logradouro;
+    document.getElementById('bairro').value = dados.bairro;
+    document.getElementById('cidade').value = dados.localidade;
+    document.getElementById('estado').value = dados.uf;
+});
+    </script>
+</body>
+</html>

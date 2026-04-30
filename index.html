@@ -41,7 +41,7 @@
     </header>
         <nav class="nav">
     <ul>
-        <li><a href="#">Início</a></li>
+        <li><a href="index.html">Início</a></li>
         <li><a href="#">Vestidos</a></li>
         <li><a href="#">Blusas</a></li>
         <li><a href="#">Saias</a></li>
@@ -122,6 +122,10 @@
                 <a href="#">Instagram</a>
                 <a href="#">Facebook</a>
             </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
         </div>
         <div class="rodape-base">
             <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
@@ -133,55 +137,47 @@
 
 <script type="module">
     import { collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "./admin/firebase.js";
+    import { db } from "./admin/firebase.js";
+    import { todosProdutos } from "./js/pagPrincipal.js";
 
 async function buscarProdutos(produtoDigitado){
-    //referenciando a tabela de produtos do banco de dados.
-    const prodRef = collection(db, "produtos");
+    const termo = produtoDigitado.toLowerCase();
+    const snapshot = await getDocs(collection(db, "produtos"));
+    
+    const resultados = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(p => 
+            p.nome.toLowerCase().includes(termo) ||
+            p.categoria.toLowerCase().includes(termo)
+        );
 
-    //Criando consulta no servidor
-    const consulta =  query(prodRef, where("categoria", "==", produtoDigitado));
+    document.querySelector('main').style.display = 'none';
+    document.getElementById('resultados-busca').style.display = 'block';
 
-    try{
-        const snapshot = await getDocs(consulta);
-
-        //transformando o retorno num array limpo
-        const resultados = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
-
-        console.log(resultados);
-
-        const grid = document.getElementById('grid-resultados');
-            document.querySelector('main').style.display = 'none';
-            document.getElementById('resultados-busca').style.display = 'block';
-            console.log(document.getElementById('grid-resultados'));
-            grid.innerHTML = "";
-            resultados.forEach(p => {
-                grid.innerHTML += `
-                <article class="card-produto">
-                    <img src="${p.imgURL}" alt="${p.nome}">
-                    <div class="conteiner-informacao">
-                        <span class="descricao">${p.categoria}</span>
-                        <h3>${p.nome}</h3>
-                        <p class="preco">R$ ${p.preco}</p>
-                        <button class="btnadicionar">Adicionar ao Carrinho</button>
-                    </div>
-                </article>`;
-                });
-
-    }catch(error){
-        console.error("Erro na consulta da infraestrutura: ", error);
-    }
-}
-    document.querySelectorAll('.buscar').forEach(botao => {
-        botao.addEventListener('click', () => {
-            event.preventDefault();
-            const produto = document.getElementById("busca").value;
-            buscarProdutos(produto);
+    const grid = document.getElementById('grid-resultados');
+    grid.innerHTML = "";
+    resultados.forEach(p => {
+        grid.innerHTML += `
+        <article class="card-produto">
+            <img src="${p.imgURL}" alt="${p.nome}">
+            <div class="conteiner-informacao">
+                <span class="descricao">${p.categoria}</span>
+                <h3>${p.nome}</h3>
+                <p class="preco">R$ ${p.preco}</p>
+                <button class="btnadicionar">Adicionar ao Carrinho</button>
+            </div>
+        </article>`;
         });
-    })
+}
+
+document.querySelectorAll('.buscar').forEach(botao => {
+    botao.addEventListener('click', (event) => {  // ← aqui
+        event.preventDefault();
+        const produto = document.getElementById("busca").value;
+        buscarProdutos(produto);
+    });
+})
+
 </script>
 
 </body>

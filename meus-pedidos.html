@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylepadrao.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Meus Pedidos — Liri de Lírios</title>
+    <style>
+        .pedidos-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            font-size: 0.75rem;
+            color: var(--color-label);
+            letter-spacing: 0.08em;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: var(--color-label);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--color-primary);
+        }
+
+        .pagina-titulo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--color-dark);
+            margin-bottom: 28px;
+        }
+
+        .pedido-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+        }
+
+        .pedido-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pedido-card__numero {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: var(--color-dark);
+        }
+
+        .pedido-card__status {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .status-concluido {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-andamento {
+            background: #fff8e1;
+            color: #f57f17;
+        }
+
+        .status-cancelado {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .pedido-card__item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-top: 1px solid var(--color-card-border);
+        }
+
+        .pedido-card__item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: var(--color-bg);
+        }
+
+        .pedido-card__item-info p {
+            font-size: 0.85rem;
+            color: var(--color-dark);
+        }
+
+        .pedido-card__item-info span {
+            font-size: 0.75rem;
+            color: var(--color-label);
+        }
+
+        .pedido-card__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pedido-card__total {
+            font-size: 0.85rem;
+            color: var(--color-dark);
+        }
+
+        .pedido-card__total strong {
+            color: var(--color-primary);
+        }
+
+        .btn-ver-detalhes {
+            background: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 8px 18px;
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-ver-detalhes:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .pedidos-vazio {
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--color-label);
+        }
+
+        .pedidos-vazio p {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+        }
+
+        .pedidos-vazio a {
+            display: inline-block;
+            background: var(--color-primary);
+            color: #fff;
+            padding: 10px 24px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            <a href="carrinho.html">
+                <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        </div>
+    </header>
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Vestidos</a></li>
+            <li><a href="#">Blusas</a></li>
+            <li><a href="#">Saias</a></li>
+            <li><a href="#">Ver Tudo</a></li>
+            <li><a href="#">Promoções</a></li>
+        </ul>
+    </nav>
+
+    <main class="pedidos-wrapper">
+        <p class="breadcrumb"><a href="minha-conta.html">Minha Conta</a> / Meus Pedidos</p>
+        <h1 class="pagina-titulo">Meus Pedidos</h1>
+        <div id="lista-pedidos">
+            <p style="color:var(--color-label); font-size:0.85rem;">Carregando pedidos...</p>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: xh ás xh</p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { onAuthStateChanged, signOut } from "firebase/auth";
+        import { auth, db } from "./admin/firebase.js";
+        import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+
+        const iconePerfil = document.getElementById('icone-perfil');
+        const dropdown = document.getElementById('dropdown-perfil');
+
+        iconePerfil.addEventListener('click', () => {
+            dropdown.classList.toggle('ativo');
+        });
+
+        onAuthStateChanged(auth, async (usuario) => {
+            if (usuario) {
+                dropdown.innerHTML = `
+                    <a href="minha-conta.html">MINHA CONTA</a>
+                    <a href="meus-pedidos.html">MEUS PEDIDOS</a>
+                    <a href="meus-dados.html">MEUS DADOS</a>
+                    <a href="enderecos.html">ENDEREÇO</a>
+                    <a href="#" id="btn-sair">SAIR</a>
+                `;
+                document.getElementById('btn-sair').addEventListener('click', async () => {
+                    await signOut(auth);
+                    window.location.href = '/login.html';
+                });
+
+                await carregarPedidos(usuario.uid);
+            } else {
+                window.location.href = '/login.html';
+            }
+        });
+
+        async function carregarPedidos(uid) {
+            const lista = document.getElementById('lista-pedidos');
+            try {
+                const q = query(
+                    collection(db, "pedidos"),
+                    where("usuarioId", "==", uid)
+                );
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    lista.innerHTML = `
+                        <div class="pedidos-vazio">
+                            <p>Você ainda não fez nenhum pedido.</p>
+                            <a href="index.html">Explorar coleção</a>
+                        </div>`;
+                    return;
+                }
+
+                lista.innerHTML = "";
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    const status = p.status || "andamento";
+                    const statusLabel = { concluido: "Concluído", andamento: "Em andamento", cancelado: "Cancelado" }[status];
+                    const statusClass = { concluido: "status-concluido", andamento: "status-andamento", cancelado: "status-cancelado" }[status];
+
+                    const itensHTML = (p.itens || []).map(item => `
+                        <div class="pedido-card__item">
+                            <img src="${item.imgURL || ''}" alt="${item.nome}">
+                            <div class="pedido-card__item-info">
+                                <p>${item.nome}</p>
+                                <span>Qtd: ${item.quantidade} · R$ ${parseFloat(item.preco).toFixed(2)}</span>
+                            </div>
+                        </div>`).join('');
+
+                    lista.innerHTML += `
+                        <div class="pedido-card">
+                            <div class="pedido-card__header">
+                                <span class="pedido-card__numero">Pedido #${doc.id.slice(0,8).toUpperCase()}</span>
+                                <span class="pedido-card__status ${statusClass}">${statusLabel}</span>
+                            </div>
+                            ${itensHTML}
+                            <div class="pedido-card__footer">
+                                <span class="pedido-card__total">Total: <strong>R$ ${parseFloat(p.total || 0).toFixed(2)}</strong></span>
+                            </div>
+                        </div>`;
+                });
+            } catch (error) {
+                lista.innerHTML = `<p style="color:var(--color-label)">Erro ao carregar pedidos.</p>`;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
