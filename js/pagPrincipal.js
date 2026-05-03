@@ -41,26 +41,26 @@ const btnEsquerda = document.querySelector(".anterior");
 const btnDireita = document.querySelector(".proximo");
 const carrossel = document.getElementById("vitrine-destaques");
 
-//largura do card (280px) + Gap (24px)
 const tamnhoDoPasso = 304;
 
-btnDireita.addEventListener("click", () => {
-  carrossel.scrollBy({
-    left: tamnhoDoPasso,
-    behavior: "smooth",
+if (btnDireita) {
+  btnDireita.addEventListener("click", () => {
+    carrossel.scrollBy({ left: tamnhoDoPasso, behavior: "smooth" });
   });
-});
-btnEsquerda.addEventListener("click", () => {
-  carrossel.scrollBy({
-    left: -tamnhoDoPasso,
-    behavior: "smooth",
+}
+if (btnEsquerda) {
+  btnEsquerda.addEventListener("click", () => {
+    carrossel.scrollBy({ left: -tamnhoDoPasso, behavior: "smooth" });
   });
-});
+}
+
+//largura do card (280px) + Gap (24px)
 
 let listaProdutos = [];
 
 const vitrineDesques = document.getElementById("vitrine-destaques");
 
+if(vitrineDesques){
 monitorarEstoque((produtos) => {
 listaProdutos = produtos;
 vitrineDesques.innerHTML = produtos.map((p)=> `
@@ -117,8 +117,20 @@ vitrineDesques.addEventListener("click", (e) => {
     }
   }
 });
+}
 
 function abrirModal(produto) {
+
+      const tamanhos = produto.estoque;
+    const botoeshtml = Object.entries(tamanhos)
+          .map(([tam,qtd]) => `
+        <button class="btn-tamanho ${qtd === 0 ? 'esgotado' : ''}" 
+            data-tamanho="${tam}" 
+            ${qtd === 0 ? 'disabled' : ''}>
+            ${tam}
+        </button>          
+          `).join('');
+
   const modal = document.querySelector(".modal-overlay");
   const conteudo = document.getElementById("detlahes-produtos");
 
@@ -127,6 +139,11 @@ function abrirModal(produto) {
     <img src="${produto.imgURL}" style="max-width: 300px;">
     <p>${produto.descricao}</p>
     <p><strong>Preço:</strong> R$ ${parseFloat(produto.preco).toFixed(2)}</p>
+    <div class="seletor-tamanho">${botoeshtml}</div>
+      <div id="msg-erro" style="display:none; color:red; font-size:13px; margin-top:8px;">
+        Selecione um tamanho antes de adicionar ao carrinho.
+      </div>
+      <button id="btn-adicionar-carrinho">Adicionar ao Carrinho</button>
     <button id="btn-fechar">Fechar</button> 
 
     `;
@@ -135,16 +152,46 @@ function abrirModal(produto) {
     //adicionando evento para fecha modal
     document.getElementById("btn-fechar").addEventListener("click", () => {
         modal.classList.remove('active');
-    })
-}
+    });
 
+  /*LOgica botao modal*/
+  let tamSelecionado = null;
+  const btnTamanho = document.querySelectorAll(".btn-tamanho");
+    btnTamanho.forEach(btn => {
+      btn.addEventListener("click", selecionado => {
+        btnTamanho.forEach(b => b.classList.remove("selecionado"));
+        btn.classList.add("selecionado")
+        tamSelecionado = btn.dataset.tamanho
+      });
+    });
+    const btnadicionar = document.getElementById("btn-adicionar-carrinho");
+    btnadicionar.addEventListener("click", p =>{
+      if(tamSelecionado === null){
+        document.getElementById("msg-erro").style.display ="block";
+      }else{
+          const item = {
+          nome: produto.nome,
+          preco: parseFloat(produto.preco),
+          tamanho: tamSelecionado,
+          imgURL: produto.img,
+          categoria: produto.categoria,
+          quantidade: 1,
+    };
+        const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]")
+        carrinho.push(item)
+        localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        modal.classList.remove('active')
+      }
+    });
+  }
+  
 /*Buscando produtos*/
 async function carregarNossosProdutos(){
   const q = query(collection(db, "produtos"));
   const snapshot = await getDocs(q);
 
   snapshot.forEach((doc) => {
-    todosProdutos.push(doc.data());
+    todosProdutos.push({id: doc.id, ...doc.data()});
   });
 
   renderizarPagina();
@@ -161,21 +208,70 @@ function renderizarPagina(){
   const fim = paginaAtual * produtosPorPagina;
   const fatia = todosProdutos.slice(inicio,fim);
 
+  if (!grid) return;
+
   grid.innerHTML = "";
   fatia.forEach((p) =>{
     grid.innerHTML += 
     `
-    <article class="card-produto">
-        <img src="${p.imgURL}" alt="${p.nome}">
-        <div class="conteiner-informacao">
-          <span class="descricao">${p.categoria}</span>
-          <h3>${p.nome}</h3>
-          <p class="preco">R$ ${p.preco}</p>
-          <button class="btnadicionar">Adicionar ao Carrinho</button>
-        </div>
-      </article>
+<article class="card-produto" data-id="${p.id}">
+    <img src="${p.imgURL}" alt="${p.nome}">
+    <div class="conteiner-informacao">
+      <span class="descricao">${p.categoria}</span>
+      <h3>${p.nome}</h3>
+      <p class="preco">R$ ${p.preco}</p>
+      <button class="btnadicionar" 
+          data-id="${p.id}"
+          data-nome="${p.nome}"
+          data-preco="${p.preco}"
+          data-img="${p.imgURL}"
+          data-categoria="${p.categoria}">
+          Adicionar ao Carrinho
+      </button>
+    </div>
+</article>
       `;
   });
+
+  const gridGeral = document.getElementById("vitrine-nossos");
+  if(gridGeral){
+    gridGeral.addEventListener("click", (e) => {
+
+      if(e.target.classList.contains("btnadicionar")){
+        const btn = e.target;
+        const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
+
+        const item = {
+          id: btn.dataset.id,
+          nome: btn.dataset.nome,
+          preco: parseFloat(btn.dataset.preco),
+          imgURL: btn.dataset.img,
+          categoria: btn.dataset.categoria,
+          quantidade: 1,
+        };
+        const existente = carrinho.find((i) => i.id === item.id);
+        if(existente){
+          existente.quantidade += 1;
+        }else{
+          carrinho.push(item);
+        }
+        localStorage.setItem("carrinho", JSON.stringify(carrinho));
+        alert("produto adicionado ao carrinho!")    
+      }
+      else if(e.target.closest(".card-produto")){
+        const card = e.target.closest(".card-produto");
+        const id = card.dataset.id;
+
+        const produtos = todosProdutos.find(p => p.id === id);
+        console.log("id:", id, "produto:", produtos, "todos:", todosProdutos);
+
+        if(produtos){
+          abrirModal(produtos);
+        }
+      }
+
+    });
+  }
 
 }
 

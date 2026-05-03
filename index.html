@@ -42,11 +42,7 @@
         <nav class="nav">
     <ul>
         <li><a href="index.html">Início</a></li>
-        <li><a href="#">Vestidos</a></li>
-        <li><a href="#">Blusas</a></li>
-        <li><a href="#">Saias</a></li>
-        <li><a href="#">Ver Tudo</a></li>
-        <li><a href="#">Promoções</a></li>
+        <li><a href="#" id="ver-tudo">Ver Tudo</a></li>
     </ul>
 </nav>
     <main>
@@ -105,14 +101,15 @@
     <div class="rodape-grid">
             <div class="coluna">
                 <h4>A LOJA</h4>
-                <a href="#">Sobre nós</a>
                 <a href="#">Trocas e devoluções</a>
                 <a href="#">Politica de privacidade</a>
             </div>
 
             <div class="coluna">
                 <h4>Atendimento</h4>
-                <p>Seg-Sex: xh ás xh</p>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
                 <a href="#">lojaliridelirios@xxxxx.com</a>
                 <a href="https://w.app/lirisdelirios">WhatsApp</a>
             </div>
@@ -134,51 +131,8 @@
 </footer>
 
 <script type="module" src="./js/pagPrincipal.js"></script>
-
-<script type="module">
-    import { collection, query, where, getDocs } from "firebase/firestore";
-    import { db } from "./admin/firebase.js";
-    import { todosProdutos } from "./js/pagPrincipal.js";
-
-async function buscarProdutos(produtoDigitado){
-    const termo = produtoDigitado.toLowerCase();
-    const snapshot = await getDocs(collection(db, "produtos"));
-    
-    const resultados = snapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(p => 
-            p.nome.toLowerCase().includes(termo) ||
-            p.categoria.toLowerCase().includes(termo)
-        );
-
-    document.querySelector('main').style.display = 'none';
-    document.getElementById('resultados-busca').style.display = 'block';
-
-    const grid = document.getElementById('grid-resultados');
-    grid.innerHTML = "";
-    resultados.forEach(p => {
-        grid.innerHTML += `
-        <article class="card-produto">
-            <img src="${p.imgURL}" alt="${p.nome}">
-            <div class="conteiner-informacao">
-                <span class="descricao">${p.categoria}</span>
-                <h3>${p.nome}</h3>
-                <p class="preco">R$ ${p.preco}</p>
-                <button class="btnadicionar">Adicionar ao Carrinho</button>
-            </div>
-        </article>`;
-        });
-}
-
-document.querySelectorAll('.buscar').forEach(botao => {
-    botao.addEventListener('click', (event) => {  // ← aqui
-        event.preventDefault();
-        const produto = document.getElementById("busca").value;
-        buscarProdutos(produto);
-    });
-})
-
-</script>
+<script type="module" src="js/pesquisa.js"></script>
+<script type="module" src="js/verTudo.js"></script>
 
 </body>
 </html>

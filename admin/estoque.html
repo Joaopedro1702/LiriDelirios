@@ -89,10 +89,25 @@
             <input type="text" id="descricao-produto" placeholder="Descrição do produto">
             <label class="labels">Categoria do produto: </label>
             <input type="text" id="categoria-produto" placeholder="Categoria do produto">
-            <label class="labels">Quantidade do produto: </label>
-            <input type="number" id="quantidade-produto" placeholder="Quantidade do produto">
-            <label class="labels">Tamanho do produto: </label>
-            <input type="text" id="tamanho-produto" placeholder="Tamanho do produto">
+            <label>Quantidade por tamanho:</label>
+                    <div class="campo-grupo">
+                        <div class="campo">
+                            <label>P</label>
+                            <input type="number" id="qtd-p" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>M</label>
+                            <input type="number" id="qtd-m" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>G</label>
+                            <input type="number" id="qtd-g" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>GG</label>
+                            <input type="number" id="qtd-gg" placeholder="0" min="0">
+                        </div>
+                    </div>
             <label class="labels">Imagem do produto: </label>
             <input type="file" id="imagem-produto">
             <label for="labels">Onde vai ficar? (se selecionar vai para destaques e se não vai ficar apenas em nossos produtos)</label>
@@ -148,8 +163,6 @@
         const inputFoto = document.getElementById("imagem-produto");
         const descricaoProduto = document.getElementById("descricao-produto").value;
         const categoriaProduto = document.getElementById("categoria-produto").value;
-        const tamanhoProduto = document.getElementById("tamanho-produto").value;
-        const quantidadeProduto = parseInt(document.getElementById("quantidade-produto").value);
 
         const arquivoSelecionado = inputFoto.files[0];
 
@@ -162,12 +175,14 @@
             preco: precoDigitado,
             descricao: descricaoProduto,
             categoria: categoriaProduto,
-            tamanho: tamanhoProduto,
             imagem: arquivoSelecionado,
             destaque: document.getElementById("destaque-produto").checked,
             estoque: {
-                quantidade: quantidadeProduto,
-                tamanho: "M"
+                P: parseInt(document.getElementById('qtd-p').value) || 0,
+                M: parseInt(document.getElementById('qtd-m').value) || 0,
+                G: parseInt(document.getElementById('qtd-g').value) || 0,
+                GG: parseInt(document.getElementById('qtd-gg').value) || 0,
+
             }
         };
         try{

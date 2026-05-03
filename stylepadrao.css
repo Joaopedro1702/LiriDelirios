@@ -236,6 +236,34 @@ h4{
   background: var(--color-bg);
   color: var(--color-primary);
 }
+/*modal*/
+
+.btn-tamanho {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-tamanho:hover {
+    border-color: black;
+    background: black;
+    color: white;
+}
+
+.esgotado {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.btn-tamanho.selecionado {
+    background: black;
+    color: white;
+    border-color: black;
+}
 
 /*media queries*/
 
