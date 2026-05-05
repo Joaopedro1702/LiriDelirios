@@ -60,7 +60,7 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
     botao.addEventListener('click', async function(){
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
         
-    const resposta = await fetch("http://127.0.0.1:5001/liri-delirios/us-central1/criarCheckout", {
+    const resposta = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itens: carrinho })
