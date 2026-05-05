@@ -13,7 +13,8 @@ export default defineConfig({
         meusPedidos: resolve(__dirname, 'meus-pedidos.html'),
         meusDados: resolve(__dirname, 'meus-dados.html'),
         enderecos: resolve(__dirname, 'enderecos.html'),
-        redefinir: resolve(__dirname, 'redefinirSenha.html'),
+        esqueciSenha: resolve(__dirname, 'esqueciSenha.html'),
+        redefinirSenha: resolve(__dirname, 'redefinirSenha.html'),
         admin: resolve(__dirname, 'admin/index.html'),
         estoque: resolve(__dirname, 'admin/estoque.html')
       },
