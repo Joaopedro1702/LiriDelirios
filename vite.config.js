@@ -18,6 +18,12 @@ export default defineConfig({
         'admin/index': resolve(__dirname, 'admin/index.html'),
         'admin/estoque': resolve(__dirname, 'admin/estoque.html'),
       },
+      
+      output: {
+        entryFileNames: `[name].js`,
+        chunkFileNames: `[name].js`,
+        assetFileNames: `[name].[ext]`,
+      }
     },
   },
 })
