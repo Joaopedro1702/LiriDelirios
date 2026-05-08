@@ -1,4 +1,4 @@
-   import { collection, query, where, getDocs } from "firebase/firestore";
+    import { collection, query, where, getDocs } from "firebase/firestore";
     import { db } from "../admin/firebase.js";
     import { todosProdutos } from "../js/pagPrincipal.js";
 
