@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrinho — Líri de Lírios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── VARIÁVEIS ─── */
+    :root {
+      --rosé:    #f5ede8;
+      --vinho:   #8b1a35;
+      --vinho-escuro: #5c1022;
+      --vinho-claro:  #c94068;
+      --texto:   #2c1a22;
+      --cinza:   #a08b90;
+      --branco:  #fff;
+      --borda:   #e2d4d0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      background: var(--rosé);
+      color: var(--texto);
+      min-height: 100vh;
+    }
+
+    /* ─── BANNER FRETE ─── */
+    .banner-frete {
+      background: var(--vinho);
+      color: var(--branco);
+      text-align: center;
+      padding: 10px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+    }
+    
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      background: var(--rosé);
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .navbar__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--vinho);
+      text-decoration: none;
+    }
+
+    .navbar__nav {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .navbar__nav a {
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--texto);
+      transition: color 0.2s;
+    }
+
+    .navbar__nav a:hover { color: var(--vinho); }
+
+    .navbar__icons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .navbar__icons svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--texto);
+      fill: none;
+      cursor: pointer;
+      transition: stroke 0.2s;
+    }
+
+    .navbar__icons svg:hover { stroke: var(--vinho); }
+
+    /* ─── BREADCRUMB ─── */
+    .breadcrumb {
+      padding: 18px 60px;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--cinza);
+    }
+
+    .breadcrumb span { color: var(--vinho); }
+
+    /* ─── CARRINHO LAYOUT ─── */
+    .carrinho-wrapper {
+      padding: 0 60px 80px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ─── TÍTULO ─── */
+    .secao-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 2.4rem;
+      color: var(--vinho);
+      margin-bottom: 8px;
+    }
+
+    .secao-subtitulo {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--cinza);
+      margin-bottom: 32px;
+    }
+
+    /* ─── CABEÇALHO DA TABELA ─── */
+    .carrinho-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+      gap: 16px;
+      padding: 0 0 12px;
+      border-bottom: 2px solid var(--vinho);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--cinza);
+    }
+
+    /* ─── ITEM DO CARRINHO ─── */
+    .carrinho-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+      gap: 16px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--borda);
+      align-items: center;
+    }
+
+    .item-produto {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .item-img {
+      width: 80px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #e8dbd8;
+      flex-shrink: 0;
+    }
+
+    .item-img-placeholder {
+      width: 80px;
+      height: 96px;
+      background: linear-gradient(135deg, #e8dbd8, #d4c5c0);
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .item-info__categoria {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: var(--vinho-claro);
+      margin-bottom: 4px;
+    }
+
+    .item-info__nome {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--texto);
+    }
+
+    .item-info__variante {
+      font-size: 0.65rem;
+      color: var(--cinza);
+      letter-spacing: 0.08em;
+    }
+
+    .item-preco {
+      font-size: 0.9rem;
+      color: var(--texto);
+    }
+
+    /* ─── CONTROLE DE QUANTIDADE ─── */
+    .quantidade {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--borda);
+      border-radius: 2px;
+      width: fit-content;
+    }
+
+    .quantidade__btn {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--vinho);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .quantidade__btn:hover { background: var(--borda); }
+
+    .quantidade__valor {
+      width: 36px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--texto);
+      border: none;
+      border-left: 1px solid var(--borda);
+      border-right: 1px solid var(--borda);
+      padding: 6px 0;
+      background: none;
+      font-family: 'Josefin Sans', sans-serif;
+    }
+
+    .item-subtotal {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--vinho);
+    }
+
+    .item-remover {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--cinza);
+      font-size: 1.2rem;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item-remover:hover { color: var(--vinho); }
+
+    /* ─── CUPOM ─── */
+    .cupom-area {
+      margin-top: 32px;
+      display: flex;
+      gap: 0;
+    }
+
+    .cupom-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--borda);
+      border-right: none;
+      background: var(--branco);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--texto);
+      outline: none;
+    }
+
+    .cupom-input::placeholder { color: var(--cinza); }
+
+    .cupom-btn {
+      padding: 12px 24px;
+      background: var(--vinho);
+      color: var(--branco);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cupom-btn:hover { background: var(--vinho-escuro); }
+
+    .continuar-comprando {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .continuar-comprando:hover { color: var(--vinho); }
+
+    /* ─── RESUMO DO PEDIDO ─── */
+    .resumo {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 4px;
+      padding: 36px 32px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .resumo__titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--vinho);
+      margin-bottom: 24px;
+    }
+
+    .resumo__linha {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--borda);
+      font-size: 0.8rem;
+    }
+
+    .resumo__linha:last-of-type { border-bottom: none; }
+
+    .resumo__label { color: var(--cinza); letter-spacing: 0.08em; }
+
+    .resumo__valor { color: var(--texto); font-weight: 600; }
+
+    .resumo__frete-gratis {
+      color: #4caf50;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+    }
+
+    .resumo__total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 20px 0 24px;
+      border-top: 2px solid var(--vinho);
+      margin-top: 8px;
+    }
+
+    .resumo__total-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--texto);
+      font-weight: 600;
+    }
+
+    .resumo__total-valor {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--vinho);
+    }
+
+    .resumo__parcelamento {
+      font-size: 0.65rem;
+      color: var(--cinza);
+      text-align: right;
+      margin-top: -16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-finalizar {
+      width: 100%;
+      padding: 16px;
+      background: var(--vinho);
+      color: var(--branco);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.25s;
+      margin-bottom: 12px;
+    }
+
+    .btn-finalizar:hover { background: var(--vinho-escuro); }
+
+    .btn-paypal {
+      width: 100%;
+      padding: 14px;
+      background: none;
+      color: var(--cinza);
+      border: 1px solid var(--borda);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-paypal:hover { border-color: var(--vinho); color: var(--vinho); }
+
+    .resumo__seguro {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 18px;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--cinza);
+    }
+
+
+    @media (max-width: 768px) {
+  .navbar { padding: 16px 20px; }
+  .breadcrumb { padding: 12px 20px; }
+
+  .carrinho-wrapper {
+    grid-template-columns: 1fr;
+    padding: 0 16px 60px;
+  }
+
+  .carrinho-header { display: none; }
+
+  .carrinho-item {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .item-produto { grid-column: 1 / -1; }
+
+  footer {
+    grid-template-columns: 1fr;
+    padding: 40px 24px;
+    gap: 24px;
+  }
+}
+    
+  </style>
+  <script type="module" crossorigin src="/carrinho.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+
+  <!-- BANNER FRETE -->
+  <div class="banner-frete">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <img src="/logolirios.png" alt="Logo Liri de Lírios." class="logo">
+    </a>
+
+      <div class="header-icons">
+            <a href="login.html">
+                <img src="/perfil.png" alt="Icone de perfil" class="perfil">
+            </a>
+            <a href="carrinho.html">
+                <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+      </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">INÍCIO / <span>CARRINHO</span></div>
+
+  <!-- CARRINHO -->
+  <main class="carrinho-wrapper">
+
+    <!-- LADO ESQUERDO: ITENS -->
+    <section id="lista-carrinho">
+      <h1 class="secao-titulo">Meu Carrinho</h1>
+      <p class="secao-subtitulo">3 ITENS SELECIONADOS</p>
+
+      <!-- Cabeçalho -->
+      <div class="carrinho-header">
+        <span>PRODUTO</span>
+        <span>PREÇO</span>
+        <span>QUANTIDADE</span>
+        <span>SUBTOTAL</span>
+        <span></span>
+      </div>
+
+      <div id="itens-carrinho"></div>
+
+      <a href="index.html" class="continuar-comprando">← CONTINUAR COMPRANDO</a>
+    </section>
+
+    <!-- LADO DIREITO: RESUMO -->
+    <aside class="resumo">
+      <h2 class="resumo__titulo">Resumo do Pedido</h2>
+
+      <div class="resumo__linha">
+        <span class="resumo__label">SUBTOTAL</span>
+        <span class="resumo__valor">R$ 519,96</span>
+      </div>
+      <div class="resumo__linha">
+        <span class="resumo__label">DESCONTO</span>
+        <span class="resumo__valor" style="color:#4caf50">− R$ 0,00</span>
+      </div>
+      <div class="resumo__linha">
+        <span class="resumo__label">FRETE</span>
+        <span class="resumo__frete-gratis">GRÁTIS ✦</span>
+      </div>
+
+      <div class="resumo__total">
+        <span class="resumo__total-label">TOTAL</span>
+        <span class="resumo__total-valor">R$ 519,96</span>
+      </div>
+      <p class="resumo__parcelamento">em até 3× sem juros no cartão</p>
+
+      <button class="btn-finalizar" id="finalizar">FINALIZAR COMPRA</button>
+      <div class="resumo__seguro">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        COMPRA 100% SEGURA
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: xh ás xh</p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+  </footer>
+</body>
+</html>

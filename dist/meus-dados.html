@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Meus Dados — Liri de Lírios</title>
+    <style>
+        .dados-wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            font-size: 0.75rem;
+            color: var(--color-label);
+            letter-spacing: 0.08em;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: var(--color-label);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover { color: var(--color-primary); }
+
+        .pagina-titulo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--color-dark);
+            margin-bottom: 28px;
+        }
+
+        .dados-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .dados-card h3 {
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-muted);
+            margin-bottom: 20px;
+        }
+
+        .campo-grupo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .campo-grupo.full {
+            grid-template-columns: 1fr;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo label {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-label);
+        }
+
+        .campo input {
+            padding: 10px 14px;
+            border: 1px solid var(--color-card-border);
+            border-radius: 4px;
+            font-family: var(--font--sans);
+            font-size: 0.88rem;
+            color: var(--color-dark);
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .campo input:focus {
+            border-color: var(--color-primary);
+        }
+
+        .campo input:disabled {
+            background: var(--color-bg);
+            color: var(--color-label);
+            cursor: not-allowed;
+        }
+
+        .btn-salvar {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-salvar:hover { background: var(--color-primary-dark); }
+
+        .btn-deletar {
+            background: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 10px 22px;
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            display: inline-block;
+        }
+
+        .btn-deletar:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .btn-alterar-senha {
+            background: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 10px 22px;
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            display: inline-block;
+        }
+
+        .btn-alterar-senha:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .mensagem {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .mensagem.sucesso { color: #2e7d32; }
+        .mensagem.erro { color: #c62828; }
+
+        @media (max-width: 600px) {
+            .campo-grupo { grid-template-columns: 1fr; }
+        }
+    </style>
+  <script type="module" crossorigin src="/meusDados.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            <a href="carrinho.html">
+                <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        </div>
+    </header>
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Ver Tudo</a></li>
+
+        </ul>
+    </nav>
+
+    <main class="dados-wrapper">
+        <p class="breadcrumb"><a href="minha-conta.html">Minha Conta</a> / Meus Dados</p>
+        <h1 class="pagina-titulo">Meus Dados</h1>
+
+        <div class="dados-card">
+            <h3>✦ Informações pessoais</h3>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>Nome completo</label>
+                    <input type="text" id="nome" placeholder="Seu nome">
+                </div>
+                <div class="campo">
+                    <label>E-mail</label>
+                    <input type="email" id="email" disabled>
+                </div>
+            </div>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>Telefone</label>
+                    <input type="tel" id="telefone" placeholder="(11) 99999-9999">
+                </div>
+                <div class="campo">
+                    <label>CPF</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00">
+                </div>
+            </div>
+            <button class="btn-salvar" id="btn-salvar">Salvar alterações</button>
+            <p class="mensagem" id="msg-dados"></p>
+        </div>
+
+        <div class="dados-card">
+            <h3>✦ Segurança</h3>
+            <a href="redefinirSenha.html" class="btn-alterar-senha">Alterar senha</a>
+        
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--color-card-border);">
+            <p style="font-size: 0.72rem; color: var(--color-label); margin-bottom: 12px; letter-spacing: 0.05em;">Deseja encerrar sua conta? Esta ação é permanente.</p>
+            <button class="btn-deletar" id="btn-deletar-conta">Excluir minha conta</button>
+
+        </div>
+    </main>
+
+<footer class="rodape">
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    
+</footer>
+
+</body>
+</html>

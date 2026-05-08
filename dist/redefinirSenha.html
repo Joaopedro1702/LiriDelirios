@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redefinir Senha — Líri de Lírios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rosé:         #f5ede8;
+      --vinho:        #8b1a35;
+      --vinho-escuro: #5c1022;
+      --texto:        #2c1a22;
+      --cinza:        #a08b90;
+      --branco:       #fff;
+      --borda:        #e2d4d0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      background: var(--rosé);
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      visibility: hidden;
+    }
+
+    .banner {
+      background: var(--vinho);
+      color: var(--branco);
+      text-align: center;
+      padding: 10px;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+    }
+
+    .navbar {
+      background: var(--rosé);
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--borda);
+    }
+    .navbar__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--vinho);
+      text-decoration: none;
+    }
+    .navbar__voltar {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .navbar__voltar:hover { color: var(--vinho); }
+
+    .auth-wrapper {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-painel {
+      background: var(--vinho);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-painel::before {
+      content: '';
+      position: absolute;
+      width: 420px; height: 420px;
+      border: 60px solid rgba(255,255,255,0.05);
+      border-radius: 50%;
+      top: -120px; right: -120px;
+    }
+    .auth-painel::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border: 40px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+      bottom: -80px; left: -60px;
+    }
+    .painel__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 3rem;
+      color: var(--branco);
+      margin-bottom: 10px;
+      position: relative; z-index: 1;
+    }
+    .painel__tagline {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 56px;
+      position: relative; z-index: 1;
+    }
+    .painel__divisor {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.25);
+      margin: 0 auto 40px;
+    }
+    .painel__frase {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.45rem;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.7;
+      max-width: 280px;
+      position: relative; z-index: 1;
+    }
+
+    .auth-form-area {
+      background: var(--branco);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 80px;
+    }
+    .form-box {
+      width: 100%;
+      max-width: 400px;
+    }
+    .form-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 2rem;
+      color: var(--vinho);
+      margin-bottom: 6px;
+    }
+    .form-subtitulo {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      margin-bottom: 40px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .campo label {
+      font-size: 0.63rem;
+      letter-spacing: 0.15em;
+      color: var(--cinza);
+    }
+    .campo input {
+      padding: 13px 16px;
+      border: 1px solid var(--borda);
+      background: var(--rosé);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--texto);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .campo input:focus {
+      border-color: var(--vinho);
+      background: var(--branco);
+    }
+    .campo input::placeholder { color: var(--cinza); }
+
+    /* INDICADOR DE FORÇA */
+    .forca-senha {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .forca-senha__barra {
+      height: 3px;
+      flex: 1;
+      background: var(--borda);
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+    .forca-senha__label {
+      font-size: 0.6rem;
+      color: var(--cinza);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    .btn-principal {
+      width: 100%;
+      padding: 15px;
+      background: var(--vinho);
+      color: var(--branco);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.25s;
+      margin-bottom: 16px;
+    }
+    .btn-principal:hover { background: var(--vinho-escuro); }
+    .btn-principal:disabled {
+      background: var(--cinza);
+      cursor: not-allowed;
+    }
+
+    .voltar-login {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+      border-top: 1px solid var(--borda);
+      padding-top: 24px;
+    }
+    .voltar-login a {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .voltar-login a:hover { color: var(--vinho); }
+
+    /* TELA DE SUCESSO */
+    .sucesso {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+    .sucesso__icone {
+      width: 64px;
+      height: 64px;
+      background: var(--rosé);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--vinho);
+      margin-bottom: 8px;
+    }
+    .sucesso__titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--vinho);
+    }
+    .sucesso__texto {
+      font-size: 0.75rem;
+      color: var(--cinza);
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    footer {
+      background: var(--vinho);
+      text-align: center;
+      padding: 18px;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4);
+    }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 16px 20px; }
+      .auth-wrapper { grid-template-columns: 1fr; }
+      .auth-painel { display: none; }
+      .auth-form-area { padding: 40px 24px; }
+    }
+  </style>
+  <script type="module" crossorigin src="/redefinirSenha.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+</head>
+<body>
+
+  <div class="banner">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">Líri de Lírios</a>
+    <a href="login.html" class="navbar__voltar">← VOLTAR PARA LOGIN</a>
+  </header>
+
+  <main class="auth-wrapper">
+
+    <aside class="auth-painel">
+      <p class="painel__logo">Líri de Lírios</p>
+      <p class="painel__tagline">NOVO CONCEITO EM MODAS</p>
+      <div class="painel__divisor"></div>
+      <p class="painel__frase">"Sua segurança é nossa prioridade"</p>
+    </aside>
+
+    <section class="auth-form-area">
+      <div class="form-box">
+
+        <!-- FORMULÁRIO -->
+        <div id="form-redefinir">
+          <h1 class="form-titulo">Redefinir senha</h1>
+          <p class="form-subtitulo">CRIE UMA NOVA SENHA SEGURA PARA SUA CONTA</p>
+
+          <div class="campo">
+            <label for="nova-senha">NOVA SENHA</label>
+            <input type="password" id="nova-senha" placeholder="Mínimo 8 caracteres"/>
+            <div class="forca-senha">
+              <div class="forca-senha__barra" id="barra1"></div>
+              <div class="forca-senha__barra" id="barra2"></div>
+              <div class="forca-senha__barra" id="barra3"></div>
+              <div class="forca-senha__barra" id="barra4"></div>
+            </div>
+            <span class="forca-senha__label" id="forca-label">Força da senha</span>
+          </div>
+
+          <div class="campo">
+            <label for="confirmar-senha">CONFIRMAR SENHA</label>
+            <input type="password" id="confirmar-senha" placeholder="Repita a nova senha"/>
+          </div>
+
+          <button class="btn-principal" id="btn-redefinir">REDEFINIR SENHA</button>
+
+          <div class="voltar-login">
+            <a href="login.html">← VOLTAR PARA O LOGIN</a>
+          </div>
+        </div>
+
+        <!-- TELA DE SUCESSO -->
+        <div class="sucesso" id="sucesso">
+          <div class="sucesso__icone">✦</div>
+          <p class="sucesso__titulo">Senha redefinida!</p>
+          <p class="sucesso__texto">Sua senha foi atualizada com sucesso. Você já pode entrar na sua conta com a nova senha.</p>
+          <a href="login.html" class="btn-principal" style="text-align:center; text-decoration:none; display:block; margin-top:16px;">ENTRAR NA MINHA CONTA</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Liri Delirios</title>
+  <script type="module" crossorigin src="/main.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="modulepreload" crossorigin href="/produtos.js">
+  <link rel="stylesheet" crossorigin href="/style.css">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            
+            <a href="carrinho.html">
+                <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        
+
+        <img src="/pesquisa.png" alt="Icone de pesquisa." id="icone-busca">
+            <form action="#" class="barra-pesquisa" role="search" id="barra-pesquisa">
+                <input
+                type="search"
+                id="busca"
+                name="q"
+                placeholder="Buscar vestidos, blusas..."
+                aria-label="Pesquisar produtos no site"
+                required
+                >
+                <button type="submit" aria-label="Buscar" class="buscar">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </header>
+        <nav class="nav">
+    <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="#" id="ver-tudo">Ver Tudo</a></li>
+        
+    </ul>
+</nav>
+    <main>
+        <section class="topo">
+            <div class="container-topo">
+                <h1 class="texto1">Nova Coleção Outono e Inverno</h1>
+                <p>ELEGÃNCIA & RECATO EM CADA PEÇA</p>
+                <button class="explorar">EXPLORAR COLEÇÃO</button>
+            </div>
+        </section>
+        <!--Destaques e CARDS-->
+        <section class="destaques">
+            <h2>Destaques</h2>
+            <p>PEÇAS SELECIONADAS PARA VOCẼ</p>
+    <div class="carousel-container">
+        <button class="anterior">&lt;</button>
+        <button class="proximo" id="proximo">&gt;</button>
+        
+        <div class="grid-cards" id="vitrine-destaques">
+            <!-- Os cards de produtos serão inseridos aqui dinamicamente -->
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-conteudo">
+            <div id="detlahes-produtos"></div>
+    </div>
+</div>
+        </section>
+        <!--Fim dos destaques-->
+
+        <section class="meio">
+            <div class="container-meio">
+                <h2 class="textomeio">Moda Modesta</h2>
+                <p>PEÇAS QUE VESTEM E VALORIZAM</p>
+                <button class="colecao">VER COLEÇÃO COMPLETA</button>
+            </div>
+
+        </section>
+
+<!--Mais vendidos e CARDS-->
+        <section class="maisvendidos">
+            <h2>Nossos produtos</h2>
+            <p>FAVORISTAS DAS CLIENTES</p>
+
+        <div class="grid-cards" id="vitrine-nossos">
+        </div>
+        </section>
+
+    </main>
+
+        <section id="resultados-busca" style="display: none;">
+            <div class="grid-cards" id="grid-resultados"></div>
+        </section>
+<footer class="rodape">
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>R. Sapucáia do Sul, 53 - Jardim Record, Taboão da Serra - SP, 06784-390, Brasil</p>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="https://www.facebook.com/share/18dS6JzoHr/">Instagram</a>
+                <a href="https://www.facebook.com/share/18dS6JzoHr/">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    
+</footer>
+
+
+</body>
+</html>

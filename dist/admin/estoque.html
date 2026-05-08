@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        gestao-estoque {
+            padding: 20px;
+        }
+        .gestao-estoque h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #tabela-estoque {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #tabela-estoque th,
+        #tabela-estoque td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        .adcProduto {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .adcProduto label,
+        .adcProduto input,
+        .adcProduto select,
+        .adcProduto button{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .adcProduto .linha{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+    </style>
+    <title>Estoque</title>
+  <script type="module" crossorigin src="/admin/estoque.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="modulepreload" crossorigin href="/produtos.js">
+  <link rel="stylesheet" crossorigin href="/style.css">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+        <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+    </header>
+        <nav class="nav">
+    <ul>
+        <li><a href="#">Gestão de estoque</a></li>
+        <li><a href="#">Vestidos</a></li>
+    </ul>
+</nav>
+<main>
+
+    <div class="gestao-estoque">
+        <h2>Gestão de estoque - Liri de Lírios</h2>
+        <table id="tabela-estoque">
+            <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Produtos</th>
+                    <th>Categoria</th>
+                    <th>Qtd</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="listar-produtos-estoque"></tbody>
+        </table>
+    </div>
+
+    <section class="adcProduto">
+        <h2>Adicionar produto</h2>
+        <form class="adicionarProduto" >
+            <label class="labels">Nome do produto: </label>
+            <input type="text" id="nome-produto" placeholder="Nome do produto">
+            <label class="labels">Valor do produto: </label>
+            <input type="text" id="valor-produto" placeholder="valor do produto">
+            <label class="labels">Descrição do produto: </label>
+            <input type="text" id="descricao-produto" placeholder="Descrição do produto">
+            <label class="labels">Categoria do produto: </label>
+            <input type="text" id="categoria-produto" placeholder="Categoria do produto">
+            <label>Quantidade por tamanho:</label>
+                    <div class="campo-grupo">
+                        <div class="campo">
+                            <label>P</label>
+                            <input type="number" id="qtd-p" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>M</label>
+                            <input type="number" id="qtd-m" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>G</label>
+                            <input type="number" id="qtd-g" placeholder="0" min="0">
+                        </div>
+                        <div class="campo">
+                            <label>GG</label>
+                            <input type="number" id="qtd-gg" placeholder="0" min="0">
+                        </div>
+                    </div>
+            <label class="labels">Imagem do produto: </label>
+            <input type="file" id="imagem-produto">
+            <label for="labels">Onde vai ficar? (se selecionar vai para destaques e se não vai ficar apenas em nossos produtos)</label>
+            <label for="labels">Destaque</label>
+            <input type="checkbox" id="destaque-produto">
+
+            <button type="submit" id="btn-adicionar-produto">Adicionar</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

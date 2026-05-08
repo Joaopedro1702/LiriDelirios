@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Endereços — Liri de Lírios</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .enderecos-wrapper {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .breadcrumb {
+            font-size: 0.75rem;
+            color: var(--color-label);
+            letter-spacing: 0.08em;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: var(--color-label);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover { color: var(--color-primary); }
+
+        .pagina-titulo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--color-dark);
+            margin-bottom: 28px;
+        }
+
+        .endereco-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .endereco-card.padrao {
+            border-color: var(--color-primary);
+        }
+
+        .badge-padrao {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .endereco-card h4 {
+            font-family: var(--font--sans);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-dark);
+            margin-bottom: 8px;
+        }
+
+        .endereco-card p {
+            font-size: 0.85rem;
+            color: var(--color-label);
+            line-height: 1.6;
+        }
+
+        .endereco-card__acoes {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .btn-acao {
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .btn-acao.excluir { color: #c62828; }
+        .btn-acao.editar { color: var(--color-primary); }
+
+        .btn-novo-endereco {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px dashed var(--color-primary);
+            color: var(--color-primary);
+            padding: 14px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .btn-novo-endereco:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        /* Modal de novo endereço */
+        .modal-fundo {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-fundo.ativo { display: flex; }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            width: 100%;
+            max-width: 500px;
+            margin: 16px;
+        }
+
+        .modal-box h3 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--color-dark);
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .campo label {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-label);
+        }
+
+        .campo input {
+            padding: 10px 14px;
+            border: 1px solid var(--color-card-border);
+            border-radius: 4px;
+            font-family: var(--font--sans);
+            font-size: 0.88rem;
+            color: var(--color-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .campo input:focus { border-color: var(--color-primary); }
+
+        .campo-grupo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .modal-acoes {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-salvar {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+            transition: background 0.2s;
+        }
+
+        .btn-salvar:hover { background: var(--color-primary-dark); }
+
+        .btn-cancelar {
+            background: transparent;
+            border: 1px solid var(--color-card-border);
+            color: var(--color-label);
+            padding: 12px 24px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+  <script type="module" crossorigin src="/enderecos.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            <a href="carrinho.html">
+                <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        </div>
+    </header>
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Vestidos</a></li>
+            <li><a href="#">Blusas</a></li>
+            <li><a href="#">Saias</a></li>
+            <li><a href="#">Ver Tudo</a></li>
+            <li><a href="#">Promoções</a></li>
+        </ul>
+    </nav>
+
+    <main class="enderecos-wrapper">
+        <p class="breadcrumb"><a href="minha-conta.html">Minha Conta</a> / Endereços</p>
+        <h1 class="pagina-titulo">Endereços</h1>
+
+        <button class="btn-novo-endereco" id="btn-abrir-modal">+ Cadastrar novo endereço</button>
+
+        <div id="lista-enderecos">
+            <p style="color:var(--color-label); font-size:0.85rem;">Carregando endereços...</p>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-fundo" id="modal-endereco">
+        <div class="modal-box">
+            <h3>Novo endereço</h3>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>CEP</label>
+                    <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                </div>
+                <div class="campo">
+                    <label>Estado</label>
+                    <input type="text" id="estado" placeholder="SP">
+                </div>
+            </div>
+            <div class="campo">
+                <label>Cidade</label>
+                <input type="text" id="cidade" placeholder="São Paulo">
+            </div>
+            <div class="campo">
+                <label>Bairro</label>
+                <input type="text" id="bairro" placeholder="Jardim das Flores">
+            </div>
+            <div class="campo-grupo">
+                <div class="campo">
+                    <label>Rua</label>
+                    <input type="text" id="rua" placeholder="Av. das Rosas">
+                </div>
+                <div class="campo">
+                    <label>Número</label>
+                    <input type="text" id="numero" placeholder="123">
+                </div>
+            </div>
+            <div class="campo">
+                <label>Complemento</label>
+                <input type="text" id="complemento" placeholder="Apto 12 (opcional)">
+            </div>
+            <div class="modal-acoes">
+                <button class="btn-cancelar" id="btn-fechar-modal">Cancelar</button>
+                <button class="btn-salvar" id="btn-salvar-endereco">Salvar endereço</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="rodape">
+        <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Sobre nós</a>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: xh ás xh</p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    </footer>
+
+</body>
+</html>

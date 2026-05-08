@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Minha Conta — Liri de Lírios</title>
+    <style>
+        .conta-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .conta-boas-vindas {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 36px;
+        }
+
+        .conta-boas-vindas__info h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--color-dark);
+            margin-bottom: 4px;
+        }
+
+        .conta-boas-vindas__info p {
+            font-size: 0.82rem;
+            color: var(--color-label);
+            letter-spacing: 0.05em;
+        }
+
+        .btn-editar {
+            background: var(--color-primary);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            font-family: var(--font--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-editar:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .atalhos-titulo {
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-muted);
+            margin-bottom: 16px;
+        }
+
+        .atalhos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .atalho-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 10px;
+            padding: 28px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            color: var(--color-dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .atalho-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 2px 12px rgba(128,0,32,0.08);
+        }
+
+        .atalho-card__icone {
+            font-size: 1.6rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .atalho-card__texto span {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--color-primary);
+        }
+
+        .atalho-card__texto p {
+            font-size: 0.8rem;
+            color: var(--color-label);
+            margin-top: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .atalhos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .conta-boas-vindas {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .atalhos-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <script type="module" crossorigin src="/minhaConta.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            <a href="carrinho.html">
+                <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        </div>
+    </header>
+        <nav class="nav">
+    <ul>
+        <li><a href="index.html">Início</a></li>
+    </ul>
+</nav>
+
+    <main class="conta-wrapper">
+        <div class="conta-boas-vindas">
+            <div class="conta-boas-vindas__info">
+                <h2 id="nome-usuario">Bem-vinda!</h2>
+                <p id="email-usuario"></p>
+            </div>
+            <a href="meus-dados.html" class="btn-editar">✎ Editar dados</a>
+        </div>
+
+        <p class="atalhos-titulo">✦ Atalhos</p>
+
+        <div class="atalhos-grid">
+            <a href="meus-pedidos.html" class="atalho-card">
+                <div class="atalho-card__icone">🛍</div>
+                <div class="atalho-card__texto">
+                    <span>Meus Pedidos</span>
+                    <p>Acompanhe suas compras</p>
+                </div>
+            </a>
+            <a href="meus-dados.html" class="atalho-card">
+                <div class="atalho-card__icone">👤</div>
+                <div class="atalho-card__texto">
+                    <span>Meus Dados</span>
+                    <p>Edite suas informações</p>
+                </div>
+            </a>
+            <a href="enderecos.html" class="atalho-card">
+                <div class="atalho-card__icone">📍</div>
+                <div class="atalho-card__texto">
+                    <span>Endereços</span>
+                    <p>Gerencie seus endereços</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+<footer class="rodape">
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>A LOJA</h4>
+                <a href="#">Trocas e devoluções</a>
+                <a href="#">Politica de privacidade</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
+                <a href="#">lojaliridelirios@xxxxx.com</a>
+                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="#">Instagram</a>
+                <a href="#">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                <a href="#">Nossas regras</a>
+            </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    
+</footer>
+
+
+</body>
+</html>

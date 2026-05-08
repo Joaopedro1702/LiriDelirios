@@ -1,0 +1,17 @@
+import"./modulepreload-polyfill.js";/* empty css           */import{c as e,d as t,f as n,g as r,i,n as a,o,r as s,t as c,u as l,y as u}from"./firebase.js";var d=document.getElementById(`icone-perfil`),f=document.getElementById(`dropdown-perfil`);d.addEventListener(`click`,()=>f.classList.toggle(`ativo`));var p=null;r(c,async e=>{e?(p=e.uid,f.innerHTML=`
+                    <a href="minha-conta.html">MINHA CONTA</a>
+                    <a href="meus-pedidos.html">MEUS PEDIDOS</a>
+                    <a href="meus-dados.html">MEUS DADOS</a>
+                    <a href="enderecos.html">ENDEREÇO</a>
+                    <a href="#" id="btn-sair">SAIR</a>
+                `,document.getElementById(`btn-sair`).addEventListener(`click`,async()=>{await u(c),window.location.href=`/login.html`}),await m()):window.location.href=`/login.html`});async function m(){let r=document.getElementById(`lista-enderecos`),s=await o(e(t(a,`enderecos`),l(`usuarioId`,`==`,p)));if(s.empty){r.innerHTML=`<p style="color:var(--color-label);font-size:0.85rem;">Nenhum endereço cadastrado ainda.</p>`;return}r.innerHTML=``,s.forEach((e,t)=>{let n=e.data();r.innerHTML+=`
+                <div class="endereco-card ${t===0?`padrao`:``}">
+                    ${t===0?`<span class="badge-padrao">Padrão</span>`:``}
+                    <h4>Endereço ${t===0?`Padrão`:t+1}</h4>
+                    <p>${n.rua}, ${n.numero}${n.complemento?`, `+n.complemento:``}<br>
+                    ${n.bairro} — ${n.cidade}, ${n.estado}<br>
+                    CEP ${n.cep}</p>
+                    <div class="endereco-card__acoes">
+                        <button class="btn-acao excluir" data-id="${e.id}">Excluir</button>
+                    </div>
+                </div>`}),r.querySelectorAll(`.excluir`).forEach(e=>{e.addEventListener(`click`,async()=>{(await Swal.fire({title:`Excluir endereço?`,text:`Esta ação não pode ser desfeita.`,icon:`warning`,showCancelButton:!0,confirmButtonColor:`#800020`,cancelButtonColor:`#B05070`,confirmButtonText:`Sim, excluir`,cancelButtonText:`Cancelar`})).isConfirmed&&(await i(n(a,`enderecos`,e.dataset.id)),await m(),Swal.fire(`Excluído!`,`Endereço removido com sucesso.`,`success`))})})}document.getElementById(`btn-abrir-modal`).addEventListener(`click`,()=>{document.getElementById(`modal-endereco`).classList.add(`ativo`)}),document.getElementById(`btn-fechar-modal`).addEventListener(`click`,()=>{document.getElementById(`modal-endereco`).classList.remove(`ativo`)}),document.getElementById(`btn-salvar-endereco`).addEventListener(`click`,async()=>{let e={usuarioId:p,cep:document.getElementById(`cep`).value,estado:document.getElementById(`estado`).value,cidade:document.getElementById(`cidade`).value,bairro:document.getElementById(`bairro`).value,rua:document.getElementById(`rua`).value,numero:document.getElementById(`numero`).value,complemento:document.getElementById(`complemento`).value};if(!e.rua||!e.numero||!e.cidade){alert(`Preencha os campos obrigatórios.`);return}await s(t(a,`enderecos`),e),document.getElementById(`modal-endereco`).classList.remove(`ativo`),await m()}),document.getElementById(`cep`).addEventListener(`blur`,async()=>{let e=document.getElementById(`cep`).value.replace(/\D/g,``);if(e.length!==8)return;let t=await(await fetch(`https://viacep.com.br/ws/${e}/json/`)).json();if(t.erro){alert(`CEP não encontrado.`);return}document.getElementById(`rua`).value=t.logradouro,document.getElementById(`bairro`).value=t.bairro,document.getElementById(`cidade`).value=t.localidade,document.getElementById(`estado`).value=t.uf});

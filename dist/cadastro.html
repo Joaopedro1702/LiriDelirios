@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar Conta — Líri de Lírios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rosé:         #f5ede8;
+      --vinho:        #8b1a35;
+      --vinho-escuro: #5c1022;
+      --texto:        #2c1a22;
+      --cinza:        #a08b90;
+      --branco:       #fff;
+      --borda:        #e2d4d0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      background: var(--rosé);
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BANNER */
+    .banner {
+      background: var(--vinho);
+      color: var(--branco);
+      text-align: center;
+      padding: 10px;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--rosé);
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--borda);
+    }
+    .navbar__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--vinho);
+      text-decoration: none;
+    }
+    .navbar__voltar {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .navbar__voltar:hover { color: var(--vinho); }
+
+    /* LAYOUT PRINCIPAL */
+    .auth-wrapper {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* PAINEL ESQUERDO: BENEFÍCIOS */
+    .auth-painel {
+      background: var(--vinho);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-painel::before {
+      content: '';
+      position: absolute;
+      width: 420px; height: 420px;
+      border: 60px solid rgba(255,255,255,0.05);
+      border-radius: 50%;
+      top: -120px; right: -120px;
+    }
+    .auth-painel::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border: 40px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+      bottom: -80px; left: -60px;
+    }
+    .painel__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 3rem;
+      color: var(--branco);
+      margin-bottom: 10px;
+      position: relative; z-index: 1;
+    }
+    .painel__tagline {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 56px;
+      position: relative; z-index: 1;
+    }
+    .painel__divisor {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.25);
+      margin: 0 auto 32px;
+    }
+    .painel__subtitulo {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .painel__beneficios {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative; z-index: 1;
+      text-align: left;
+    }
+    .painel__beneficios li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.5;
+    }
+    .painel__beneficios li .icone {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.75rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* PAINEL DIREITO: FORMULÁRIO */
+    .auth-form-area {
+      background: var(--branco);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 52px 80px;
+      overflow-y: auto;
+    }
+    .form-box {
+      width: 100%;
+      max-width: 420px;
+    }
+    .form-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 2rem;
+      color: var(--vinho);
+      margin-bottom: 6px;
+    }
+    .form-subtitulo {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--cinza);
+      margin-bottom: 36px;
+    }
+
+    /* SEÇÃO DO FORMULÁRIO */
+    .form-secao-titulo {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--vinho);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    /* CAMPOS */
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .campo label {
+      font-size: 0.63rem;
+      letter-spacing: 0.15em;
+      color: var(--cinza);
+    }
+    .campo input, .campo select {
+      padding: 13px 16px;
+      border: 1px solid var(--borda);
+      background: var(--rosé);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--texto);
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+    }
+    .campo input:focus, .campo select:focus {
+      border-color: var(--vinho);
+      background: var(--branco);
+    }
+    .campo input::placeholder { color: var(--cinza); }
+
+    /* CAMPOS DUPLOS */
+    .campos-duplos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* INDICADOR DE FORÇA DE SENHA */
+    .forca-senha {
+      display: flex;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .forca-senha__barra {
+      height: 3px;
+      flex: 1;
+      background: var(--borda);
+      border-radius: 2px;
+    }
+    .forca-senha__label {
+      font-size: 0.6rem;
+      color: var(--cinza);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* SEPARADOR DE SEÇÃO */
+    .separador {
+      margin: 28px 0 24px;
+    }
+
+    /* CHECKBOXES */
+    .checkbox-linha {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .checkbox-linha input[type="checkbox"] {
+      width: 15px; height: 15px;
+      accent-color: var(--vinho);
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .checkbox-linha label {
+      font-size: 0.68rem;
+      color: var(--cinza);
+      line-height: 1.5;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+    .checkbox-linha a {
+      color: var(--vinho);
+      text-decoration: none;
+    }
+
+    /* BOTÕES */
+    .btn-principal {
+      width: 100%;
+      padding: 15px;
+      background: var(--vinho);
+      color: var(--branco);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.25s;
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .btn-principal:hover { background: var(--vinho-escuro); }
+
+    /* JÁ TENHO CONTA */
+    .ja-tem-conta {
+      border-top: 1px solid var(--borda);
+      padding-top: 24px;
+      text-align: center;
+    }
+    .ja-tem-conta p {
+      font-size: 0.7rem;
+      color: var(--cinza);
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+    .btn-entrar-link {
+      display: inline-block;
+      width: 100%;
+      padding: 13px;
+      background: none;
+      color: var(--vinho);
+      border: 1.5px solid var(--vinho);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-entrar-link:hover {
+      background: var(--vinho);
+      color: var(--branco);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--vinho);
+      text-align: center;
+      padding: 18px;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4);
+    }
+
+    @media (max-width: 768px) {
+  .navbar { padding: 16px 20px; }
+
+  .auth-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-painel { display: none; }
+
+  .auth-form-area { padding: 40px 24px; }
+
+  .campos-duplos {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+  <script type="module" crossorigin src="/cadastro.js"></script>
+  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+</head>
+<body>
+
+  <div class="banner">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+
+  <header class="navbar">
+    <a href="#" class="navbar__logo">Líri de Lírios</a>
+    <a href="login.html" class="navbar__voltar">← VOLTAR PARA LOGIN</a>
+  </header>
+
+  <main class="auth-wrapper">
+
+    <!-- PAINEL ESQUERDO: BENEFÍCIOS -->
+    <aside class="auth-painel">
+      <p class="painel__logo">Líri de Lírios</p>
+      <p class="painel__tagline">NOVO CONCEITO EM MODAS</p>
+      <div class="painel__divisor"></div>
+      <p class="painel__subtitulo">POR QUE CRIAR UMA CONTA?</p>
+      <ul class="painel__beneficios">
+        <li>
+          <span class="icone">✦</span>
+          Histórico de compras organizado para facilitar devoluções
+        </li>
+        <li>
+          <span class="icone">✦</span>
+          Salve seus endereços e finalize compras mais rapidamente
+        </li>
+      </ul>
+    </aside>
+
+    <!-- FORMULÁRIO DE CADASTRO -->
+    <section class="auth-form-area">
+      <form class="form-box" id="form-box">
+
+        <h1 class="form-titulo">Criar minha conta</h1>
+        <p class="form-subtitulo">JUNTE-SE À NOSSA COMUNIDADE</p>
+
+        <!-- DADOS PESSOAIS -->
+        <p class="form-secao-titulo">DADOS PESSOAIS</p>
+
+        <div class="campos-duplos">
+          <div class="campo">
+            <label for="nome">NOME</label>
+            <input type="text" id="nome" placeholder="Maria"/>
+          </div>
+          <div class="campo">
+            <label for="sobrenome">SOBRENOME</label>
+            <input type="text" id="sobrenome" placeholder="Silva"/>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="cpf">CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00"/>
+        </div>
+
+        <div class="campos-duplos">
+          <div class="campo">
+            <label for="nascimento">DATA DE NASCIMENTO</label>
+            <input type="date" id="nascimento"/>
+          </div>
+          <div class="campo">
+            <label for="telefone">TELEFONE</label>
+            <input type="tel" id="telefone" placeholder="(11) 99999-9999"/>
+          </div>
+        </div>
+        <!--Dados de endereço-->
+
+       <div class="separador">
+  <p class="form-secao-titulo">ENDEREÇO DE ENTREGA</p>
+</div>
+
+<div class="campos-duplos">
+  <div class="campo">
+    <label for="cep">CEP</label>
+    <div style="display: flex; gap: 8px;">
+      <input type="text" id="cep" placeholder="00000-000" maxlength="9" style="flex: 1;"/>
+      <button type="button" class="btn-buscar-cep" style="padding: 0 15px; background: var(--vinho); color: white; border: none; cursor: pointer; font-size: 0.65rem;">BUSCAR</button>
+    </div>
+  </div>
+  <div class="campo">
+    <label for="estado">ESTADO (UF)</label>
+    <select id="estado">
+      <option value="">Selecione</option>
+      <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+      <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+      <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+      <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+      <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+      <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+      <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+      <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+      <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+    </select>
+  </div>
+</div>
+
+<div class="campo">
+  <label for="logradouro">LOGRADOURO (RUA)</label>
+  <input type="text" id="logradouro" placeholder="Ex: Rua Angelin"/>
+</div>
+
+<div class="campos-duplos">
+  <div class="campo">
+    <label for="cidade">CIDADE</label>
+    <input type="text" id="cidade" placeholder="Ex: Taboão da Serra"/>
+  </div>
+  <div class="campo">
+    <label for="bairro">BAIRRO</label>
+    <input type="text" id="bairro" placeholder="Ex: Jardim Record"/>
+  </div>
+</div>
+
+<div class="campo">
+  <label for="numero">NÚMERO</label>
+  <input type="text" id="numero" placeholder="123"/>
+</div>
+
+        <!-- ACESSO -->
+        <div class="separador">
+          <p class="form-secao-titulo">DADOS DE ACESSO</p>
+        </div>
+
+        <div class="campo">
+          <label for="email">E-MAIL</label>
+          <input type="email" id="email" placeholder="seu@email.com"/>
+        </div>
+
+        <div class="campo">
+          <label for="senha">SENHA</label>
+          <input type="password" id="senha" placeholder="Mínimo 8 caracteres"/>
+          <div class="forca-senha">
+            <div class="forca-senha__barra"></div>
+            <div class="forca-senha__barra"></div>
+            <div class="forca-senha__barra"></div>
+            <div class="forca-senha__barra"></div>
+          </div>
+          <span class="forca-senha__label">Força da senha</span>
+        </div>
+
+        <div class="campo">
+          <label for="confirma-senha">CONFIRMAR SENHA</label>
+          <input type="password" id="confirma-senha" placeholder="Repita a senha"/>
+        </div>
+
+        <!-- CONSENTIMENTOS -->
+        <div class="separador">
+          <p class="form-secao-titulo">PREFERÊNCIAS</p>
+        </div>
+
+        <div class="checkbox-linha">
+          <input type="checkbox" id="termos"/>
+          <label for="termos">
+            Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da Líri de Lírios. *
+          </label>
+        </div>
+
+        <div class="checkbox-linha">
+          <input type="checkbox" id="newsletter"/>
+          <label for="newsletter">
+            Quero receber novidades, promoções e lançamentos por e-mail.
+          </label>
+        </div>
+
+        <div class="checkbox-linha">
+          <input type="checkbox" id="whatsapp"/>
+          <label for="whatsapp">
+            Aceito receber comunicações via WhatsApp.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-principal">CRIAR MINHA CONTA</button>
+
+        <!-- JÁ TEM CONTA -->
+        <div class="ja-tem-conta">
+          <p>Já tem uma conta?</p>
+          <a href="login.html" class="btn-entrar-link">ENTRAR NA MINHA CONTA</a>
+        </div>
+
+      </form>
+    </section>
+
+  </main>
+
+  <footer>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</footer>
+
+  <!--Script cadastro-->
+    <!--Parte da validação de CEP pela viacep-->
+  <script>
+    document.getElementById('cep').addEventListener('input', function(){
+      let val = this.value.replace(/\D/g, '');
+      if(val.length === 5) val = val.slice(0,5) + '-' + val.slice(5,8);
+      this.value = val;
+    });
+
+    async function buscarCep(){
+      const cep = document.getElementById('cep').value.replace(/\D/g, '');
+      if(cep.length !== 8){
+        alert('Digite um cep válido com 8 dígitos.')
+        return;
+      }
+      try{
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data.erro){
+          alert('CEP não encontrado. Verifique e tente novamente.')
+
+        }
+        document.getElementById('logradouro').value = data.logradouro || '';
+        document.getElementById('bairro').value = data.bairro || '';
+        document.getElementById('cidade').value = data.localidade || '';
+
+        const select = document.getElementById('estado');
+        for (let opt of select.options){
+          if(opt.value === data.uf){
+            opt.selected = true;
+            break;
+          }
+        }
+        document.getElementById('numero').focus();
+      }catch(error){
+        console.log('Erro ao buscar o CEP. Verifique a sua conexão', error);
+      }
+    }
+    document.querySelector('.btn-buscar-cep').addEventListener('click', buscarCep);
+
+    document.getElementById('cep').addEventListener('input', function(){
+      const cep = this.value.replace(/\D/g, '');
+      if(cep.length === 8) buscarCep();
+    });
+  </script>
+</body>
+</html>
