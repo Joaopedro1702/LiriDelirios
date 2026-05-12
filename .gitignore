@@ -1,4 +1,4 @@
 .env
 firebase.js
 node_modules/
-functions/.env
+../api/.env

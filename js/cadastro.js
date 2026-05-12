@@ -63,7 +63,7 @@ async function executarFluxoCadastro({ nome, sobrenome, cpf, nascimento, telefon
     await emailjs.send(
       import.meta.env.VITE_EMAILJS_SERVICE_ID,
       import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      payloadEmail);
+      payloadEmail).catch(err => console.error('EmailJS erro: ', err));
 
 
     alert('Conta criada com sucesso! Agora você pode fazer login.');
