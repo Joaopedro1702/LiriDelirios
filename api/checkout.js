@@ -22,12 +22,13 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            notification_urls: ["https://liri-delirios.vercel.app/api/webhook"],
           reference_id: "pedido-liri",
           items: itens.map(item => ({
             reference_id: item.id,
             name: item.nome,
             quantity: item.quantidade,
-            unit_amount: Math.round(item.preco * 100)
+            unit_amount: Math.round(item.preco * 100),
           }))
         })
       });
