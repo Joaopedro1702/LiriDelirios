@@ -33,4 +33,4 @@ exports.criarCheckout = onRequest(async(req,res) =>{
     const dados = await resposta.json();
     res.json(dados); 
 
-});
+}); 
