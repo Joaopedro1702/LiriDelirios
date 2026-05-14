@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="../stylepadrao.css">
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-
     <style>
+        body { visibility: hidden; }
+
         gestao-estoque {
             padding: 20px;
         }
@@ -131,6 +132,8 @@
     onAuthStateChanged(auth, (usuario) => {
         if (!usuario || usuario.email !== EMAIL_ADMIN){
             window.location.href = "/admin/login.html";
+        }else{
+            document.body.style.visibility = "visible";
         }
     })
 
