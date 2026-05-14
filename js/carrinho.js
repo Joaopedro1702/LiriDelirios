@@ -73,6 +73,7 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
     const botao = document.getElementById("finalizar");
 
     botao.addEventListener('click', async function(){
+        try{
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
         const docRef = await addDoc(collection(db, "pedidos"), {
                 usuarioId: usuarioAtual.uid,
@@ -87,10 +88,19 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id })
             });
-    const dados = await resposta.json();
-    console.log(dados);
-    const link = dados.links.find(l => l.rel === "PAY");
-    window.location.href = link.href;
-    });
+            const dados = await resposta.json();
+            console.log(dados);
+            const link = dados.links.find(l => l.rel === "PAY");
+            window.location.href = link.href;
+            }catch(erro){
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro ao finalizar",
+                    text: "Ocorreu um problema ao processar seu pedido. Tente novamente.",
+                    confirmButtonColor: "#7B1A2E"
+                });
+                console.error(erro);
+            }
+        });
 
 renderizarCarrinho();
