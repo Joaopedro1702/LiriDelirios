@@ -142,8 +142,8 @@
             <td><img src="${p.imgURL}" width="50"></td>
             <td>${p.nome}</td>
             <td>${p.categoria}</td>
-            <td class="${p.estoque.quantidade < 3 ? 'alerta' : ''}">
-            ${p.estoque.quantidade}</td>
+            <td class="${Object.values(p.estoque).reduce((acc, qtd) => acc + qtd, 0) < 3 ? 'alerta' : ''}">
+            ${Object.values(p.estoque).reduce((acc, qtd) => acc + qtd, 0)}</td>
             <td>
                 <button class="btn-excluir" data-id="${p.id}">Excluir</button>
             </td>

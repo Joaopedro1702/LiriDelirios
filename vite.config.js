@@ -21,6 +21,7 @@ export default defineConfig({
         esqueciSenha: resolve(__dirname, 'esqueciSenha.html'),
         redefinirSenha: resolve(__dirname, 'redefinirSenha.html'),
         sucesso: resolve(__dirname, 'sucesso.html'),
+        'admin/login': resolve(__dirname, 'admin/login.html'),
         'admin/index': resolve(__dirname, 'admin/index.html'),
         'admin/estoque': resolve(__dirname, 'admin/estoque.html'),
       },
