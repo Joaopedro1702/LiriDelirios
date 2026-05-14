@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  // Configuração de CORS para permitir que seu frontend acesse a API
+  // Configuração de CORS para permitir que o frontend acesse a API
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const token = process.env.PAGSEGURO_API_KEY;
-      const { itens } = req.body;
+      const { itens, pedidoId } = req.body;
 
       const resposta = await fetch("https://sandbox.api.pagseguro.com/checkouts", {
         method: "POST",
@@ -22,8 +22,9 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            notification_urls: ["https://liri-delirios.vercel.app/api/webhook"],
-          reference_id: "pedido-liri",
+          notification_urls: ["https://liri-delirios.vercel.app/api/webhook"],
+          redirect_url: `https://liri-delirios.vercel.app/sucesso.html?pedido=${pedidoId}`,
+          reference_id: pedidoId,
           items: itens.map(item => ({
             reference_id: item.id,
             name: item.nome,

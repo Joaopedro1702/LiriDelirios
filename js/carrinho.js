@@ -1,3 +1,18 @@
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../admin/firebase.js";
+import { addDoc, collection } from "firebase/firestore";
+
+    //guardar pedido por usuário até a realização do pagamento.
+let usuarioAtual = null;
+
+onAuthStateChanged(auth, (usuario) => {
+    if (usuario){
+        usuarioAtual = usuario;
+    }else{
+        window.location.href = '/login.html';
+    }
+});
+
 function renderizarCarrinho(){
     const lista = document.getElementById('itens-carrinho');
     const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
@@ -59,12 +74,19 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
 
     botao.addEventListener('click', async function(){
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
-        
-    const resposta = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itens: carrinho })
-    });
+        const docRef = await addDoc(collection(db, "pedidos"), {
+                usuarioId: usuarioAtual.uid,
+                itens: carrinho,
+                status: "pendente",
+                criadoEm: new Date()    
+            });
+            const pedidoId = docRef.id;
+
+            const resposta = await fetch("/api/checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id })
+            });
     const dados = await resposta.json();
     console.log(dados);
     const link = dados.links.find(l => l.rel === "PAY");

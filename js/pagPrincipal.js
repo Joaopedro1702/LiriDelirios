@@ -69,53 +69,20 @@ vitrineDesques.innerHTML = produtos.map((p)=> `
         <div class="conteiner-informacao">
           <span class="descricao">${p.categoria}</span>
           <h3>${p.nome}</h3>
-            <button class="btnadicionar" 
-                data-id="${p.id}"
-                data-nome="${p.nome}"
-                data-preco="${p.preco}"
-                data-img="${p.imgURL}"
-                data-categoria="${p.categoria}">
-                Adicionar ao Carrinho
-            </button>
+            <button class="btn-ver-detalhes" data-id="${p.id}">Ver detalhes</button>
         </div>
 </article>
 `).join('');
 });
 
 vitrineDesques.addEventListener("click", (e) => {
-  if (e.target.classList.contains("btnadicionar")) {
-    const btn = e.target;
-    const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
-
-    const item = {
-      id: btn.dataset.id,
-      nome: btn.dataset.nome,
-      preco: parseFloat(btn.dataset.preco),
-      imgURL: btn.dataset.img,
-      categoria: btn.dataset.categoria,
-      quantidade: 1,
-    };
-
-    const existente = carrinho.find((i) => i.id === item.id);
-    if (existente) {
-      existente.quantidade += 1;
-    } else {
-      carrinho.push(item);
-    }
-
-    localStorage.setItem("carrinho", JSON.stringify(carrinho));
-    alert("Produto adicionado ao carrinho!");
-  }
-
-  else if(e.target.closest(".card-produto")){
-    const card =  e.target.closest(".card-produto");
-    const id = card.dataset.id;
+  if(e.target.classList.contains("btn-ver-detalhes")){
+    const id = e.target.dataset.id;
     const produto = listaProdutos.find(p => p.id === id);
-
     if(produto){
         abrirModal(produto);
     }
-  }
+}
 });
 }
 
@@ -144,7 +111,7 @@ function abrirModal(produto) {
         Selecione um tamanho antes de adicionar ao carrinho.
       </div>
       <button id="btn-adicionar-carrinho">Adicionar ao Carrinho</button>
-    <button id="btn-fechar">Fechar</button> 
+    <button id="btn-fechar">X</button> 
 
     `;
     modal.classList.add('active');
@@ -170,10 +137,11 @@ function abrirModal(produto) {
         document.getElementById("msg-erro").style.display ="block";
       }else{
           const item = {
+          id: produto.id,
           nome: produto.nome,
           preco: parseFloat(produto.preco),
           tamanho: tamSelecionado,
-          imgURL: produto.img,
+          imgURL: produto.imgURL,
           categoria: produto.categoria,
           quantidade: 1,
     };
@@ -220,14 +188,7 @@ function renderizarPagina(){
       <span class="descricao">${p.categoria}</span>
       <h3>${p.nome}</h3>
       <p class="preco">R$ ${p.preco}</p>
-      <button class="btnadicionar" 
-          data-id="${p.id}"
-          data-nome="${p.nome}"
-          data-preco="${p.preco}"
-          data-img="${p.imgURL}"
-          data-categoria="${p.categoria}">
-          Adicionar ao Carrinho
-      </button>
+<button class="btn-ver-detalhes" data-id="${p.id}">Ver detalhes</button>
     </div>
 </article>
       `;
@@ -236,31 +197,9 @@ function renderizarPagina(){
   const gridGeral = document.getElementById("vitrine-nossos");
   if(gridGeral){
     gridGeral.addEventListener("click", (e) => {
-
-      if(e.target.classList.contains("btnadicionar")){
+      if(e.target.classList.contains("btn-ver-detalhes")){
         const btn = e.target;
-        const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
-
-        const item = {
-          id: btn.dataset.id,
-          nome: btn.dataset.nome,
-          preco: parseFloat(btn.dataset.preco),
-          imgURL: btn.dataset.img,
-          categoria: btn.dataset.categoria,
-          quantidade: 1,
-        };
-        const existente = carrinho.find((i) => i.id === item.id);
-        if(existente){
-          existente.quantidade += 1;
-        }else{
-          carrinho.push(item);
-        }
-        localStorage.setItem("carrinho", JSON.stringify(carrinho));
-        alert("produto adicionado ao carrinho!")    
-      }
-      else if(e.target.closest(".card-produto")){
-        const card = e.target.closest(".card-produto");
-        const id = card.dataset.id;
+        const id = btn.dataset.id;
 
         const produtos = todosProdutos.find(p => p.id === id);
         console.log("id:", id, "produto:", produtos, "todos:", todosProdutos);

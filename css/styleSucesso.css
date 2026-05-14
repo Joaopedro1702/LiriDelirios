@@ -1,0 +1,147 @@
+ .sucesso-container {
+            min-height: 60vh;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 80px 20px;
+            text-align: center;
+            background-color: var(--color-body);
+        }
+
+        .sucesso-icone {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            animation: aparecer 0.6s ease forwards;
+        }
+
+        .sucesso-icone svg {
+            width: 32px !important;
+            height: 32px !important;
+            stroke: var(--color-primary);
+            stroke-width: 1.5;
+            fill: none;
+            overflow: visible;
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: desenhar 0.8s 0.4s ease forwards;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes desenhar {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .sucesso-titulo {
+            font-family: var(--font-serif), 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--color-dark, #3D0010);
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: subir 0.6s 0.6s ease forwards;
+        }
+
+        .sucesso-subtitulo {
+            font-family: var(--font--sans), 'Jost', sans-serif;
+            font-weight: 500;
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--color-label, #B05070);
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: subir 0.6s 0.8s ease forwards;
+        }
+
+        .sucesso-divisor {
+            width: 40px;
+            height: 1px;
+            background: var(--color-card-border, #F0D5DD);
+            margin: 24px auto;
+            opacity: 0;
+            animation: subir 0.6s 0.9s ease forwards;
+        }
+
+        .sucesso-mensagem {
+            font-family: var(--font--sans), 'Jost', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            color: var(--color-muted, #993355);
+            max-width: 420px;
+            line-height: 1.8;
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: subir 0.6s 1s ease forwards;
+        }
+
+        .sucesso-botoes {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: subir 0.6s 1.1s ease forwards;
+        }
+
+        .btn-voltar-loja {
+            display: inline-block;
+            padding: 14px 36px;
+            background: var(--color-primary, #800020);
+            color: #fff !important;
+            font-family: var(--font--sans), 'Jost', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-voltar-loja:hover {
+            background-color: var(--color-primary-dark, #6d1229);
+        }
+
+        .btn-minha-conta {
+            display: inline-block;
+            padding: 14px 36px;
+            background: transparent;
+            color: var(--color-primary, #800020) !important;
+            border: 1px solid var(--color-primary, #800020);
+            font-family: var(--font--sans), 'Jost', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            border-radius: 2px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .btn-minha-conta:hover {
+            background-color: var(--color-primary, #800020);
+            color: #fff !important;
+        }
+
+        @keyframes subir {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .sucesso-container { padding: 60px 20px; }
+            .sucesso-botoes { flex-direction: column; align-items: center; }
+            .btn-voltar-loja, .btn-minha-conta { width: 240px; text-align: center; }
+        }
