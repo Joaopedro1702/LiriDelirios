@@ -20,6 +20,7 @@ export default defineConfig({
         enderecos: resolve(__dirname, 'enderecos.html'),
         esqueciSenha: resolve(__dirname, 'esqueciSenha.html'),
         redefinirSenha: resolve(__dirname, 'redefinirSenha.html'),
+        sucesso: resolve(__dirname, 'sucesso.html'),
         'admin/index': resolve(__dirname, 'admin/index.html'),
         'admin/estoque': resolve(__dirname, 'admin/estoque.html'),
       },
