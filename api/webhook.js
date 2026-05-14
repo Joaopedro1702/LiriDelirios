@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         const pedidoData = pedidoDoc.data();
 
         await Promise.all(
-            pedidoData.map(async(item) => {
+            pedidoData.itens.map(async(item) => {
                 const produtoRef = db.collection("produtos").doc(item.id);
                 const produtoDoc = await produtoRef.get();
                 const estoqueAtual = produtoDoc.data().estoque;

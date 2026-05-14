@@ -123,6 +123,17 @@
 
 // Importando as ferramentas do Firebase (para os botões de excluir/listar)
     import { monitorarEstoque, cadastrarProduto, deletarProduto } from "./produtos.js";
+    import { onAuthStateChanged } from "firebase/auth";
+    import { auth } from "./firebase.js";
+    
+    const EMAIL_ADMIN = "contato.liridelirios@gmail.com";
+
+    onAuthStateChanged(auth, (usuario) => {
+        if (!usuario || usuario.email !== EMAIL_ADMIN){
+            window.location.href = "/admin/login.html";
+        }
+    })
+
     const corpoTabela = document.getElementById("listar-produtos-estoque");
 
     monitorarEstoque((produtos) => {
