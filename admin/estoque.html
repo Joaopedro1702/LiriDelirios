@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../stylepadrao.css">
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <script type="module" src="/admin/estoque.js" defer></script>
     <style>
         body { visibility: hidden; }
 
@@ -47,6 +48,73 @@
             flex-wrap: wrap;
             gap: 16px;
             align-items: center;
+        }
+        /*Box de atualização de pedidos*/
+
+        /* Container principal do painel de vendas */
+        .painel-vendas {
+            position: fixed;            /* Mantém o painel fixo na tela ao rolar */
+            top: 20px;                  /* Distância do topo */
+            right: 20px;                /* Distância da direita */
+            width: 320px;               /* Largura fixa para manter o padrão */
+            background-color: #ffffff;  /* Fundo branco para contraste */
+            border-top: 4px solid #7B1A2E; /* Faixa superior com o bordô da marca */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombreamento suave (depth) */
+            border-radius: 8px;         /* Bordas levemente arredondadas */
+            padding: 16px;
+            z-index: 9999;              /* Garante que fique acima de outros elementos */
+            font-family: 'Jost', sans-serif;
+        }
+
+        /* Estilo do título com a cor bordô da loja */
+        .painel-vendas h2 {
+            color: #7B1A2E;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Status do monitoramento (pequeno e discreto) */
+        #status-conexao {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* Indicador visual de "Ativo" */
+        .status-online::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #4CAF50; /* Verde para indicar atividade */
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Container que recebe as vendas via JS */
+        .feed-container {
+            max-height: 400px;         /* Limita a altura com scroll interno */
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        /* Estilo dos cards de venda do innerHTML */
+        .card-venda-nova {
+            border-bottom: 1px solid #f0e0e4;
+            padding: 10px 0;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
     <title>Estoque</title>
@@ -118,96 +186,23 @@
             <button type="submit" id="btn-adicionar-produto">Adicionar</button>
         </form>
     </section>
+
+    <section class="painel-vendas">
+    <div class="header-vendas">
+        <h2>Últimas Vendas Confirmadas 🌸</h2>
+        <span id="status-conexao" class="status-online">Monitoramento Ativo</span>
+    </div>
+
+    <div id="feed-pedidos" class="feed-container">
+        <div class="msg-espera">
+            <p>Aguardando novas transações em tempo real...</p>
+        </div>
+    </div>
+</section>
+
+<audio id="audio-notificacao" src="../sons/venda-sucesso.mp3" preload="auto"></audio>
+
 </main>
 
-<script type="module">
-
-// Importando as ferramentas do Firebase (para os botões de excluir/listar)
-    import { monitorarEstoque, cadastrarProduto, deletarProduto } from "./produtos.js";
-    import { onAuthStateChanged } from "firebase/auth";
-    import { auth } from "./firebase.js";
-    
-    const EMAIL_ADMIN = "contato.liridelirios@gmail.com";
-
-    onAuthStateChanged(auth, (usuario) => {
-        if (!usuario || usuario.email !== EMAIL_ADMIN){
-            window.location.href = "/admin/login.html";
-        }else{
-            document.body.style.visibility = "visible";
-        }
-    })
-
-    const corpoTabela = document.getElementById("listar-produtos-estoque");
-
-    monitorarEstoque((produtos) => {
-        corpoTabela.innerHTML = produtos.map(p => `
-        <tr>
-            <td><img src="${p.imgURL}" width="50"></td>
-            <td>${p.nome}</td>
-            <td>${p.categoria}</td>
-            <td class="${Object.values(p.estoque).reduce((acc, qtd) => acc + qtd, 0) < 3 ? 'alerta' : ''}">
-            ${Object.values(p.estoque).reduce((acc, qtd) => acc + qtd, 0)}</td>
-            <td>
-                <button class="btn-excluir" data-id="${p.id}">Excluir</button>
-            </td>
-        </tr>
-        `).join('');
-    });
-
-    corpoTabela.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("btn-excluir")){
-            const id = event.target.dataset.id;
-            const confirmar = confirm("Deseja mesmo remover este item do catálogo?")
-
-            if(confirmar){
-                try{
-                    await deletarProduto(id);
-                    alert("Produto removido com sucesso!")
-                }catch(error){
-                    console.error("Erro ao remover: ", error);
-                }
-            }
-        }
-    })
-    const btnSalvar = document.getElementById("btn-adicionar-produto");
-    btnSalvar.addEventListener("click", async (event) => {
-        event.preventDefault();
-        const nomeProduto = document.getElementById("nome-produto").value;
-        const precoDigitado = parseFloat(document.getElementById("valor-produto").value);
-        const inputFoto = document.getElementById("imagem-produto");
-        const descricaoProduto = document.getElementById("descricao-produto").value;
-        const categoriaProduto = document.getElementById("categoria-produto").value;
-
-        const arquivoSelecionado = inputFoto.files[0];
-
-        if (!arquivoSelecionado || nomeProduto === ""){
-            alert("Preencha todos os campos obrigatórios");
-            return;
-        }
-        const produto = {
-            nome: nomeProduto,
-            preco: precoDigitado,
-            descricao: descricaoProduto,
-            categoria: categoriaProduto,
-            imagem: arquivoSelecionado,
-            destaque: document.getElementById("destaque-produto").checked,
-            estoque: {
-                P: parseInt(document.getElementById('qtd-p').value) || 0,
-                M: parseInt(document.getElementById('qtd-m').value) || 0,
-                G: parseInt(document.getElementById('qtd-g').value) || 0,
-                GG: parseInt(document.getElementById('qtd-gg').value) || 0,
-
-            }
-        };
-        try{
-            await cadastrarProduto(produto);
-            alert("Produto adicionado com sucesso!");
-            document.querySelector(".adicionarProduto").reset();
-        }catch(error){
-            console.error("Erro ao adicionar produto: ", error);
-            alert("Erro ao adicionar produto. Veja o console para detalhes.");
-        }
-    });
-</script>
 </body>
 </html>
