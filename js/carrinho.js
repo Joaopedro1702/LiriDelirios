@@ -17,6 +17,12 @@ function renderizarCarrinho(){
     const lista = document.getElementById('itens-carrinho');
     const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
     
+    const totalItens = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
+    document.querySelector('.secao-subtitulo').textContent = 
+    totalItens === 0  
+    ? 'SEU CARRINHO ESTÁ VAZIO'
+    : `${totalItens} ${totalItens === 1 ? 'ITEM SELECIONADO' : `ITENS SELECIONADOS`}`;
+    
     lista.innerHTML = carrinho.map(item => {
         const subtotal = item.preco * item.quantidade;
         return`
