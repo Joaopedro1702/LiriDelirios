@@ -320,6 +320,31 @@
 
 }
 
+.btn-ver-detalhes{
+    margin-top: 8px;
+    background-color: var(--color-btn-secondary);
+    color: var(--color-dark);
+    border: none;
+    padding: 10px 14px;
+    font-family: var(--font--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.btn-ver-detalhes:hover{
+    background-color: var(--color-primary);
+    color: #fff;
+
+}
+
+/*Modal*/
+
 .modal-conteudo {
     position: relative;
 
