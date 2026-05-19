@@ -320,6 +320,39 @@
 
 }
 
+.btn-adicionar-carrinho{
+    margin-top: 8px;
+    background-color: var(--color-btn-secondary);
+    color: var(--color-dark);
+    border: none;
+    padding: 10px 14px;
+    font-family: var(--font--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.btn-adicionar-carrinho:hover{
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+#btn-fechar{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
 /*CSS com media queries*/
 
 @media (max-width: 768px) {
