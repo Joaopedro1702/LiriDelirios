@@ -37,7 +37,9 @@ export default async function handler(req, res) {
         console.log("pedidoData.itens:", JSON.stringify(pedidoData.itens)); // <- aqui
 
         await Promise.all(
-            pedidoData.itens.map(async(item) => {
+            pedidoData.itens
+            .filter(item => item.id)
+            .map(async(item) => {
                 const produtoRef = db.collection("produtos").doc(item.id);
                 const produtoDoc = await produtoRef.get();
                 const estoqueAtual = produtoDoc.data().estoque;
