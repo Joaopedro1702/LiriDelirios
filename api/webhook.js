@@ -33,10 +33,8 @@ export default async function handler(req, res) {
         })
 
         const pedidoDoc = await db.collection("pedidos").doc(pedidoId).get();
-        const pedidoDoc = await db.collection("pedidos").doc(pedidoId).get();
         const pedidoData = pedidoDoc.data();
         console.log("pedidoData.itens:", JSON.stringify(pedidoData.itens)); // <- aqui
-        const pedidoData = pedidoDoc.data();
 
         await Promise.all(
             pedidoData.itens.map(async(item) => {
