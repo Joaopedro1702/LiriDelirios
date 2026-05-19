@@ -320,7 +320,19 @@
 
 }
 
-.btn-adicionar-carrinho{
+.modal-conteudo {
+    position: relative;
+
+    background-color: var(--color-card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#btn-adicionar-carrinho{
     margin-top: 8px;
     background-color: var(--color-btn-secondary);
     color: var(--color-dark);
@@ -337,7 +349,7 @@
     width: 100%;
 }
 
-.btn-adicionar-carrinho:hover{
+#btn-adicionar-carrinho:hover{
     background-color: var(--color-primary);
     color: #fff;
 }
