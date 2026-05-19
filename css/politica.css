@@ -1,0 +1,195 @@
+/* politica.css */
+
+.politica-main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 20px 80px;
+}
+
+/* Hero */
+.politica-hero {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.politica-hero__label {
+    font-family: var(--font--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.politica-hero__titulo {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    color: var(--color-dark);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+}
+
+.politica-hero__subtitulo {
+    font-family: var(--font--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+}
+
+/* Accordion */
+.politica-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--color-card-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.accordion {
+    background-color: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-card-border);
+}
+
+.accordion:last-child {
+    border-bottom: none;
+}
+
+.accordion__titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 32px;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    transition: background 0.2s, color 0.2s;
+    user-select: none;
+}
+
+.accordion__titulo::-webkit-details-marker {
+    display: none;
+}
+
+.accordion__titulo:hover {
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+}
+
+.accordion[open] .accordion__titulo {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.accordion__icone {
+    font-size: 0.75rem;
+    transition: transform 0.3s ease;
+    opacity: 0.6;
+}
+
+.accordion[open] .accordion__icone {
+    transform: rotate(45deg);
+    opacity: 1;
+}
+
+/* Conteúdo */
+.accordion__conteudo {
+    padding: 36px 32px 40px;
+    border-top: 1px solid var(--color-card-border);
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.accordion__data {
+    font-family: var(--font--sans);
+    font-size: 0.75rem;
+    color: var(--color-label);
+    letter-spacing: 0.1em;
+    margin-bottom: 28px;
+    font-style: italic;
+}
+
+.accordion__conteudo h2 {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 28px 0 10px;
+    letter-spacing: 0.02em;
+}
+
+.accordion__conteudo h2:first-of-type {
+    margin-top: 0;
+}
+
+.accordion__conteudo h3 {
+    font-family: var(--font--sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 20px 0 8px;
+}
+
+.accordion__conteudo p {
+    font-family: var(--font--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-dark);
+    margin-bottom: 12px;
+}
+
+.accordion__conteudo ul {
+    padding-left: 20px;
+    margin-bottom: 12px;
+}
+
+.accordion__conteudo ul li {
+    font-family: var(--font--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-dark);
+    margin-bottom: 4px;
+}
+
+.accordion__conteudo a {
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-btn-secondary);
+    transition: border-color 0.2s;
+}
+
+.accordion__conteudo a:hover {
+    border-color: var(--color-primary);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .politica-main {
+        padding: 40px 16px 60px;
+    }
+
+    .accordion__titulo {
+        padding: 18px 20px;
+        font-size: 0.75rem;
+    }
+
+    .accordion__conteudo {
+        padding: 24px 20px 28px;
+    }
+}

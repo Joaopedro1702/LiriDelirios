@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="stylepadrao.css">
+    <link rel="stylesheet" href="css/politica.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="imagem/logolirios.png">
+    
+    <script type="module" src="js/pagPrincipal.js"></script>
+    <script type="module" src="js/login.js"></script>
+    <script type="module" src="js/pesquisa.js"></script>
+    
+    <title>Liri Delirios</title>
+</head>
+<body>
+    <div class="barra-topo">✦ FRETE GRÁTIS ACIMA DE R$ 199,00 ✦</div>
+    <header class="header">
+        <img src="imagem/logolirios.png" alt="Logo Liri Delirios" class="logo">
+        <div class="header-icons">
+            <div class="perfil-container">
+                <img src="imagem/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
+                <div class="dropdown-perfil" id="dropdown-perfil"></div>
+            </div>
+            
+            <a href="carrinho.html">
+                <img src="imagem/cestinha.png" alt="Cestinha do site" class="cestinha">
+            </a>
+        
+
+        <img src="imagem/pesquisa.png" alt="Icone de pesquisa." id="icone-busca">
+            <form action="#" class="barra-pesquisa" role="search" id="barra-pesquisa">
+                <input
+                type="search"
+                id="busca"
+                name="q"
+                placeholder="Buscar vestidos, blusas..."
+                aria-label="Pesquisar produtos no site"
+                required
+                >
+                <button type="submit" aria-label="Buscar" class="buscar">
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </header>
+        <nav class="nav">
+    <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="#" id="ver-tudo">Ver Tudo</a></li>
+        
+    </ul>
+</nav>
+
+    <main class="politica-main">
+        <div class="politica-hero">
+            <p class="politica-hero__label">TRANSPARÊNCIA & CONFIANÇA</p>
+            <h1 class="politica-hero__titulo">Políticas da Loja</h1>
+            <p class="politica-hero__subtitulo">Seu direito de saber como cuidamos de você</p>
+        </div>
+
+        <div class="politica-container">
+
+            <!-- POLÍTICA DE PRIVACIDADE -->
+            <details class="accordion">
+                <summary class="accordion__titulo">
+                    <span>Política de Privacidade</span>
+                    <span class="accordion__icone">✦</span>
+                </summary>
+                <div class="accordion__conteudo">
+                    <p class="accordion__data">Última atualização: 8 de maio de 2026</p>
+
+                    <h2>1. Apresentação e Controlador dos Dados</h2>
+                    <p>Esta Política de Privacidade descreve como a <strong>Liri de Lírios</strong>, loja de moda feminina, trata os dados pessoais coletados por meio do site <a href="https://liri-delirios.vercel.app">liri-delirios.vercel.app</a>, em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 — LGPD).</p>
+                    <p>Controladora dos dados: <strong>Liri de Lírios</strong><br>Canal de contato: <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a></p>
+
+                    <h2>2. Dados Pessoais Coletados</h2>
+                    <h3>2.1 Dados fornecidos por você</h3>
+                    <ul>
+                        <li>Nome completo</li>
+                        <li>Endereço de e-mail</li>
+                        <li>Senha (armazenada em hash seguro pelo Firebase Authentication)</li>
+                        <li>Endereço de entrega (logradouro, número, complemento, bairro, cidade, CEP, estado)</li>
+                        <li>Telefone (quando informado)</li>
+                    </ul>
+                    <h3>2.2 Dados de pagamento</h3>
+                    <p>Os dados de pagamento são processados exclusivamente pelo <strong>PagBank (UOL)</strong>. A Liri de Lírios não armazena nem acessa esses dados diretamente.</p>
+                    <h3>2.3 Dados coletados automaticamente</h3>
+                    <ul>
+                        <li>Endereço IP</li>
+                        <li>Tipo de navegador e sistema operacional</li>
+                        <li>Páginas visitadas e tempo de permanência</li>
+                        <li>Data e hora de acesso</li>
+                    </ul>
+
+                    <h2>3. Finalidade e Base Legal do Tratamento</h2>
+                    <h3>Execução de contrato (art. 7º, V)</h3>
+                    <ul>
+                        <li>Processar e entregar pedidos realizados</li>
+                        <li>Calcular e cobrar o frete</li>
+                        <li>Enviar confirmação de compra por e-mail</li>
+                    </ul>
+                    <h3>Legítimo interesse (art. 7º, IX)</h3>
+                    <ul>
+                        <li>Melhorar a experiência de navegação</li>
+                        <li>Prevenir fraudes e garantir segurança das transações</li>
+                    </ul>
+                    <h3>Consentimento (art. 7º, I)</h3>
+                    <ul>
+                        <li>Enviar comunicações de marketing e novidades da loja (quando autorizado)</li>
+                    </ul>
+
+                    <h2>4. Compartilhamento com Terceiros</h2>
+                    <p>A Liri de Lírios não vende seus dados. Compartilhamos apenas o necessário com:</p>
+                    <ul>
+                        <li><strong>Firebase / Google</strong> — autenticação e banco de dados</li>
+                        <li><strong>PagBank (UOL)</strong> — processamento de pagamentos</li>
+                        <li><strong>Vercel</strong> — hospedagem do site e APIs</li>
+                        <li><strong>Google SMTP / Nodemailer</strong> — envio de e-mails transacionais</li>
+                    </ul>
+
+                    <h2>5. Cookies e localStorage</h2>
+                    <p>Utilizamos cookies e localStorage para manter o carrinho de compras e a sessão de login. Você pode desativar cookies nas configurações do navegador, o que pode afetar o funcionamento do carrinho.</p>
+
+                    <h2>6. Retenção dos Dados</h2>
+                    <ul>
+                        <li><strong>Dados de conta:</strong> enquanto a conta estiver ativa ou para cumprir obrigações legais</li>
+                        <li><strong>Dados de pedidos:</strong> 5 anos (conforme o CDC)</li>
+                        <li><strong>Dados de pagamento:</strong> não armazenamos — retidos pelo PagBank</li>
+                    </ul>
+
+                    <h2>7. Seus Direitos (LGPD — Art. 18)</h2>
+                    <p>Você pode, a qualquer momento, solicitar acesso, correção, exclusão, portabilidade e revogação de consentimento dos seus dados. Entre em contato pelo e-mail <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a>. Responderemos em até 15 dias úteis.</p>
+
+                    <h2>8. Segurança dos Dados</h2>
+                    <ul>
+                        <li>Senhas armazenadas em hash seguro via Firebase</li>
+                        <li>Comunicação via HTTPS em todas as páginas</li>
+                        <li>Dados de pagamento transmitidos diretamente ao PagBank</li>
+                    </ul>
+
+                    <h2>9. Alterações nesta Política</h2>
+                    <p>Esta Política pode ser atualizada periodicamente. Publicaremos a nova versão nesta página com a data de atualização.</p>
+
+                    <h2>10. Contato</h2>
+                    <p>E-mail: <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a><br>
+                    Você também pode apresentar reclamação à ANPD pelo portal <a href="https://www.gov.br/anpd" target="_blank">gov.br/anpd</a>.</p>
+                </div>
+            </details>
+
+            <!-- TERMOS DE USO -->
+            <details class="accordion">
+                <summary class="accordion__titulo">
+                    <span>Termos de Uso</span>
+                    <span class="accordion__icone">✦</span>
+                </summary>
+                <div class="accordion__conteudo">
+                    <p class="accordion__data">Última atualização: 8 de maio de 2026</p>
+
+                    <h2>1. Aceitação dos Termos</h2>
+                    <p>Ao acessar e utilizar o site da <strong>Liri de Lírios</strong>, você declara ter lido, compreendido e concordado com estes Termos de Uso. Caso não concorde com alguma condição, solicitamos que não utilize o site.</p>
+
+                    <h2>2. Sobre o Site</h2>
+                    <p>O site <a href="https://liri-delirios.vercel.app">liri-delirios.vercel.app</a> é uma loja virtual de moda feminina, onde você pode navegar pelos produtos, criar uma conta e realizar compras de forma segura.</p>
+
+                    <h2>3. Uso Permitido</h2>
+                    <p>Você pode utilizar o site para:</p>
+                    <ul>
+                        <li>Navegar e visualizar produtos</li>
+                        <li>Criar e gerenciar sua conta de cliente</li>
+                        <li>Realizar compras de produtos disponíveis</li>
+                    </ul>
+
+                    <h2>4. Uso Proibido</h2>
+                    <p>É expressamente proibido:</p>
+                    <ul>
+                        <li>Utilizar o site para fins ilícitos ou contrários à legislação brasileira</li>
+                        <li>Tentar acessar áreas restritas ou administrativas sem autorização</li>
+                        <li>Realizar engenharia reversa, scraping ou qualquer extração automatizada de dados</li>
+                        <li>Reproduzir, copiar ou distribuir o conteúdo do site sem autorização prévia</li>
+                        <li>Fornecer informações falsas no cadastro</li>
+                    </ul>
+
+                    <h2>5. Propriedade Intelectual</h2>
+                    <p>Todo o conteúdo do site — incluindo textos, imagens, logotipos e layout — é de propriedade da Liri de Lírios ou licenciado por ela. É vedada a reprodução sem autorização expressa.</p>
+
+                    <h2>6. Responsabilidade</h2>
+                    <p>A Liri de Lírios empenha-se em manter as informações atualizadas e corretas, mas não se responsabiliza por eventuais erros tipográficos em preços ou descrições, nem por indisponibilidade temporária do site por razões técnicas.</p>
+
+                    <h2>7. Modificações</h2>
+                    <p>Reservamo-nos o direito de alterar estes Termos a qualquer momento. As alterações entram em vigor na data de publicação nesta página.</p>
+
+                    <h2>8. Lei Aplicável e Foro</h2>
+                    <p>Estes Termos são regidos pela legislação brasileira. Fica eleito o foro da comarca de São Paulo/SP para dirimir eventuais conflitos.</p>
+
+                    <h2>9. Contato</h2>
+                    <p>Dúvidas sobre estes Termos: <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a></p>
+                </div>
+            </details>
+
+            <!-- TROCAS E DEVOLUÇÕES -->
+            <details class="accordion">
+                <summary class="accordion__titulo">
+                    <span>Trocas e Devoluções</span>
+                    <span class="accordion__icone">✦</span>
+                </summary>
+                <div class="accordion__conteudo">
+                    <p class="accordion__data">Última atualização: 8 de maio de 2026</p>
+
+                    <h2>1. Direito de Arrependimento</h2>
+                    <p>Conforme o <strong>Art. 49 do Código de Defesa do Consumidor (Lei nº 8.078/1990)</strong>, você tem o direito de desistir da compra em até <strong>7 (sete) dias corridos</strong> após o recebimento do produto, sem necessidade de justificativa.</p>
+
+                    <h2>2. Como Solicitar</h2>
+                    <p>Para solicitar troca ou devolução, entre em contato pelo e-mail <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a> com:</p>
+                    <ul>
+                        <li>Número do pedido</li>
+                        <li>Motivo da devolução ou troca</li>
+                        <li>Fotos do produto (em caso de defeito)</li>
+                    </ul>
+
+                    <h2>3. Condições do Produto</h2>
+                    <p>Para que a troca ou devolução seja aceita, o produto deve:</p>
+                    <ul>
+                        <li>Estar sem uso, lavagem ou avaria</li>
+                        <li>Estar com a etiqueta original afixada</li>
+                        <li>Estar na embalagem original</li>
+                    </ul>
+
+                    <h2>4. Produtos com Defeito</h2>
+                    <p>Em caso de defeito de fabricação, o prazo para reclamação é de <strong>90 (noventa) dias</strong> após o recebimento. Após confirmação do defeito, providenciaremos a troca ou reembolso integral, incluindo o frete.</p>
+
+                    <h2>5. Frete de Devolução</h2>
+                    <ul>
+                        <li><strong>Arrependimento:</strong> o frete de retorno é por conta do cliente</li>
+                        <li><strong>Defeito ou erro nosso:</strong> o frete de retorno é por nossa conta</li>
+                    </ul>
+
+                    <h2>6. Reembolso</h2>
+                    <p>Após recebermos e verificarmos o produto, o reembolso será processado em até <strong>10 dias úteis</strong>, pelo mesmo meio de pagamento utilizado na compra.</p>
+
+                    <h2>7. Troca por Tamanho</h2>
+                    <p>Aceitamos troca de tamanho sujeita à disponibilidade em estoque. Caso o tamanho desejado não esteja disponível, realizaremos o reembolso integral.</p>
+
+                    <h2>8. Contato</h2>
+                    <p>E-mail: <a href="mailto:contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a></p>
+                </div>
+            </details>
+
+            <!-- FORMAS DE PAGAMENTO -->
+            <details class="accordion">
+                <summary class="accordion__titulo">
+                    <span>Formas de Pagamento</span>
+                    <span class="accordion__icone">✦</span>
+                </summary>
+                <div class="accordion__conteudo">
+                    <h2>Pagamentos aceitos</h2>
+                    <p>Todos os pagamentos são processados com segurança pelo <strong>PagBank (UOL)</strong>, um dos maiores gateways de pagamento do Brasil.</p>
+                    <ul>
+                        <li>Cartão de crédito (parcelamento conforme condições do PagBank)</li>
+                        <li>Cartão de débito</li>
+                        <li>PIX</li>
+                        <li>Boleto bancário</li>
+                    </ul>
+                    <p>A Liri de Lírios não armazena nenhum dado de pagamento. Todas as transações são criptografadas e processadas diretamente pelo PagBank.</p>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+<footer class="rodape">
+    <div class="rodape-grid">
+            <div class="coluna">
+                <h4>Atendimento</h4>
+                <p>R. Sapucáia do Sul, 53 - Jardim Record, Taboão da Serra - SP, 06784-390, Brasil</p>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
+                <a href="contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a>
+                <a href="https://wa.me/c/5511952081308">WhatsApp</a>
+            </div>
+
+            <div class="coluna">
+                <h4>Siga nas redes sociais</h4>
+                <a href="https://www.instagram.com/liri_de_lirios?igsh=Z2hwMXQyMHhjOG5i">Instagram</a>
+                <a href="https://www.facebook.com/share/18dS6JzoHr/">Facebook</a>
+            </div>
+            <div class="coluna">
+                <h4>Regras comerciais</h4>
+                    <a href="politica.html">Trocas e devoluções</a>
+                    <a href="politica.html">Politica de privacidade</a>
+                </div>            
+        </div>
+        <div class="rodape-base">
+            <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
+        </div>
+    
+</footer>
+
+</body>
+</html>
