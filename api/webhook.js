@@ -19,13 +19,14 @@ export default async function handler(req, res) {
         const db = admin.firestore();
 
         const itensComImagem = await Promise.all(
-            items.map(async (item) => {
-            const doc = await db.collection("produtos").doc(item.reference_id).get()
-            return {...item, imgURL: doc.data().imgURL};
+            items.filter(item => item.reference_id !== "frete")
+            .map(async(item) => {
+                const doc = await db.collection("produtos").doc(item.reference_id).get();
+                return {...item, imgURL: doc.data().imgURL};
             })
         )
 
-        const pedidoId = req.body.reference_id;
+        const pedidoId = charge.reference_id;
 
         await db.collection("pedidos").doc(pedidoId).update({
             status: "confirmado"

@@ -81,6 +81,8 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
     botao.addEventListener('click', async function(){
         try{
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
+        const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+        const frete = total >= 199 ? 0 : 10;
         const docRef = await addDoc(collection(db, "pedidos"), {
                 usuarioId: usuarioAtual.uid,
                 itens: carrinho,
@@ -92,7 +94,7 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
             const resposta = await fetch("/api/checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id })
+                body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id, frete })
             });
             const dados = await resposta.json();
             console.log(dados);
