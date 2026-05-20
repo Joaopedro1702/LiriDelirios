@@ -1,11 +1,13 @@
 import nodemailer from 'nodemailer'
 import admin from 'firebase-admin'
 
-const app = admin.initializeApp({credential: admin.credential.cert({
+if (!admin.apps.length) {
+admin.initializeApp({credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL
 }) })
+}
 
 //Envio automatico de email consfirmando a compra, feito pelo própio pagseguro
 
@@ -29,7 +31,8 @@ export default async function handler(req, res) {
         const pedidoId = charge.reference_id;
 
         await db.collection("pedidos").doc(pedidoId).update({
-            status: "confirmado"
+            status: "confirmado",
+            atualizadoEm: admin.firestore.FieldValue.serverTimestamp()
         })
 
         const pedidoDoc = await db.collection("pedidos").doc(pedidoId).get();
@@ -41,13 +44,20 @@ export default async function handler(req, res) {
             .filter(item => item.id)
             .map(async(item) => {
                 const produtoRef = db.collection("produtos").doc(item.id);
-                const produtoDoc = await produtoRef.get();
-                const estoqueAtual = produtoDoc.data().estoque;
 
-                const novaQuantidade = estoqueAtual[item.tamanho] - item.quantidade;
+                await db.runTransaction(async (transaction) => {
+                    const produtoDoc = await transaction.get(produtoRef);
+                    const estoqueAtual = produtoDoc.data().estoque || {};
+                    const quantidadeAtual = Number(estoqueAtual[item.tamanho] || 0);
+                    const novaQuantidade = quantidadeAtual - item.quantidade;
 
-                await produtoRef.update({
-                    [`estoque.${item.tamanho}`]: novaQuantidade
+                    if (novaQuantidade < 0) {
+                        throw new Error(`Estoque insuficiente para ${item.id} tamanho ${item.tamanho}.`);
+                    }
+
+                    transaction.update(produtoRef, {
+                        [`estoque.${item.tamanho}`]: novaQuantidade
+                    })
                 })
             })
         )

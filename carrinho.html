@@ -291,7 +291,19 @@
       transition: background 0.2s;
     }
 
-    .cupom-btn:hover { background: var(--vinho-escuro); }
+	    .cupom-btn:hover { background: var(--vinho-escuro); }
+
+    .cupom-feedback {
+      color: var(--cinza);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      margin-top: 8px;
+      min-height: 16px;
+    }
+
+    .cupom-feedback.sucesso { color: #4caf50; }
+
+    .cupom-feedback.erro { color: #c62828; }
 
     .continuar-comprando {
       display: inline-flex;
@@ -497,14 +509,25 @@
     <aside class="resumo">
       <h2 class="resumo__titulo">Resumo do Pedido</h2>
 
-      <div class="resumo__linha">
-        <span class="resumo__label">SUBTOTAL</span>
-        <span class="resumo__valor">R$ 519,96</span>
-      </div>
-      <div class="resumo__linha">
-        <span class="resumo__label">DESCONTO</span>
-        <span class="resumo__valor" style="color:#4caf50">− R$ 0,00</span>
-      </div>
+	      <div class="resumo__linha">
+	        <span class="resumo__label">SUBTOTAL</span>
+	        <span class="resumo__valor">R$ 519,96</span>
+	      </div>
+        <form class="cupom-area" id="form-cupom-carrinho">
+          <input
+            type="text"
+            class="cupom-input"
+            id="cupom-carrinho"
+            placeholder="CUPOM DE DESCONTO"
+            autocomplete="off"
+          >
+          <button type="submit" class="cupom-btn">APLICAR</button>
+        </form>
+        <p class="cupom-feedback" id="cupom-feedback"></p>
+	      <div class="resumo__linha">
+	        <span class="resumo__label">DESCONTO</span>
+	        <span class="resumo__valor" id="resumo-desconto" style="color:#4caf50">− R$ 0,00</span>
+	      </div>
       <div class="resumo__linha">
         <span class="resumo__label">FRETE</span>
         <span class="resumo__frete-gratis">GRÁTIS ✦</span>

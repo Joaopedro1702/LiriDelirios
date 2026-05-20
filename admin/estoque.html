@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     <script type="module" src="/admin/estoque.js" defer></script>
+    <script type="module" src="/admin/cupom.js" defer></script>
     <style>
         body { visibility: hidden; }
 
@@ -27,7 +28,8 @@
             padding: 10px;
             text-align: center;
         }
-        .adcProduto {
+        .adcProduto,
+        .gestao-cupons {
             margin-top: 40px;
             padding: 20px;
             border: 1px solid #ccc;
@@ -38,10 +40,108 @@
         .adcProduto label,
         .adcProduto input,
         .adcProduto select,
-        .adcProduto button{
+        .adcProduto button,
+        .gestao-cupons label,
+        .gestao-cupons input,
+        .gestao-cupons select,
+        .gestao-cupons button{
             display: flex;
             flex-direction: column;
             gap: 4px;
+        }
+        .gestao-cupons h2 {
+            color: var(--color-primary);
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.7rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        .gestao-cupons__intro {
+            color: var(--color-label);
+            font-family: var(--font--sans);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+        .form-cupom {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(150px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+        .form-cupom .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-cupom label {
+            color: var(--color-label);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .form-cupom input,
+        .form-cupom select {
+            border: 1px solid var(--color-card-border);
+            border-radius: 4px;
+            color: var(--color-dark);
+            font-family: var(--font--sans);
+            padding: 10px 12px;
+        }
+        .campo-checkbox {
+            align-items: center;
+            flex-direction: row !important;
+            gap: 8px;
+            min-height: 40px;
+        }
+        .campo-checkbox input {
+            width: auto;
+        }
+        #btn-salvar-cupom {
+            background: var(--color-primary);
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            padding: 12px 18px;
+            text-transform: uppercase;
+        }
+        .tabela-cupons-wrapper {
+            margin-top: 22px;
+            overflow-x: auto;
+        }
+        #tabela-cupons {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #tabela-cupons th,
+        #tabela-cupons td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        #tabela-cupons th {
+            color: var(--color-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        @media (max-width: 900px) {
+            .form-cupom {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .form-cupom {
+                grid-template-columns: 1fr;
+            }
         }
         .adcProduto .linha{
             display: flex;
@@ -126,7 +226,7 @@
         <nav class="nav">
     <ul>
         <li><a href="#">Gestão de estoque</a></li>
-        <li><a href="#">Vestidos</a></li>
+        <li><a href="#gestao-cupons">Cupons</a></li>
     </ul>
 </nav>
 <main>
@@ -147,7 +247,7 @@
         </table>
     </div>
 
-    <section class="adcProduto">
+	    <section class="adcProduto">
         <h2>Adicionar produto</h2>
         <form class="adicionarProduto" >
             <label class="labels">Nome do produto: </label>
@@ -185,9 +285,75 @@
 
             <button type="submit" id="btn-adicionar-produto">Adicionar</button>
         </form>
-    </section>
+	    </section>
 
-    <section class="painel-vendas">
+        <section class="gestao-cupons" id="gestao-cupons">
+            <h2>Cupons de desconto</h2>
+            <p class="gestao-cupons__intro">Crie descontos para campanhas, aniversários e ações promocionais.</p>
+
+            <form class="form-cupom" id="form-cupom">
+                <div class="campo">
+                    <label for="codigo-cupom">Código</label>
+                    <input type="text" id="codigo-cupom" placeholder="NIVER10">
+                </div>
+
+                <div class="campo">
+                    <label for="tipo-cupom">Tipo</label>
+                    <select id="tipo-cupom">
+                        <option value="percentual">Percentual (%)</option>
+                        <option value="fixo">Valor fixo (R$)</option>
+                        <option value="frete_gratis">Frete grátis</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="valor-cupom">Desconto</label>
+                    <input type="number" id="valor-cupom" placeholder="10" min="0" step="0.01">
+                </div>
+
+                <div class="campo">
+                    <label for="minimo-cupom">Pedido mínimo</label>
+                    <input type="number" id="minimo-cupom" placeholder="0" min="0" step="0.01">
+                </div>
+
+                <div class="campo">
+                    <label for="limite-cupom">Limite de usos</label>
+                    <input type="number" id="limite-cupom" placeholder="100" min="1">
+                </div>
+
+                <div class="campo">
+                    <label for="validade-cupom">Validade</label>
+                    <input type="date" id="validade-cupom">
+                </div>
+
+                <label class="campo campo-checkbox" for="ativo-cupom">
+                    <input type="checkbox" id="ativo-cupom" checked>
+                    Cupom ativo
+                </label>
+
+                <button type="submit" id="btn-salvar-cupom">Salvar cupom</button>
+            </form>
+
+            <div class="tabela-cupons-wrapper">
+                <table id="tabela-cupons">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Tipo</th>
+                            <th>Desconto</th>
+                            <th>Pedido mínimo</th>
+                            <th>Usos</th>
+                            <th>Validade</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listar-cupons"></tbody>
+                </table>
+            </div>
+        </section>
+
+	    <section class="painel-vendas">
     <div class="header-vendas">
         <h2>Últimas Vendas Confirmadas 🌸</h2>
         <span id="status-conexao" class="status-online">Monitoramento Ativo</span>

@@ -56,6 +56,24 @@ async function executarFluxoCadastro({ nome, sobrenome, cpf, nascimento, telefon
 
     await salvarDadosNoBanco({ uid, nome, sobrenome, cpf, nascimento, telefone, email, endereco, receberNewsletter, receberWhatsapp });
     
+    try{
+      const respostaBrevo = await fetch('/api/brevo-contato', {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ uid })
+      });
+
+      const dadosBrevo = await respostaBrevo.json();
+
+      if(!respostaBrevo.ok){
+        console.error('Erro ao integrar com Brevo: ', dadosBrevo);
+      }
+    }catch(erroBrevo){
+      console.error('Falha ao conectar com o Brevo: ', erroBrevo);
+    }
+
     const payloadEmail = {
       nome_usuario: nome,
       email_usuario: email

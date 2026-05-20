@@ -1,9 +1,11 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../admin/firebase.js";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import Swal from "sweetalert2";
 
     //guardar pedido por usuário até a realização do pagamento.
 let usuarioAtual = null;
+let cupomAplicado = null;
 
 onAuthStateChanged(auth, (usuario) => {
     if (usuario){
@@ -50,12 +52,79 @@ function renderizarCarrinho(){
 
     if(total >= 199) frete = 0;
 
-    const totalFinal = frete + total;
+    let desconto = 0;
+    if (cupomAplicado) {
+        if (cupomAplicado.tipo === "percentual") {
+            desconto = total * (cupomAplicado.valor / 100);
+        }
+        if (cupomAplicado.tipo === "fixo") {
+            desconto = cupomAplicado.valor;
+        }
+        if (cupomAplicado.tipo === "frete_gratis") {
+            frete = 0;
+        }
+    }
+
+    desconto = Math.min(desconto, total);
+    const totalFinal = frete + total - desconto;
 
     document.querySelector('.resumo__total-valor').textContent = `R$ ${totalFinal.toFixed(2)}`;
     document.querySelector('.resumo__valor').textContent = `R$ ${total.toFixed(2)}`;
+    document.getElementById('resumo-desconto').textContent = `− R$ ${desconto.toFixed(2)}`;
     document.querySelector('.resumo__frete-gratis').textContent = frete === 0 ? 'GRÁTIS ✦' : `R$ ${frete.toFixed(2)}`;
 }
+
+//Area para validar cupons
+document.getElementById('form-cupom-carrinho').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const feedback = document.getElementById('cupom-feedback');
+    const codigo = document.getElementById('cupom-carrinho').value.trim().toUpperCase();
+    const carrinho = JSON.parse(localStorage.getItem('carrinho') || '[]');
+    const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
+    if (!codigo) {
+        cupomAplicado = null;
+        localStorage.removeItem('cupom');
+        feedback.textContent = 'Digite um cupom para aplicar.';
+        feedback.className = 'cupom-feedback erro';
+        renderizarCarrinho();
+        return;
+    }
+
+    try {
+        const cupomDoc = await getDoc(doc(db, 'cupons', codigo));
+
+        if (!cupomDoc.exists()) {
+            throw new Error('Cupom não encontrado.');
+        }
+
+        const cupom = cupomDoc.data();
+        const hoje = new Date().toISOString().slice(0, 10);
+
+        if (!cupom.ativo) throw new Error('Cupom inativo.');
+        if (cupom.expiraEm && cupom.expiraEm < hoje) throw new Error('Cupom expirado.');
+        if (total < Number(cupom.minimoPedido || 0)) throw new Error('Pedido não atingiu o valor mínimo do cupom.');
+        if (Number(cupom.usosAtuais || 0) >= Number(cupom.usosMaximos || 1)) throw new Error('Cupom atingiu o limite de usos.');
+
+        cupomAplicado = {
+            codigo,
+            tipo: cupom.tipo,
+            valor: Number(cupom.valor || 0),
+            minimoPedido: Number(cupom.minimoPedido || 0)
+        };
+        localStorage.setItem('cupom', codigo);
+        feedback.textContent = `Cupom ${codigo} aplicado.`;
+        feedback.className = 'cupom-feedback sucesso';
+        renderizarCarrinho();
+    } catch (error) {
+        cupomAplicado = null;
+        localStorage.removeItem('cupom');
+        feedback.textContent = error.message;
+        feedback.className = 'cupom-feedback erro';
+        renderizarCarrinho();
+    }
+});
 
 document.getElementById('itens-carrinho').addEventListener('click', (e) => {
     const id = e.target.dataset.id;
@@ -83,22 +152,49 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
         const carrinho = JSON.parse(localStorage.getItem("carrinho") || "[]");
         const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
         const frete = total >= 199 ? 0 : 10;
+        const cupom = localStorage.getItem("cupom");
+        const clienteDoc = await getDoc(doc(db, "clientes", usuarioAtual.uid));
+
+        if (!clienteDoc.exists()) {
+            throw new Error("Dados da cliente nao encontrados.");
+        }
+
+        const cliente = clienteDoc.data();
+        const clienteNome = [cliente.nome, cliente.sobrenome].filter(Boolean).join(" ").trim() || "Cliente";
+
         const docRef = await addDoc(collection(db, "pedidos"), {
                 usuarioId: usuarioAtual.uid,
+                clienteNome,
+                telefone: cliente.telefone || "",
+                email: cliente.email || usuarioAtual.email || "",
+                endereco: cliente.endereco || null,
                 itens: carrinho,
                 status: "pendente",
-                criadoEm: new Date()    
+                criadoEm: serverTimestamp(),
+                dataCriacao: serverTimestamp(),
+                total,
+                frete,
+                valorTotal: total + frete,
+                cupom: cupom || null
             });
             const pedidoId = docRef.id;
+            const idToken = await usuarioAtual.getIdToken();
 
             const resposta = await fetch("/api/checkout", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id, frete })
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${idToken}`
+                },
+                body: JSON.stringify({ itens: carrinho, pedidoId: docRef.id, frete, cupom })
             });
             const dados = await resposta.json();
-            console.log(dados);
-            const link = dados.links.find(l => l.rel === "PAY");
+
+            if (!resposta.ok) throw new Error(dados.error || "Erro ao criar checkout.");
+
+            const link = dados.links?.find(l => l.rel === "PAY");
+            if (!link) throw new Error("Link de pagamento nao encontrado.");
+
             window.location.href = link.href;
             }catch(erro){
                 Swal.fire({
@@ -110,5 +206,10 @@ document.getElementById('itens-carrinho').addEventListener('click', (e) => {
                 console.error(erro);
             }
         });
+
+const cupomSalvo = localStorage.getItem('cupom');
+if (cupomSalvo) {
+    document.getElementById('cupom-carrinho').value = cupomSalvo;
+}
 
 renderizarCarrinho();

@@ -1,6 +1,5 @@
-import { auth, db } from "./admin/firebase.js";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { db } from "../admin/firebase.js";
+import { doc, onSnapshot } from "firebase/firestore";
 
 //pegar pedido da URL
 
@@ -11,20 +10,46 @@ if (!pedidoId){
     window.location.href = "/index.html"
 }
 
-async function verificarStatusPedido(){
-const docRef = doc(db, "pedidos", pedidoId);
-const snapshot = await getDoc(docRef);
-const pedido = snapshot.data();
+function atualizarTela(status) {
+    const titulo = document.querySelector(".sucesso-titulo");
+    const subtitulo = document.querySelector(".sucesso-subtitulo");
+    const mensagem = document.querySelector(".sucesso-mensagem");
 
-if(pedido.status === "confirmado"){
-    localStorage.removeItem("carrinho");
-}else if (pedido.status === "pendente"){
-    document.querySelector(".sucesso-titulo").textContent = "Pagamento em processamento...";
-    document.querySelector(".sucesso-subtitulo").textContent = "Assim que confirmado você receberá um e-mail.";
-}else if (pedido.status === "cancelado"){
-    document.querySelector(".sucesso-titulo").textContent = "Pagamento não aprovado";
-    document.querySelector(".sucesso-subtitulo").textContent = "Tente novamente.";    
+    if(status === "confirmado"){
+        localStorage.removeItem("carrinho");
+        titulo.textContent = "Pedido confirmado";
+        subtitulo.textContent = "Obrigada pela sua compra";
+        mensagem.textContent = "Seu pagamento foi aprovado. Em breve você receberá um e-mail com a confirmação e os detalhes da sua compra.";
+    }else if (status === "pendente"){
+        titulo.textContent = "Pagamento em processamento...";
+        subtitulo.textContent = "Assim que confirmado você receberá um e-mail.";
+        mensagem.textContent = "Seu pedido foi recebido e estamos aguardando a confirmação do pagamento.";
+    }else if (status === "cancelado"){
+        titulo.textContent = "Pagamento não aprovado";
+        subtitulo.textContent = "Tente novamente.";
+        mensagem.textContent = "Não conseguimos confirmar o pagamento deste pedido. Você pode voltar para a loja e tentar finalizar novamente.";
+    }else{
+        titulo.textContent = "Acompanhando pedido...";
+        subtitulo.textContent = "Estamos verificando o status do pagamento.";
+        mensagem.textContent = "A atualização pode levar alguns instantes após o retorno do pagamento.";
     }
 }
 
-verificarStatusPedido();
+function monitorarStatusPedido(){
+    const docRef = doc(db, "pedidos", pedidoId);
+
+    onSnapshot(docRef, (snapshot) => {
+        if (!snapshot.exists()) {
+            window.location.href = "/index.html";
+            return;
+        }
+
+        const pedido = snapshot.data();
+        atualizarTela(pedido.status);
+    }, (erro) => {
+        console.error("Erro ao monitorar pedido:", erro);
+        atualizarTela("pendente");
+    });
+}
+
+monitorarStatusPedido();

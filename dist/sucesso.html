@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="/logolirios.png">
-    <title>Liri Delirios</title>
-  <script type="module" crossorigin src="/main.js"></script>
+    <title>Pedido Confirmado — Liri Delirios</title>
+  <script type="module" crossorigin src="/sucesso.js"></script>
   <link rel="modulepreload" crossorigin href="/firebase.js">
-  <link rel="modulepreload" crossorigin href="/produtos.js">
-  <link rel="modulepreload" crossorigin href="/pesquisa.js">
+  <link rel="stylesheet" crossorigin href="/sucesso.css">
   <link rel="stylesheet" crossorigin href="/style.css">
   <link rel="stylesheet" crossorigin href="/stylepadrao.css">
 </head>
@@ -22,87 +21,38 @@
                 <img src="/perfil.png" alt="Icone de perfil" class="perfil" id="icone-perfil">
                 <div class="dropdown-perfil" id="dropdown-perfil"></div>
             </div>
-            
             <a href="carrinho.html">
                 <img src="/cestinha.png" alt="Cestinha do site" class="cestinha">
             </a>
-        
-
-        <img src="/pesquisa.png" alt="Icone de pesquisa." id="icone-busca">
+            <img src="/pesquisa.png" alt="Icone de pesquisa." id="icone-busca">
             <form action="#" class="barra-pesquisa" role="search" id="barra-pesquisa">
-                <input
-                type="search"
-                id="busca"
-                name="q"
-                placeholder="Buscar vestidos, blusas..."
-                aria-label="Pesquisar produtos no site"
-                required
-                >
-                <button type="submit" aria-label="Buscar" class="buscar">
-                    Buscar
-                </button>
+                <input type="search" id="busca" name="q" placeholder="Buscar vestidos, blusas..." aria-label="Pesquisar produtos no site" required>
+                <button type="submit" aria-label="Buscar" class="buscar">Buscar</button>
             </form>
         </div>
     </header>
-        <nav class="nav">
-    <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="#" id="ver-tudo">Ver Tudo</a></li>
-        
-    </ul>
-</nav>
-    <main>
-        <section class="topo">
-            <div class="container-topo">
-                <h1 class="texto1">Nova Coleção Outono e Inverno</h1>
-                <p>ELEGÃNCIA & RECATO EM CADA PEÇA</p>
-                <button class="explorar">EXPLORAR COLEÇÃO</button>
-            </div>
-        </section>
-        <!--Destaques e CARDS-->
-        <section class="destaques">
-            <h2>Destaques</h2>
-            <p>PEÇAS SELECIONADAS PARA VOCẼ</p>
-    <div class="carousel-container">
-        <button class="anterior">&lt;</button>
-        <button class="proximo" id="proximo">&gt;</button>
-        
-        <div class="grid-cards" id="vitrine-destaques">
-            <!-- Os cards de produtos serão inseridos aqui dinamicamente -->
+
+    <main class="sucesso-container">
+        <div class="sucesso-icone">
+            <svg viewBox="0 0 24 24" width="32" height="32">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
         </div>
-    </div>
 
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-conteudo">
-            <div id="detlahes-produtos"></div>
-    </div>
-</div>
-        </section>
-        <!--Fim dos destaques-->
+        <h1 class="sucesso-titulo">Pedido confirmado</h1>
+        <p class="sucesso-subtitulo">Obrigada pela sua compra</p>
+        <div class="sucesso-divisor"></div>
+        <p class="sucesso-mensagem">
+            Seu pedido foi recebido com sucesso. Em breve você receberá um e-mail com a confirmação e os detalhes da sua compra.
+        </p>
 
-        <section class="meio">
-            <div class="container-meio">
-                <h2 class="textomeio">Moda Modesta</h2>
-                <p>PEÇAS QUE VESTEM E VALORIZAM</p>
-                <button class="colecao">VER COLEÇÃO COMPLETA</button>
-            </div>
-
-        </section>
-
-<!--Mais vendidos e CARDS-->
-        <section class="maisvendidos">
-            <h2>Nossos produtos</h2>
-            <p>FAVORISTAS DAS CLIENTES</p>
-
-        <div class="grid-cards" id="vitrine-nossos">
+        <div class="sucesso-botoes">
+            <a href="index.html" class="btn-voltar-loja">Continuar comprando</a>
+            <a href="enderecos.html" class="btn-minha-conta">Minha conta</a>
         </div>
-        </section>
-
     </main>
 
-        <section id="resultados-busca" style="display: none;">
-            <div class="grid-cards" id="grid-resultados"></div>
-        </section>
+    <footer class="rodape">
 <footer class="rodape">
     <div class="rodape-grid">
             <div class="coluna">
@@ -131,7 +81,7 @@
         </div>
     
 </footer>
-
+    </footer>
 
 </body>
 </html>

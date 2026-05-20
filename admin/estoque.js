@@ -95,24 +95,36 @@ function iniciarMonitoramentoDePedidos(){
         snapshot.forEach((pedido) => {
             const dados = pedido.data();
 
-            const milissegundos = dados.dataCriacao.seconds * 1000;
+            const dataBase = dados.dataCriacao || dados.criadoEm;
+
+            if (!dataBase) return;
+
+            const milissegundos = dataBase.seconds * 1000;
             const dataObjeto = new Date(milissegundos);
             const horarioFormatado = dataObjeto.toLocaleTimeString('pt-BR', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
                 const idCurto = pedido.id.slice(-5).toUpperCase();
+                const cidade = dados.endereco?.cidade || "";
+                const bairro = dados.endereco?.bairro || "";
+                const rua = dados.endereco?.logradouro || "";
+                const telefone = dados.telefone || "";
 
+                const localDeEntrega = [rua, bairro, cidade].filter(Boolean).join(", ").trim() || "Endereço não informado";
                 const cardHTML = `
                 <article class="card-venda-nova">
                     <div class="info-principal">
                         <span class="id-destaque">#${idCurto} 🌸</span>
                         
-                        <strong class="nome-cliente">${dados.clienteNome}</strong>
+                        <strong class="nome-cliente">${dados.clienteNome || dados.email || 'Cliente'}</strong>
+
+                        <span class="local-entrega">${localDeEntrega}</span>
+                        <span class="telefone-cliente">${telefone}</span>
                     </div>
                     
                     <div class="info-financeira">
-                        <span class="valor-total">R$ ${dados.valorTotal.toFixed(2)}</span>
+                        <span class="valor-total">R$ ${Number(dados.valorTotal || dados.total || 0).toFixed(2)}</span>
                         
                         <time class="horario-venda">${horarioFormatado}</time>
                     </div>

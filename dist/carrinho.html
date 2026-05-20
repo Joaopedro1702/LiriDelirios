@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Carrinho — Líri de Lírios</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="/logolirios.png">
   <style>
     /* ─── VARIÁVEIS ─── */
     :root {
@@ -289,7 +290,19 @@
       transition: background 0.2s;
     }
 
-    .cupom-btn:hover { background: var(--vinho-escuro); }
+	    .cupom-btn:hover { background: var(--vinho-escuro); }
+
+    .cupom-feedback {
+      color: var(--cinza);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      margin-top: 8px;
+      min-height: 16px;
+    }
+
+    .cupom-feedback.sucesso { color: #4caf50; }
+
+    .cupom-feedback.erro { color: #c62828; }
 
     .continuar-comprando {
       display: inline-flex;
@@ -445,7 +458,8 @@
     
   </style>
   <script type="module" crossorigin src="/carrinho.js"></script>
-  <link rel="modulepreload" crossorigin href="/modulepreload-polyfill.js">
+  <link rel="modulepreload" crossorigin href="/sweetalert2.all.js">
+  <link rel="modulepreload" crossorigin href="/firebase.js">
   <link rel="stylesheet" crossorigin href="/stylepadrao.css">
 </head>
 <body>
@@ -478,7 +492,7 @@
     <!-- LADO ESQUERDO: ITENS -->
     <section id="lista-carrinho">
       <h1 class="secao-titulo">Meu Carrinho</h1>
-      <p class="secao-subtitulo">3 ITENS SELECIONADOS</p>
+      <p class="secao-subtitulo"></p>
 
       <!-- Cabeçalho -->
       <div class="carrinho-header">
@@ -498,14 +512,25 @@
     <aside class="resumo">
       <h2 class="resumo__titulo">Resumo do Pedido</h2>
 
-      <div class="resumo__linha">
-        <span class="resumo__label">SUBTOTAL</span>
-        <span class="resumo__valor">R$ 519,96</span>
-      </div>
-      <div class="resumo__linha">
-        <span class="resumo__label">DESCONTO</span>
-        <span class="resumo__valor" style="color:#4caf50">− R$ 0,00</span>
-      </div>
+	      <div class="resumo__linha">
+	        <span class="resumo__label">SUBTOTAL</span>
+	        <span class="resumo__valor">R$ 519,96</span>
+	      </div>
+        <form class="cupom-area" id="form-cupom-carrinho">
+          <input
+            type="text"
+            class="cupom-input"
+            id="cupom-carrinho"
+            placeholder="CUPOM DE DESCONTO"
+            autocomplete="off"
+          >
+          <button type="submit" class="cupom-btn">APLICAR</button>
+        </form>
+        <p class="cupom-feedback" id="cupom-feedback"></p>
+	      <div class="resumo__linha">
+	        <span class="resumo__label">DESCONTO</span>
+	        <span class="resumo__valor" id="resumo-desconto" style="color:#4caf50">− R$ 0,00</span>
+	      </div>
       <div class="resumo__linha">
         <span class="resumo__label">FRETE</span>
         <span class="resumo__frete-gratis">GRÁTIS ✦</span>
@@ -527,35 +552,33 @@
   </main>
 
   <!-- FOOTER -->
-  <footer>
+<footer class="rodape">
     <div class="rodape-grid">
             <div class="coluna">
-                <h4>A LOJA</h4>
-                <a href="#">Sobre nós</a>
-                <a href="#">Trocas e devoluções</a>
-                <a href="#">Politica de privacidade</a>
-            </div>
-
-            <div class="coluna">
                 <h4>Atendimento</h4>
-                <p>Seg-Sex: xh ás xh</p>
-                <a href="#">lojaliridelirios@xxxxx.com</a>
-                <a href="https://w.app/lirisdelirios">WhatsApp</a>
+                <p>R. Sapucáia do Sul, 53 - Jardim Record, Taboão da Serra - SP, 06784-390, Brasil</p>
+                <p>Seg-Sex: 10:00 às 19:00</p>
+                <p>Sábado: 10:00 às 18:00</p>
+                <p>Domingo: 10:00 às 14:00 </p>
+                <a href="contato.liridelirios@gmail.com">contato.liridelirios@gmail.com</a>
+                <a href="https://wa.me/c/5511952081308">WhatsApp</a>
             </div>
 
             <div class="coluna">
                 <h4>Siga nas redes sociais</h4>
-                <a href="#">Instagram</a>
-                <a href="#">Facebook</a>
+                <a href="https://www.instagram.com/liri_de_lirios?igsh=Z2hwMXQyMHhjOG5i">Instagram</a>
+                <a href="https://www.facebook.com/share/18dS6JzoHr/">Facebook</a>
             </div>
             <div class="coluna">
                 <h4>Regras comerciais</h4>
-                <a href="#">Nossas regras</a>
-            </div>            
+                    <a href="politica.html">Trocas e devoluções</a>
+                    <a href="politica.html">Politica de privacidade</a>
+                </div>            
         </div>
         <div class="rodape-base">
             <p>© 2025 LÍRI DE LÍRIOS — TODOS OS DIREITOS RESERVADOS</p>
         </div>
-  </footer>
+    
+</footer>
 </body>
 </html>
