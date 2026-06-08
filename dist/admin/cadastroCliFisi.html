@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <title>Configuração WhatsApp - Liri de Lírios</title>
+  <script type="module" crossorigin src="/admin/cadastroCliFisi.js"></script>
+  <link rel="modulepreload" crossorigin href="/firebase.js">
+  <link rel="stylesheet" crossorigin href="/cadastroCliFisi.css">
+  <link rel="stylesheet" crossorigin href="/style.css">
+  <link rel="stylesheet" crossorigin href="/stylepadrao.css">
+</head>
+<body>
+    <header class="header">
+        <img src="/logolirios.png" alt="Logo Liri Delirios" class="logo">
+    </header>
+    
+    <nav class="nav">
+        <ul>
+            <li><a href="/admin/estoque.html">Gestão de estoque</a></li>
+            <li><a href="/admin/estoque.html#gestao-cupons">Cupons</a></li>
+            <li><a href="#">Configurar WhatsApp</a></li>
+        </ul>
+    </nav>
+
+    <main style="padding: 20px;">
+        
+        <section class="gestao-whatsapp" id="gestao-whatsapp">
+            <h2>Conexão WhatsApp (Automações)</h2>
+            <p class="gestao-whatsapp__intro">Conecte o número da empresa para habilitar os disparos automatizados de aniversário.</p>
+            
+            <form class="form-whatsapp" id="form-whatsapp" onsubmit="event.preventDefault();">
+                <div class="campo">
+                    <label for="numero-wpp">Número do WhatsApp</label>
+                    <input type="text" id="numero-wpp" placeholder="5511999999999">
+                </div>
+                <button type="button" id="btn-conectar-wpp">Conectar Dispositivo</button>
+            </form>
+        </section>
+
+        <section class="cadastro-clientes-fisico" id="cadastro-clientes-fisico">
+            <h2>Cadastrar Cliente - Loja Física</h2>
+            <p class="cadastro-clientes-fisico__intro">Adicione os aniversariantes da loja física para o envio exclusivo de cupons por WhatsApp.</p>
+            
+            <form class="form-cadastro-fisico" id="form-cadastro-fisico">
+                <div class="campo">
+                    <label for="nome-cliente-fisico">Nome Completo</label>
+                    <input type="text" id="nome-cliente-fisico" placeholder="Nome do Cliente" required>
+                </div>
+
+                <div class="campo">
+                    <label for="tel-cliente-fisico">WhatsApp (com DDD)</label>
+                    <input type="text" id="tel-cliente-fisico" placeholder="11999999999" required>
+                </div>
+
+                <div class="campo">
+                    <label for="dia-cliente-fisico">Dia do Aniversário</label>
+                    <input type="number" id="dia-cliente-fisico" placeholder="Ex: 15" min="1" max="31" required>
+                </div>
+
+                <div class="campo">
+                    <label for="mes-cliente-fisico">Mês do Aniversário</label>
+                    <select id="mes-cliente-fisico" required>
+                        <option value="">Selecione...</option>
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="btn-salvar-cliente-fisico">Salvar Cliente</button>
+            </form>
+        </section>
+
+        <div id="modal-wpp-pareamento" class="modal-wpp">
+            <div class="modal-wpp__conteudo">
+                <button class="modal-wpp__fechar" id="btn-fechar-modal-wpp">&times;</button>
+                <h3>Sincronizar Dispositivo</h3>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Utilize o código abaixo para validar o robô no seu celular.</p>
+                
+                <div class="modal-wpp__codigo" id="wpp-codigo-display">---- ----</div>
+                
+                <div class="modal-wpp__instrucoes">
+                    <strong>Como conectar:</strong>
+                    <ol style="margin-top: 8px; padding-left: 20px; font-size: 0.8rem; gap: 4px; display: flex; flex-direction: column;">
+                        <li>Abra o WhatsApp no aparelho celular da empresa.</li>
+                        <li>Toque em <b>Mais Opções</b> ou <b>Configurações</b> e selecione <b>Aparelhos Conectados</b>.</li>
+                        <li>Toque em <b>Conectar um aparelho</b>.</li>
+                        <li>Abaixo da câmera do QR Code, selecione <b>Conectar com número de telefone</b>.</li>
+                        <li>Insira o código de 8 dígitos gerado acima.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

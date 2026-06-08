@@ -25,6 +25,7 @@ export default defineConfig({
         'admin/login': resolve(__dirname, 'admin/login.html'),
         'admin/index': resolve(__dirname, 'admin/index.html'),
         'admin/estoque': resolve(__dirname, 'admin/estoque.html'),
+        'admin/cadastroCliFisi': resolve(__dirname, 'admin/cadastroCliFisi.html'),
       },
       
       output: {
