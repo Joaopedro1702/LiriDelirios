@@ -1,46 +1,132 @@
 import nodemailer from 'nodemailer'
 import admin from 'firebase-admin'
 
-if (!admin.apps.length) {
-admin.initializeApp({credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL
-}) })
+// Inicializa o Firebase Admin apenas quando a rota for chamada, evitando erro no import sem env local.
+function getFirebaseAdmin() {
+    // Reaproveita a instancia se a function ja estiver quente na Vercel.
+    if (admin.apps.length > 0) return admin.app();
+
+    // Cria a conexao Admin usando as variaveis secretas configuradas no deploy.
+    return admin.initializeApp({credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL
+    }) })
+}
+
+function getPagSeguroBaseUrl() {
+    return process.env.PAGSEGURO_ENV === 'production'
+        ? 'https://api.pagseguro.com'
+        : 'https://sandbox.api.pagseguro.com';
+}
+
+async function consultarChargeNoPagSeguro(chargeId) {
+    if (!process.env.PAGSEGURO_API_KEY) {
+        throw new Error("PAGSEGURO_API_KEY nao configurada.");
+    }
+
+    if (!chargeId) {
+        throw new Error("Charge ID nao informado.");
+    }
+
+    const resposta = await fetch(`${getPagSeguroBaseUrl()}/charges/${chargeId}`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${process.env.PAGSEGURO_API_KEY}`,
+            "Content-Type": "application/json"
+        }
+    });
+
+    const dados = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+        throw new Error(dados?.message || "Nao foi possivel consultar a cobranca no PagSeguro.");
+    }
+
+    return dados;
 }
 
 //Envio automatico de email consfirmando a compra, feito pelo própio pagseguro
 
 export default async function handler(req, res) {
-    const { charges, customer, items } = req.body;
+    // Webhook deve aceitar apenas POST, que e o metodo usado pelo PagSeguro para notificacoes.
+    if (req.method !== "POST") {
+        return res.status(405).send("Metodo nao permitido");
+    }
+
+    // Token simples compartilhado entre checkout e webhook para bloquear chamadas falsas basicas.
+    const tokenRecebido = req.query?.token || req.headers["x-webhook-secret"];
+    // Se o token nao bater com o segredo da Vercel, a requisicao nao processa pagamento.
+    if (!process.env.PAGSEGURO_WEBHOOK_SECRET || tokenRecebido !== process.env.PAGSEGURO_WEBHOOK_SECRET) {
+        return res.status(401).send("Webhook nao autorizado");
+    }
+
+    // Le o corpo com valores padrao para evitar erro caso o PagSeguro envie payload incompleto.
+    const { charges = [], customer = {}, items = [] } = req.body || {};
+    // Pega a primeira cobranca do evento, que e onde vem status, pedido e identificador do pagamento.
     const charge = charges[0];
+
+    // Sem charge nao ha pagamento para processar.
+    if (!charge) {
+        return res.status(400).send("Charge nao informada");
+    }
 
     if (charge.status === "PAID") {
         const transporter = nodemailer.createTransport({service: "gmail", auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS}})
         
+        // Garante que o Firebase Admin esteja pronto antes de acessar o Firestore.
+        getFirebaseAdmin();
         const db = admin.firestore();
+        // O PagSeguro devolve o ID do pedido no reference_id configurado no checkout.
+        const pedidoId = charge.reference_id;
+        // Guarda um identificador da cobranca para reconhecer notificacoes repetidas.
+        const chargeId = charge.id || charge.payment_response?.reference || charge.reference_id;
+
+        // Sem ID do pedido nao da para saber qual documento atualizar.
+        if (!pedidoId) {
+            return res.status(400).send("Pedido nao informado");
+        }
+
+        const chargeConfirmada = await consultarChargeNoPagSeguro(chargeId);
+
+        if (chargeConfirmada.status !== "PAID") {
+            return res.status(200).send("Pagamento ainda nao confirmado no PagSeguro");
+        }
+
+        if (chargeConfirmada.reference_id && chargeConfirmada.reference_id !== pedidoId) {
+            return res.status(400).send("Referencia do pagamento nao confere com o pedido");
+        }
+
+        // Referencia do pedido no Firestore, usada para ler e atualizar com consistencia.
+        const pedidoRef = db.collection("pedidos").doc(pedidoId);
+        // Carrega o pedido antes de mexer em estoque ou enviar email.
+        const pedidoDoc = await pedidoRef.get();
+
+        // Se o pedido nao existe, nao processa para evitar baixa de estoque indevida.
+        if (!pedidoDoc.exists) {
+            return res.status(404).send("Pedido nao encontrado");
+        }
+
+        // Dados atuais do pedido, incluindo itens, email e flags de processamento.
+        const pedidoData = pedidoDoc.data();
+
+        // Idempotencia: se ja processou esse pagamento, nao baixa estoque nem envia email de novo.
+        if (pedidoData.pagseguroChargeId === chargeId || pedidoData.pagamentoProcessadoEm) {
+            return res.status(200).send("Pedido ja processado");
+        }
 
         const itensComImagem = await Promise.all(
             items.filter(item => item.reference_id !== "frete")
             .map(async(item) => {
                 const doc = await db.collection("produtos").doc(item.reference_id).get();
-                return {...item, imgURL: doc.data().imgURL};
+                // Usa optional chaining para nao quebrar o email se algum produto tiver sido removido.
+                return {...item, imgURL: doc.data()?.imgURL || ""};
             })
         )
 
-        const pedidoId = charge.reference_id;
-
-        await db.collection("pedidos").doc(pedidoId).update({
-            status: "confirmado",
-            atualizadoEm: admin.firestore.FieldValue.serverTimestamp()
-        })
-
-        const pedidoDoc = await db.collection("pedidos").doc(pedidoId).get();
-        const pedidoData = pedidoDoc.data();
-        console.log("pedidoData.itens:", JSON.stringify(pedidoData.itens)); // <- aqui
-
         await Promise.all(
-            pedidoData.itens
+            // Garante que a lista exista antes de percorrer os itens.
+            (pedidoData.itens || [])
             .filter(item => item.id)
             .map(async(item) => {
                 const produtoRef = db.collection("produtos").doc(item.id);
@@ -62,9 +148,18 @@ export default async function handler(req, res) {
             })
         )
 
+        // Atualiza o pedido so depois da baixa de estoque terminar com sucesso.
+        await pedidoRef.update({
+            status: "confirmado",
+            pagseguroChargeId: chargeId,
+            pagamentoProcessadoEm: admin.firestore.FieldValue.serverTimestamp(),
+            atualizadoEm: admin.firestore.FieldValue.serverTimestamp()
+        })
+
         const mailOptions = {
         from: process.env.GMAIL_USER, 
-        to: customer.email,
+        // Usa email do PagSeguro; se nao vier, usa o email salvo no pedido.
+        to: customer.email || pedidoData.email,
         subject: "Pedido confirmado! 🌸",
         html: `
                 <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; background: #fff;">
@@ -95,7 +190,14 @@ export default async function handler(req, res) {
                 </div>
 `}
         await transporter.sendMail(mailOptions);
+        // Registra o envio do email apenas depois que o Nodemailer confirmar o envio.
+        await pedidoRef.update({
+            emailConfirmacaoEnviadoEm: admin.firestore.FieldValue.serverTimestamp()
+        });
         res.status(200).send("OK");
+        return;
         }
-        
+
+        // Eventos que nao sejam pagamento aprovado sao aceitos, mas nao alteram o pedido.
+        res.status(200).send("Evento ignorado");
 }

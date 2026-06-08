@@ -1,4 +1,6 @@
 .env
+api/.env
 firebase.js
 node_modules/
 ../api/.env
+.vercel

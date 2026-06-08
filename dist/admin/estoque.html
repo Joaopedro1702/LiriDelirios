@@ -208,6 +208,56 @@
             animation: fadeIn 0.4s ease-in-out;
         }
 
+        .card-venda-nova__acoes {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .input-rastreio {
+            border: 1px solid #ead3da;
+            border-radius: 4px;
+            color: #4a2a33;
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            min-width: 0;
+            padding: 8px 10px;
+        }
+
+        .input-rastreio::placeholder {
+            color: #b28a96;
+        }
+
+        .btn-marcar-enviado {
+            background: #7B1A2E;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            padding: 8px 10px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .btn-marcar-enviado:hover {
+            background: #5c1022;
+        }
+
+        @media (max-width: 420px) {
+            .card-venda-nova__acoes {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-marcar-enviado {
+                width: 100%;
+            }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }

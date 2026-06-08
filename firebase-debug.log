@@ -1,0 +1,123 @@
+[debug] [2026-05-21T21:25:13.580Z] ----------------------------------------------------------------------
+[debug] [2026-05-21T21:25:13.583Z] Command:       /usr/bin/node /home/joauum/.npm/_npx/ba4f1959e38407b5/node_modules/.bin/firebase use
+[debug] [2026-05-21T21:25:13.583Z] CLI Version:   15.18.0
+[debug] [2026-05-21T21:25:13.584Z] Platform:      linux
+[debug] [2026-05-21T21:25:13.584Z] Node Version:  v20.20.2
+[debug] [2026-05-21T21:25:13.584Z] Time:          Thu May 21 2026 18:25:13 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-05-21T21:25:13.584Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-21T21:25:13.587Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-05-21T21:25:14.029Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-21T21:25:14.030Z] > authorizing via signed-in user (jpk.araujo2003@gmail.com)
+[info] liri-delirios
+[debug] [2026-05-21T21:25:34.053Z] ----------------------------------------------------------------------
+[debug] [2026-05-21T21:25:34.055Z] Command:       /usr/bin/node /home/joauum/.npm/_npx/ba4f1959e38407b5/node_modules/.bin/firebase firestore:databases:list --project liri-delirios
+[debug] [2026-05-21T21:25:34.056Z] CLI Version:   15.18.0
+[debug] [2026-05-21T21:25:34.056Z] Platform:      linux
+[debug] [2026-05-21T21:25:34.056Z] Node Version:  v20.20.2
+[debug] [2026-05-21T21:25:34.056Z] Time:          Thu May 21 2026 18:25:34 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-05-21T21:25:34.057Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-21T21:25:34.059Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-05-21T21:25:52.162Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-21T21:25:52.163Z] > authorizing via signed-in user (jpk.araujo2003@gmail.com)
+[debug] [2026-05-21T21:25:52.164Z] [iam] checking project liri-delirios for permissions ["datastore.databases.list","firebase.projects.get"]
+[debug] [2026-05-21T21:25:52.165Z] Checked if tokens are valid: false, expires at: 1779152965649
+[debug] [2026-05-21T21:25:52.165Z] Checked if tokens are valid: false, expires at: 1779152965649
+[debug] [2026-05-21T21:25:52.165Z] > refreshing access token with scopes: []
+[debug] [2026-05-21T21:25:52.167Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-05-21T21:25:52.167Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-05-21T21:25:52.328Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-05-21T21:25:52.328Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-05-21T21:25:52.411Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions [none]
+[debug] [2026-05-21T21:25:52.412Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions  x-goog-user-project=liri-delirios
+[debug] [2026-05-21T21:25:52.412Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions {"permissions":["datastore.databases.list","firebase.projects.get"]}
+[debug] [2026-05-21T21:25:52.574Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-05-21T21:25:52.574Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-05-21T21:25:53.362Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions 200
+[debug] [2026-05-21T21:25:53.363Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions {"permissions":["datastore.databases.list","firebase.projects.get"]}
+[debug] [2026-05-21T21:25:53.364Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:25:53.364Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:25:53.365Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases [none]
+[debug] [2026-05-21T21:25:53.948Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases 200
+[debug] [2026-05-21T21:25:53.949Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases {"databases":[{"name":"projects/liri-delirios/databases/(default)","uid":"67e785d6-0179-4e76-8b9d-aa4f863ddb36","createTime":"2026-04-16T23:26:21.890937Z","updateTime":"2026-04-16T23:26:21.890937Z","locationId":"southamerica-east1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-05-21T20:25:53.947101Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"i","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IOmD+/Soy5QDMMG4hPPD85MD"}]}
+[info] ┌───────────────────────────────────────────────┬────────────────────┬────────────────────┐
+│ Database Name                                 │ Edition            │ Type               │
+├───────────────────────────────────────────────┼────────────────────┼────────────────────┤
+│ projects/liri-delirios/databases/(default)    │ STANDARD           │ FIRESTORE_NATIVE   │
+└───────────────────────────────────────────────┴────────────────────┴────────────────────┘
+[debug] [2026-05-21T21:36:59.428Z] ----------------------------------------------------------------------
+[debug] [2026-05-21T21:36:59.431Z] Command:       /usr/bin/node /home/joauum/.npm/_npx/ba4f1959e38407b5/node_modules/.bin/firebase deploy --only firestore:rules --project liri-delirios
+[debug] [2026-05-21T21:36:59.432Z] CLI Version:   15.18.0
+[debug] [2026-05-21T21:36:59.432Z] Platform:      linux
+[debug] [2026-05-21T21:36:59.432Z] Node Version:  v20.20.2
+[debug] [2026-05-21T21:36:59.432Z] Time:          Thu May 21 2026 18:36:59 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-05-21T21:36:59.432Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-21T21:37:00.667Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-21T21:37:00.669Z] > authorizing via signed-in user (jpk.araujo2003@gmail.com)
+[debug] [2026-05-21T21:37:00.669Z] [iam] checking project liri-delirios for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]
+[debug] [2026-05-21T21:37:00.671Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:00.671Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:00.673Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions [none]
+[debug] [2026-05-21T21:37:00.673Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions  x-goog-user-project=liri-delirios
+[debug] [2026-05-21T21:37:00.673Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[debug] [2026-05-21T21:37:01.676Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions 200
+[debug] [2026-05-21T21:37:01.677Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/liri-delirios:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get"]}
+[info] 
+[info] === Deploying to 'liri-delirios'...
+[info] 
+[info] i  deploying firestore 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-05-21T21:37:01.683Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:01.683Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:01.683Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/liri-delirios/services/firestore.googleapis.com [none]
+[debug] [2026-05-21T21:37:01.684Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/liri-delirios/services/firestore.googleapis.com  x-goog-user-project=liri-delirios
+[debug] [2026-05-21T21:37:02.824Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/liri-delirios/services/firestore.googleapis.com 200
+[debug] [2026-05-21T21:37:02.824Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/liri-delirios/services/firestore.googleapis.com [omitted]
+[info] ✔  firestore: required API firestore.googleapis.com is enabled 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-05-21T21:37:02.869Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:02.869Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:02.869Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases/(default) [none]
+[debug] [2026-05-21T21:37:03.071Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases/(default) 200
+[debug] [2026-05-21T21:37:03.072Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/liri-delirios/databases/(default) {"name":"projects/liri-delirios/databases/(default)","uid":"67e785d6-0179-4e76-8b9d-aa4f863ddb36","createTime":"2026-04-16T23:26:21.890937Z","updateTime":"2026-04-16T23:26:21.890937Z","locationId":"southamerica-east1","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-05-21T20:37:03.066551Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"i","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IJv6mbSry5QDMMG4hPPD85MD"}
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2026-05-21T21:37:03.073Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:03.073Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:03.073Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios:test [none]
+[debug] [2026-05-21T21:37:03.073Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios:test [omitted]
+[debug] [2026-05-21T21:37:04.322Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios:test 200
+[debug] [2026-05-21T21:37:04.323Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios:test {}
+[info] ✔  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2026-05-21T21:37:04.326Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:04.326Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:04.327Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases pageSize=10&pageToken=
+[debug] [2026-05-21T21:37:05.445Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases 200
+[debug] [2026-05-21T21:37:05.446Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases {"releases":[{"name":"projects/liri-delirios/releases/cloud.firestore","rulesetName":"projects/liri-delirios/rulesets/ee286d01-2bfd-4bdd-b284-b00e8c7702b0","createTime":"2026-04-17T02:33:18.885026Z","updateTime":"2026-04-17T02:34:05.539099Z"}]}
+[debug] [2026-05-21T21:37:05.447Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:05.448Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:05.448Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets/ee286d01-2bfd-4bdd-b284-b00e8c7702b0 [none]
+[debug] [2026-05-21T21:37:06.508Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets/ee286d01-2bfd-4bdd-b284-b00e8c7702b0 200
+[debug] [2026-05-21T21:37:06.508Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets/ee286d01-2bfd-4bdd-b284-b00e8c7702b0 [omitted]
+[info] i  firestore: uploading rules firestore.rules... 
+[debug] [2026-05-21T21:37:06.512Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:06.512Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:06.512Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets [none]
+[debug] [2026-05-21T21:37:06.513Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets [omitted]
+[debug] [2026-05-21T21:37:07.090Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets 200
+[debug] [2026-05-21T21:37:07.091Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/liri-delirios/rulesets {"name":"projects/liri-delirios/rulesets/f813bed6-4d18-402f-b22f-9a813aa69661","source":{"files":[{"content":"rules_version = '2';\n\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    function signedIn() {\n      return request.auth != null;\n    }\n\n    function isAdmin() {\n      return signedIn() && request.auth.token.email == 'contato.liridelirios@gmail.com';\n    }\n\n    function isOwner(userId) {\n      return signedIn() && request.auth.uid == userId;\n    }\n\n    match /produtos/{produtoId} {\n      allow read: if true;\n      allow create, update, delete: if isAdmin();\n    }\n\n    match /cupons/{cupomId} {\n      allow read: if true;\n      allow create, update, delete: if isAdmin();\n    }\n\n    match /pedidos/{pedidoId} {\n      allow create: if signedIn()\n        && request.resource.data.usuarioId == request.auth.uid\n        && request.resource.data.status == 'pendente';\n\n      allow read: if isAdmin() || isOwner(resource.data.usuarioId);\n      allow update, delete: if isAdmin();\n    }\n\n    match /clientes/{clienteId} {\n      allow create, read, update, delete: if isOwner(clienteId);\n    }\n\n    match /usuarios/{usuarioId} {\n      allow create, read, update, delete: if isOwner(usuarioId);\n    }\n\n    match /enderecos/{enderecoId} {\n      allow create: if signedIn()\n        && request.resource.data.usuarioId == request.auth.uid;\n      allow read, update, delete: if isAdmin() || isOwner(resource.data.usuarioId);\n    }\n\n    match /{document=**} {\n      allow read, write: if false;\n    }\n  }\n}\n","name":"firestore.rules"}]},"createTime":"2026-05-21T21:37:06.961471Z","metadata":{"services":["cloud.firestore"]}}
+[debug] [2026-05-21T21:37:07.091Z] [rules] created ruleset projects/liri-delirios/rulesets/f813bed6-4d18-402f-b22f-9a813aa69661
+[debug] [2026-05-21T21:37:07.092Z] [rules] releasing cloud.firestore with ruleset projects/liri-delirios/rulesets/f813bed6-4d18-402f-b22f-9a813aa69661
+[debug] [2026-05-21T21:37:07.093Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:07.093Z] Checked if tokens are valid: true, expires at: 1779402351329
+[debug] [2026-05-21T21:37:07.094Z] >>> [apiv2][query] PATCH https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases/cloud.firestore [none]
+[debug] [2026-05-21T21:37:07.094Z] >>> [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases/cloud.firestore {"release":{"name":"projects/liri-delirios/releases/cloud.firestore","rulesetName":"projects/liri-delirios/rulesets/f813bed6-4d18-402f-b22f-9a813aa69661"}}
+[debug] [2026-05-21T21:37:08.278Z] <<< [apiv2][status] PATCH https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases/cloud.firestore 200
+[debug] [2026-05-21T21:37:08.278Z] <<< [apiv2][body] PATCH https://firebaserules.googleapis.com/v1/projects/liri-delirios/releases/cloud.firestore {"name":"projects/liri-delirios/releases/cloud.firestore","rulesetName":"projects/liri-delirios/rulesets/f813bed6-4d18-402f-b22f-9a813aa69661","createTime":"2026-04-17T02:33:18.885026Z","updateTime":"2026-05-21T21:37:08.151862Z"}
+[debug] [2026-05-21T21:37:08.278Z] [rules] updated release projects/liri-delirios/releases/cloud.firestore
+[info] ✔  firestore: released rules firestore.rules to cloud.firestore 
+[info] 
+[info] ✔  Deploy complete! 
+[info] 
+[info] Project Console: https://console.firebase.google.com/project/liri-delirios/overview

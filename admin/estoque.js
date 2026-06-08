@@ -2,8 +2,8 @@
     import { monitorarEstoque, cadastrarProduto, deletarProduto } from "./produtos.js";
     import { onAuthStateChanged } from "firebase/auth";
     import { auth, db} from "./firebase.js";
-    import { onSnapshot, where, query, collection} from "firebase/firestore";
-    
+    import { onSnapshot, where, query, collection, doc, updateDoc, serverTimestamp } from "firebase/firestore"; 
+
     const EMAIL_ADMIN = "contato.liridelirios@gmail.com";
 
     onAuthStateChanged(auth, (usuario) => {
@@ -128,11 +128,88 @@ function iniciarMonitoramentoDePedidos(){
                         
                         <time class="horario-venda">${horarioFormatado}</time>
                     </div>
+
+                    <div class="card-venda-nova__acoes">
+                        <input
+                            class="input-rastreio"
+                            type="text"
+                            placeholder="Código de rastreio"
+                            data-id="${pedido.id}"
+                        >
+                        <button
+                            class="btn-marcar-enviado"
+                            type="button"
+                            data-id="${pedido.id}"
+                        >
+                            Marcar enviado
+                        </button>
+                    </div>
                 </article>
             `;
             lista_de_pedidos.push(cardHTML);
         });
         document.getElementById("feed-pedidos").innerHTML = lista_de_pedidos.join("");
     });
+
+
+    async function salvarEncomendaComoEnviada(pedidoId, codRastreio){
+        
+        const pedidoRef = doc(db, "pedidos", pedidoId);
+        
+        await updateDoc(pedidoRef,{
+            status: "enviado",
+            transportadora: "correios",
+            codRastreio: codRastreio,
+            enviadoEm: serverTimestamp(),
+            atualizadoEm: serverTimestamp(),
+        });
+        console.log(`Encomenda ${pedidoId} marcada como enviada com código de rastreio: ${codRastreio}`);
+    }
+  const feedPedidos = document.getElementById("feed-pedidos");
+  feedPedidos.addEventListener('click', async (event) => {
+    
+    if (!event.target.classList.contains('btn-marcar-enviado')) return;
+    
+    const button = event.target;
+    const pedidoId = event.target.dataset.id;
+
+    const inputRastreio = document.querySelector(`.input-rastreio[data-id="${pedidoId}"]`);
+
+    if(!inputRastreio){
+        alert("Campo de código de rastreio não encontrado para este pedido.");
+        return;
+    }
+
+    const codRastreio = inputRastreio.value.trim();
+
+    if (!codRastreio) {
+      alert("Por favor, insira o código de rastreio antes de marcar como enviado.");
+      return;
+    }
+
+    const confirmar = confirm("Deseja marcar este pedido como enviado?");
+    
+    if (!confirmar) return;
+
+    // lógica do try/catch aqui
+
+    try{
+        button.disabled = true;
+        button.textContent = "Atualizando...";
+
+        await salvarEncomendaComoEnviada(pedidoId, codRastreio);
+
+        alert("Pedido marcado como enviado com sucesso!");
+
+    }catch(error){
+        console.error("Erro ao marcar pedido como enviado: ", error);
+
+        button.disabled = false;
+        button.textContent = "Marcar enviado";
+        
+        alert("Erro ao marcar pedido como enviado. Tente novamente.");
+
+    }
+  });
 }
 iniciarMonitoramentoDePedidos();

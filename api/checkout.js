@@ -182,10 +182,18 @@ async function verificarUsuario(req) {
 }
 
 export default async function handler(req, res) {
-  // Configuração de CORS para permitir que o frontend acesse a API
+  const allowedOrigins = [
+    'https://www.liridelirios.com.br',
+    'https://liri-delirios.vercel.app'
+  ];
+  const origin = req.headers.origin;
+  const allowedOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
+  // Configuração de CORS para permitir que apenas o site da loja acesse a API
   res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
   if (req.method === 'OPTIONS') {
@@ -196,6 +204,12 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       const token = process.env.PAGSEGURO_API_KEY;
+      // URL publica do site; em producao vem da Vercel, em local usa o dominio atual como fallback.
+      const baseUrl = process.env.PUBLIC_SITE_URL || 'https://liri-delirios.vercel.app';
+      // Escolhe PagSeguro real apenas quando PAGSEGURO_ENV=production; caso contrario continua em sandbox.
+      const pagseguroBaseUrl = process.env.PAGSEGURO_ENV === 'production'
+        ? 'https://api.pagseguro.com'
+        : 'https://sandbox.api.pagseguro.com';
       const { itens, pedidoId, cupom } = req.body;
       const usuario = await verificarUsuario(req);
 
@@ -236,21 +250,31 @@ export default async function handler(req, res) {
         atualizadoEm: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      const resposta = await fetch("https://sandbox.api.pagseguro.com/checkouts", {
+      const resposta = await fetch(`${pagseguroBaseUrl}/checkouts`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          notification_urls: ["https://liri-delirios.vercel.app/api/webhook"],
-          redirect_url: `https://liri-delirios.vercel.app/sucesso.html?pedido=${pedidoId}`,
+          // PagSeguro chama essa URL quando o pagamento muda de status.
+          notification_urls: [`${baseUrl}/api/webhook?token=${process.env.PAGSEGURO_WEBHOOK_SECRET}`],
+          // Depois do pagamento, a cliente volta para a tela de sucesso do pedido.
+          redirect_url: `${baseUrl}/sucesso.html?pedido=${pedidoId}`,
           reference_id: pedidoId,
           items: pedidoSeguro.itensCheckout
         })
       });
 
       const dados = await resposta.json();
+      // Se o PagSeguro recusou o checkout, devolvemos o erro real para facilitar debug.
+      if (!resposta.ok) {
+        return res.status(resposta.status).json({
+          error: dados?.error_messages?.[0]?.description || dados?.message || 'Erro ao criar checkout no PagSeguro.',
+          detalhes: dados
+        });
+      }
+
       return res.status(200).json(dados);
     } catch (error) {
       return res.status(500).json({ error: error.message });

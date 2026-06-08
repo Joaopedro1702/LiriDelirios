@@ -1,0 +1,139 @@
+
+        .gestao-whatsapp, .cadastro-clientes-fisico {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .gestao-whatsapp h2, .cadastro-clientes-fisico h2 {
+            color: var(--color-primary);
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.7rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        .gestao-whatsapp__intro, .cadastro-clientes-fisico__intro {
+            color: var(--color-label);
+            font-family: var(--font--sans);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+        .form-whatsapp, .form-cadastro-fisico {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(150px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+        .form-whatsapp .campo, .form-cadastro-fisico .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-whatsapp label, .form-cadastro-fisico label {
+            color: var(--color-label);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .form-whatsapp input, .form-cadastro-fisico input, .form-cadastro-fisico select {
+            border: 1px solid var(--color-card-border);
+            border-radius: 4px;
+            color: var(--color-dark);
+            font-family: var(--font--sans);
+            padding: 10px 12px;
+        }
+        #btn-conectar-wpp, #btn-salvar-cliente-fisico {
+            background: #25D366;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+            font-family: var(--font--sans);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            padding: 12px 18px;
+            text-transform: uppercase;
+        }
+        #btn-salvar-cliente-fisico {
+            background: var(--color-primary);
+        }
+        #btn-conectar-wpp:hover {
+            background: #1ebd58;
+        }
+
+        /* Modal do WhatsApp */
+        .modal-wpp {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-wpp.mostrar {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-wpp__conteudo {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-wpp__fechar {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-wpp__codigo {
+            font-family: 'Jost', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: #7B1A2E;
+            background: #fdf5f6;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px dashed #7B1A2E;
+        }
+        .modal-wpp__instrucoes {
+            font-size: 0.9rem;
+            text-align: left;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+            .form-whatsapp, .form-cadastro-fisico {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .form-whatsapp, .form-cadastro-fisico {
+                grid-template-columns: 1fr;
+            }
+        }
