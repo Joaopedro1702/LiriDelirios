@@ -1,6 +1,8 @@
 import { db } from "./firebase.js";
 import { collection, addDoc} from "firebase/firestore";
 
+const BOT_BACKEND_URL = window.BOT_BACKEND_URL || 'http://localhost:3000';
+
 const modalWpp = document.getElementById('modal-wpp-pareamento');
 const codigoDisplay = document.getElementById('wpp-codigo-display');
 const btnFecharModal = document.getElementById('btn-fechar-modal-wpp');
@@ -32,7 +34,7 @@ document.getElementById("btn-conectar-wpp").addEventListener("click", async () =
     }
 
     try {
-        const resposta = await fetch('http://localhost:3000/vincular-telefone', {
+        const resposta = await fetch(`${BOT_BACKEND_URL}/vincular-telefone`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -92,27 +94,6 @@ document.getElementById("form-cadastro-fisico").addEventListener("submit", async
 
         //Cria o documento e gera um novo ID
         const docCriado = await addDoc(docRef, clienteFisico);
-
-        try{
-            const resposta = await fetch('http://localhost:3000/vincular-telefone', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({telefone})
-            });
-            const dadosBot = await resposta.json();
-            if(!resposta.ok){
-                console.error("Erro no bot: ", dadosBot);
-                alert('Não foi possivel cadastrar o cliente no bot. Por favor, tente novamente.');
-            }else{
-                console.log("Bot respondeu:", dadosBot);
-                alert("Cliente e telefone cadastrados com sucesso no bot!")
-            }
-        }catch(error){
-            console.error("Erro ao cadastrar cliente no bot:", error);
-            alert("Ocorreu um erro ao cadastrar o cliente no bot. Por favor, tente novamente.");
-        }
 
         console.log(`Cliente fisico cadastrado com ID: ${docCriado.id}`);
         //Reseta todos os campos do formulário após o cadastro.

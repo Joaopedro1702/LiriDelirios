@@ -1,1 +1,103 @@
-import{f as e,n as t,r as n}from"../firebase.js";/* empty css      *//* empty css            */var r=document.getElementById(`modal-wpp-pareamento`),i=document.getElementById(`wpp-codigo-display`),a=document.getElementById(`btn-fechar-modal-wpp`);function o(e){!r||!i||(i.textContent=e||`Erro ao gerar o código`,r.classList.add(`mostrar`))}function s(){r&&r.classList.remove(`mostrar`)}a?.addEventListener(`click`,s),window.addEventListener(`click`,e=>{e.target===r&&s()}),document.getElementById(`btn-conectar-wpp`).addEventListener(`click`,async()=>{let e=document.getElementById(`numero-wpp`).value.trim();if(!e){alert(`Informe o número do WhatsApp antes de conectar.`);return}try{let t=await fetch(`http://localhost:3000/vincular-telefone`,{method:`POST`,headers:{"Content-Type":`application/json`},body:JSON.stringify({telefone:e})}),n=await t.text(),r;try{r=n?JSON.parse(n):{}}catch(e){console.error(`Não foi possível parsear JSON do backend:`,e,n),r={raw:n}}if(console.log(`Resposta do bot:`,t.status,r),!t.ok){console.error(`Erro no bot: `,r),alert(`Não foi possível conectar o dispositivo. Verifique o número e tente novamente.`);return}r&&r.pairingCode?o(r.pairingCode):alert(`Conexão iniciada, mas não recebi o código de pareamento. Verifique o backend e tente novamente.`)}catch(e){console.error(`Erro ao conectar dispositivo no bot:`,e),alert(`Ocorreu um erro ao conectar o dispositivo. Verifique se o backend está rodando e tente novamente.`)}}),document.getElementById(`form-cadastro-fisico`).addEventListener(`submit`,async r=>{r.preventDefault();let i=document.getElementById(`nome-cliente-fisico`).value.trim(),a=document.getElementById(`tel-cliente-fisico`).value,o={nome:i,telefone:a,diaNascimento:document.getElementById(`dia-cliente-fisico`).value,mesNascimento:document.getElementById(`mes-cliente-fisico`).value,tipo:`fisico`,cadastradoEm:new Date().toISOString()};try{let r=await n(await e(t,`cliente_loja_fisi`),o);try{let e=await fetch(`http://localhost:3000/vincular-telefone`,{method:`POST`,headers:{"Content-Type":`application/json`},body:JSON.stringify({telefone:a})}),t=await e.json();e.ok?(console.log(`Bot respondeu:`,t),alert(`Cliente e telefone cadastrados com sucesso no bot!`)):(console.error(`Erro no bot: `,t),alert(`Não foi possivel cadastrar o cliente no bot. Por favor, tente novamente.`))}catch(e){console.error(`Erro ao cadastrar cliente no bot:`,e),alert(`Ocorreu um erro ao cadastrar o cliente no bot. Por favor, tente novamente.`)}console.log(`Cliente fisico cadastrado com ID: ${r.id}`),document.getElementById(`form-cadastro-fisico`).reset()}catch(e){console.error(`Erro ao cadastrar cliente fisico no Firestore:`,e),alert(`Ocorreu um erro ao cadastrar o cliente. Por favor, tente novamente.`)}});
+import { db } from "../firebase.js";
+import { collection, addDoc } from "firebase/firestore";
+
+const BOT_BACKEND_URL = window.BOT_BACKEND_URL || 'http://localhost:3000';
+
+const modalWpp = document.getElementById('modal-wpp-pareamento');
+const codigoDisplay = document.getElementById('wpp-codigo-display');
+const btnFecharModal = document.getElementById('btn-fechar-modal-wpp');
+
+function abrirModalCodigo(codigo) {
+    if (!modalWpp || !codigoDisplay) return;
+    codigoDisplay.textContent = codigo || 'Erro ao gerar o código';
+    modalWpp.classList.add('mostrar');
+}
+
+function fecharModalCodigo() {
+    if (!modalWpp) return;
+    modalWpp.classList.remove('mostrar');
+}
+
+btnFecharModal?.addEventListener('click', fecharModalCodigo);
+window.addEventListener('click', (event) => {
+    if (event.target === modalWpp) {
+        fecharModalCodigo();
+    }
+});
+
+document.getElementById("btn-conectar-wpp").addEventListener("click", async () => {
+    const numeroWpp = document.getElementById("numero-wpp").value.trim();
+
+    if (!numeroWpp) {
+        alert("Informe o número do WhatsApp antes de conectar.");
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`${BOT_BACKEND_URL}/vincular-telefone`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ telefone: numeroWpp })
+        });
+
+        const textoResposta = await resposta.text();
+        let dadosBot;
+        try {
+            dadosBot = textoResposta ? JSON.parse(textoResposta) : {};
+        } catch (parseError) {
+            console.error('Não foi possível parsear JSON do backend:', parseError, textoResposta);
+            dadosBot = { raw: textoResposta };
+        }
+
+        console.log('Resposta do bot:', resposta.status, dadosBot);
+
+        if (!resposta.ok) {
+            console.error('Erro no bot: ', dadosBot);
+            alert('Não foi possível conectar o dispositivo. Verifique o número e tente novamente.');
+            return;
+        }
+
+        if (dadosBot && dadosBot.pairingCode) {
+            abrirModalCodigo(dadosBot.pairingCode);
+        } else {
+            alert('Conexão iniciada, mas não recebi o código de pareamento. Verifique o backend e tente novamente.');
+        }
+    } catch (error) {
+        console.error('Erro ao conectar dispositivo no bot:', error);
+        alert('Ocorreu um erro ao conectar o dispositivo. Verifique se o backend está rodando e tente novamente.');
+    }
+});
+
+document.getElementById("form-cadastro-fisico").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const nome = document.getElementById("nome-cliente-fisico").value.trim();
+    const telefone = document.getElementById("tel-cliente-fisico").value;
+    const diaNascimento = document.getElementById("dia-cliente-fisico").value;
+    const mesNascimento = document.getElementById("mes-cliente-fisico").value;
+
+    const clienteFisico = {
+        nome: nome,
+        telefone: telefone,
+        diaNascimento: diaNascimento,
+        mesNascimento: mesNascimento,
+        tipo: "fisico",
+        cadastradoEm: new Date().toISOString(),
+    };
+
+    try {
+        // Aponta para a coleção desejada dentro do banco
+        const docRef = await collection(db, "cliente_loja_fisi");
+
+        // Cria o documento e gera um novo ID
+        const docCriado = await addDoc(docRef, clienteFisico);
+
+        console.log(`Cliente fisico cadastrado com ID: ${docCriado.id}`);
+        document.getElementById("form-cadastro-fisico").reset();
+    } catch (error) {
+        console.error("Erro ao cadastrar cliente fisico no Firestore:", error);
+        alert("Ocorreu um erro ao cadastrar o cliente. Por favor, tente novamente.");
+    }
+});
