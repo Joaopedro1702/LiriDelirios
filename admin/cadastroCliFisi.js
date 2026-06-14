@@ -1,7 +1,40 @@
 import { db } from "./firebase.js";
 import { collection, addDoc} from "firebase/firestore";
 
-const BOT_BACKEND_URL = window.BOT_BACKEND_URL || 'http://localhost:3000';
+const BOT_BACKEND_URL = import.meta.env.VITE_BOT_URL || 'http://localhost:3000';
+// O Vite pega o valor do arquivo .env automaticamente e substitui aqui durante o processo.
+const API_KEY_BOT = import.meta.env.VITE_API_KEY_BOT || 'LiriBot@2025_Secreta!'; 
+
+async function checarStatusBot() {
+    try {
+        const resposta = await fetch(`${BOT_BACKEND_URL}/status`);
+        if (!resposta.ok) return;
+        const data = await resposta.json();
+        
+        let statusDiv = document.getElementById('wpp-status-badge');
+        if (!statusDiv) {
+            statusDiv = document.createElement('div');
+            statusDiv.id = 'wpp-status-badge';
+            statusDiv.style.marginTop = '10px';
+            statusDiv.style.fontWeight = 'bold';
+            
+            const btnConectar = document.getElementById('btn-conectar-wpp');
+            if (btnConectar) {
+                btnConectar.parentNode.insertBefore(statusDiv, btnConectar.nextSibling);
+            }
+        }
+        
+        if (data.ready) {
+            statusDiv.innerHTML = `🟢 Bot Conectado (${data.authenticatedNumber || 'Sem número'})`;
+            statusDiv.style.color = '#155724';
+        } else {
+            statusDiv.innerHTML = `🔴 Bot Desconectado`;
+            statusDiv.style.color = '#721c24';
+        }
+    } catch (error) {}
+}
+checarStatusBot();
+setInterval(checarStatusBot, 10000);
 
 const modalWpp = document.getElementById('modal-wpp-pareamento');
 const codigoDisplay = document.getElementById('wpp-codigo-display');
@@ -37,7 +70,8 @@ document.getElementById("btn-conectar-wpp").addEventListener("click", async () =
         const resposta = await fetch(`${BOT_BACKEND_URL}/vincular-telefone`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-api-key': API_KEY_BOT
             },
             body: JSON.stringify({ telefone: numeroWpp })
         });
