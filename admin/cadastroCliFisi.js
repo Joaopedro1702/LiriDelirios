@@ -2,6 +2,7 @@ import { db } from "./firebase.js";
 import { collection, addDoc} from "firebase/firestore";
 
 const BOT_BACKEND_URL = import.meta.env.VITE_BOT_URL || 'http://localhost:3000';
+
 // O Vite pega o valor do arquivo .env automaticamente e substitui aqui durante o processo.
 const API_KEY_BOT = import.meta.env.VITE_API_KEY_BOT || 'LiriBot@2025_Secreta!'; 
 
