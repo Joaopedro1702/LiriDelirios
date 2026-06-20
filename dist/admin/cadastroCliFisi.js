@@ -47,11 +47,13 @@ const btnFecharModal = document.getElementById('btn-fechar-modal-wpp');
 function abrirModalCodigo(codigo) {
     if (!modalWpp || !codigoDisplay) return;
     codigoDisplay.textContent = codigo || 'Erro ao gerar o código';
+    modalWpp.style.display = 'flex'; 
     modalWpp.classList.add('mostrar');
 }
 
 function fecharModalCodigo() {
     if (!modalWpp) return;
+    modalWpp.style.display = 'none';
     modalWpp.classList.remove('mostrar');
 }
 
