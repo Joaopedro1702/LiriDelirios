@@ -36,73 +36,62 @@ async function checarStatusBot() {
 checarStatusBot();
 setInterval(checarStatusBot, 10000);
 
+// ───────────────────────────── MODAL DE QR CODE ─────────────────────────────
+
 const modalWpp = document.getElementById('modal-wpp-pareamento');
-const codigoDisplay = document.getElementById('wpp-codigo-display');
+const qrImagem = document.getElementById('wpp-qr-image');
 const btnFecharModal = document.getElementById('btn-fechar-modal-wpp');
 
-function abrirModalCodigo(codigo) {
-    if (!modalWpp || !codigoDisplay) return;
-    codigoDisplay.textContent = codigo || 'Erro ao gerar o código';
+let qrInterval = null;
+
+function abrirModalQR() {
+    if (!modalWpp) return;
     modalWpp.classList.add('mostrar');
+    buscarQR(); // busca imediato, não espera os 3s do intervalo
+    qrInterval = setInterval(buscarQR, 3000);
 }
 
-function fecharModalCodigo() {
+function fecharModalQR() {
     if (!modalWpp) return;
     modalWpp.classList.remove('mostrar');
+    if (qrInterval) {
+        clearInterval(qrInterval);
+        qrInterval = null;
+    }
 }
 
-btnFecharModal?.addEventListener('click', fecharModalCodigo);
-window.addEventListener('click', (event) => {
-    if (event.target === modalWpp) {
-        fecharModalCodigo();
-    }
-});
-
-document.getElementById("btn-conectar-wpp").addEventListener("click", async () => {
-    const numeroWpp = document.getElementById("numero-wpp").value.trim();
-
-    if (!numeroWpp) {
-        alert("Informe o número do WhatsApp antes de conectar.");
-        return;
-    }
-
+async function buscarQR() {
     try {
-        const resposta = await fetch(`${BOT_BACKEND_URL}/vincular-telefone`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': API_KEY_BOT
-            },
-            body: JSON.stringify({ telefone: numeroWpp })
-        });
+        const resposta = await fetch(`${BOT_BACKEND_URL}/qrcode`);
+        if (!resposta.ok) return;
+        const data = await resposta.json();
 
-        const textoResposta = await resposta.text();
-        let dadosBot;
-        try {
-            dadosBot = textoResposta ? JSON.parse(textoResposta) : {};
-        } catch (parseError) {
-            console.error('Não foi possível parsear JSON do backend:', parseError, textoResposta);
-            dadosBot = { raw: textoResposta };
-        }
-
-        console.log('Resposta do bot:', resposta.status, dadosBot);
-
-        if (!resposta.ok) {
-            console.error('Erro no bot: ', dadosBot);
-            alert('Não foi possível conectar o dispositivo. Verifique o número e tente novamente.');
+        if (data.connected) {
+            fecharModalQR();
+            checarStatusBot(); // atualiza o badge 🟢/🔴 na hora
             return;
         }
 
-        if (dadosBot && dadosBot.pairingCode) {
-            abrirModalCodigo(dadosBot.pairingCode);
-        } else {
-            alert('Conexão iniciada, mas não recebi o código de pareamento. Verifique o backend e tente novamente.');
+        if (data.qr && qrImagem) {
+            qrImagem.src = data.qr;
         }
     } catch (error) {
-        console.error('Erro ao conectar dispositivo no bot:', error);
-        alert('Ocorreu um erro ao conectar o dispositivo. Verifique se o backend está rodando e tente novamente.');
+        console.error('Erro ao buscar QR code:', error);
+    }
+}
+
+btnFecharModal?.addEventListener('click', fecharModalQR);
+window.addEventListener('click', (event) => {
+    if (event.target === modalWpp) {
+        fecharModalQR();
     }
 });
+
+document.getElementById("btn-conectar-wpp").addEventListener("click", () => {
+    abrirModalQR();
+});
+
+// ───────────────────────────── CADASTRO DE CLIENTE ─────────────────────────────
 
 document.getElementById("form-cadastro-fisico").addEventListener("submit", async (event) => {
     event.preventDefault();

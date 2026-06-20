@@ -173,6 +173,15 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
+.modal-wpp__qr {
+    width: 250px;
+    height: 250px;
+    margin: 20px auto;
+    display: block;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
 /*Card de produto*/
 
 .card-produto {
